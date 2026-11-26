@@ -104,39 +104,133 @@
 
     .card + .card { margin-top: 16px; }
 
+    /* Chat header and Maria profile use floats/absolute positioning only (no flex), so they work on Safari 9. */
+    .chat-head {
+      position: relative;
+      min-height: 44px;
+      margin-bottom: 12px;
+      padding-right: 56px;
+    }
+
+    .chat-card h2 {
+      margin: 0;
+      font-size: 1.12rem;
+      line-height: 44px;
+      letter-spacing: -0.02em;
+    }
+
+    .chat-head .voice-toggle { position: absolute; top: 0; right: 0; }
+
+    .maria-profile { margin-bottom: 12px; }
+
+    .maria-profile:after { content: ""; display: block; clear: both; }
+
     .tutor-img {
+      float: left;
       display: block;
-      width: 200px;
-      max-width: 60%;
-      height: auto;
-      aspect-ratio: 1 / 1;
-      margin: 0 0 18px;
+      width: 96px;
+      height: 96px;
+      margin: 0 16px 0 0;
       border-radius: 50%;
       -o-object-fit: cover;
       object-fit: cover;
       border: 3px solid #b9e3db;
+      background: #e7f6f3;
       box-shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
     }
 
-    .chat-head {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-      -webkit-box-pack: justify;
-      -webkit-justify-content: space-between;
-      justify-content: space-between;
-      margin-bottom: 12px;
+    .maria-info { margin-left: 112px; padding-top: 4px; }
+
+    .maria-name {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
     }
 
-    .chat-card h2 {
-      margin: 0 12px 0 0;
-      min-width: 0;
-      font-size: 1.12rem;
-      letter-spacing: -0.02em;
+    .maria-role {
+      margin: 0 0 8px;
+      color: #5a6e69;
+      font-size: 0.88rem;
+      line-height: 1.4;
     }
+
+    .hear-btn {
+      -webkit-appearance: none;
+      appearance: none;
+      display: inline-block;
+      min-height: 44px;
+      margin: 0;
+      padding: 10px 18px;
+      border: 1px solid #0a6e61;
+      border-radius: 14px;
+      background: #0a6e61;
+      background: linear-gradient(160deg, #19b39f 0%, #0a6e61 100%);
+      color: #fff;
+      font: inherit;
+      font-weight: 650;
+      font-size: 1rem;
+      line-height: 1.2;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hear-btn svg { display: inline-block; width: 18px; height: 18px; margin: -3px 8px 0 0; vertical-align: middle; }
+
+    .hear-btn:hover { -webkit-filter: brightness(1.05); filter: brightness(1.05); }
+
+    .hear-btn.speaking { background: #e7f6f3; border-color: #b9e3db; color: #0a6e61; box-shadow: none; }
+
+    .hear-btn:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e, 0 6px 16px rgba(13, 143, 126, 0.28); }
+
+    .hear-btn:focus:not(:focus-visible) { box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28); }
+
+    .hear-btn.speaking:focus:not(:focus-visible) { box-shadow: none; }
+
+    .readalong {
+      display: none;
+      position: relative;
+      margin: 0 0 12px;
+      padding: 10px 14px 12px;
+      border: 1px solid #cfeae5;
+      border-radius: 14px;
+      background: #f3faf8;
+    }
+
+    .readalong.on { display: block; }
+
+    .ra-label {
+      margin: 0 0 4px;
+      color: #5a6e69;
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .ra-text {
+      position: relative;
+      max-height: 120px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      color: #5a6e69;
+      font-size: 1rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .ra-text .w { padding: 1px 2px; margin: 0 -2px; border-radius: 5px; }
+
+    .ra-text .w.done { color: #142421; }
+
+    .ra-text .w.sent { color: #142421; background: #e7f6f3; }
+
+    .ra-text .w.cur { color: #08574d; background: #cdeee8; }
 
     .voice-toggle {
       -webkit-appearance: none;
@@ -438,7 +532,8 @@
       .app { width: 100%; width: calc(100% - 20px); padding-top: 20px; }
       .card { padding: 18px 16px 16px; border-radius: 16px; }
       .hero h2 { font-size: 1.35rem; }
-      .tutor-img { width: 160px; margin-left: auto; margin-right: auto; }
+      .tutor-img { width: 80px; height: 80px; margin-right: 14px; }
+      .maria-info { margin-left: 94px; }
       .features { display: block; margin: 16px 0 0; }
       .feature { margin: 0 0 12px; }
       .feature:last-child { margin-bottom: 0; }
@@ -471,7 +566,6 @@
 
     <main>
       <section class="card hero" aria-labelledby="hero-heading">
-        <img class="tutor-img" src="yibu-tutor.png" alt="Maria, Yibu’s friendly language-learning tutor" width="200" height="200">
         <h2 id="hero-heading">Speak freely, and practice English with Maria</h2>
         <p class="lede">Yibu is an English learning app. You can chat with tutor Maria anytime to practice, talk about the news or topics you care about, and get gentle, clear corrections when you need them. Want to see how Maria would reply first? Come adjust the tutor settings.</p>
         <a class="cta" href="https://guywitharicecooker.github.io/yibu-settings/yibu-settings.html">Open tutor settings</a>
@@ -484,6 +578,18 @@
             <svg class="on-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
             <svg class="off-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
           </button>
+        </div>
+        <div class="maria-profile">
+          <img class="tutor-img" src="yibu-tutor-holding-reader.png" alt="Maria, Yibu’s friendly language-learning tutor" width="96" height="96">
+          <div class="maria-info">
+            <p class="maria-name">Maria</p>
+            <p class="maria-role">Your English tutor</p>
+            <button class="hear-btn" id="maria-hear" type="button" aria-label="Hear Maria speak"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span id="maria-hear-label">Hear Maria</span></button>
+          </div>
+        </div>
+        <div class="readalong" id="maria-readalong" aria-hidden="true">
+          <div class="ra-label">Read along</div>
+          <div class="ra-text" id="maria-readalong-text"></div>
         </div>
         <div class="chat-log" id="maria-log" role="log" aria-live="polite"></div>
         <form class="chat-form" id="maria-form" autocomplete="off">
@@ -537,15 +643,36 @@
       try { window.localStorage.setItem(key, value); } catch (err) { /* ignore */ }
     }
 
-    /* ---- Spoken replies (Web Speech API) ---- */
+    /* ---- Spoken replies: neural voice via the Worker's /tts route, Web Speech API as fallback ---- */
     var VOICE_KEY = "yibu-voice";
+    var GREETING = "Hi, I\u2019m Maria! Tell me a little about your day, in English.";
+    var TTS_URL = MARIA_ENDPOINT ? String(MARIA_ENDPOINT).replace(/\/+$/, "") + "/tts" : "";
+    var SILENT_WAV = null;
     var synth = null;
     try { synth = window.speechSynthesis || null; } catch (err) { synth = null; }
     var canSpeak = !!(synth && window.SpeechSynthesisUtterance &&
       typeof synth.speak === "function" && typeof synth.cancel === "function");
+    var player = null;
+    var canAudio = false;
+    try {
+      player = window.Audio ? new window.Audio() : null;
+      canAudio = !!(TTS_URL && player && typeof player.play === "function" &&
+        window.Blob && window.URL && window.URL.createObjectURL);
+    } catch (err) { player = null; canAudio = false; }
     var voiceBtn = document.getElementById("maria-voice");
+    var hearBtn = document.getElementById("maria-hear");
+    var hearLabel = document.getElementById("maria-hear-label");
+    var raBox = document.getElementById("maria-readalong");
+    var raText = document.getElementById("maria-readalong-text");
     var voiceOn = true;
     var chosenVoice = null;
+    var speakSeq = 0;
+    var speaking = false;
+    var activeXhr = null;
+    var tickTimer = null;
+    var neuralBlockedUntil = 0;
+    var audioCache = {};
+    var audioCacheKeys = [];
     var BAD_VOICES = /albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|princess|deranged|hysterical|grandma|grandpa|eddy|flo|reed|rocko|sandy|shelley/i;
     var PREFERRED = ["samantha", "ava", "serena", "karen", "moira", "allison", "susan", "jenny", "aria", "google us english", "google uk english female"];
 
@@ -581,34 +708,288 @@
       if (canSpeak) { try { synth.cancel(); } catch (err) { /* ignore */ } }
     }
 
-    /* Call from a click/submit handler: unlocks speech on iOS/iPadOS Safari so later async replies can play. */
-    function primeSpeech() {
-      if (!canSpeak || !voiceOn) { return; }
-      try {
-        synth.cancel();
-        var u = new window.SpeechSynthesisUtterance(" ");
-        u.volume = 0;
-        u.lang = "en-US";
-        synth.speak(u);
-      } catch (err) { /* ignore */ }
+    /* A short silent WAV (as a data: URI) used to unlock audio playback inside a user gesture. */
+    function makeSilentWav() {
+      var n = 400, i, d;
+      function u32(v) { return String.fromCharCode(v & 255, (v >> 8) & 255, (v >> 16) & 255, (v >> 24) & 255); }
+      function u16(v) { return String.fromCharCode(v & 255, (v >> 8) & 255); }
+      d = "RIFF" + u32(36 + n) + "WAVEfmt " + u32(16) + u16(1) + u16(1) + u32(8000) + u32(8000) + u16(1) + u16(8) + "data" + u32(n);
+      for (i = 0; i < n; i++) { d += "\x80"; }
+      return "data:audio/wav;base64," + window.btoa(d);
     }
 
-    function speak(text) {
-      if (!canSpeak) { return; }
+    /* Call from a click/submit handler: unlocks speech and audio on iOS/iPadOS Safari so later async replies can play. */
+    function primeSpeech(force) {
+      if (!force && !voiceOn) { return; }
+      if (canAudio) {
+        try {
+          if (!SILENT_WAV) { SILENT_WAV = makeSilentWav(); }
+          player.src = SILENT_WAV;
+          var pp = player.play();
+          if (pp && typeof pp.then === "function") { pp.then(null, function () { /* ignore */ }); }
+        } catch (err) { /* ignore */ }
+      }
+      if (canSpeak) {
+        try {
+          synth.cancel();
+          var u = new window.SpeechSynthesisUtterance(" ");
+          u.volume = 0;
+          u.lang = "en-US";
+          synth.speak(u);
+        } catch (err2) { /* ignore */ }
+      }
+    }
+
+    /* ---- Read-along transcript ---- */
+    function setHearState(on) {
+      speaking = on;
+      if (!hearBtn) { return; }
+      hearBtn.className = on ? "hear-btn speaking" : "hear-btn";
+      hearBtn.setAttribute("aria-label", on ? "Stop Maria speaking" : "Hear Maria speak");
+      if (hearLabel) { hearLabel.firstChild.nodeValue = on ? "Stop" : "Hear Maria"; }
+    }
+
+    function buildTranscript(text) {
+      while (raText.firstChild) { raText.removeChild(raText.firstChild); }
+      var words = [], els = [], re = /\S+/g, m, last = 0;
+      while ((m = re.exec(text)) !== null) {
+        if (m.index > last) { raText.appendChild(document.createTextNode(text.slice(last, m.index))); }
+        var span = document.createElement("span");
+        span.className = "w";
+        span.appendChild(document.createTextNode(m[0]));
+        raText.appendChild(span);
+        words.push({ s: m.index, e: m.index + m[0].length, t: m[0] });
+        els.push(span);
+        last = m.index + m[0].length;
+      }
+      raText.scrollTop = 0;
+      raBox.className = "readalong on";
+      /* Cumulative time weights per word (longer words and sentence ends take longer). */
+      var cum = [], total = 0, i;
+      for (i = 0; i < words.length; i++) {
+        var wt = words[i].t.length + 1;
+        if (/[.!?]["\u201d\u2019')]*$/.test(words[i].t)) { wt += 4; }
+        else if (/[,;:]$/.test(words[i].t)) { wt += 2; }
+        total += wt;
+        cum.push(total);
+      }
+      for (i = 0; i < cum.length; i++) { cum[i] = cum[i] / total; }
+      var lastKey = "";
+      var tr = { n: words.length, words: words, cum: cum };
+      /* done = words before this index are marked read; cur = current word (or -1); sFrom..sTo = highlighted sentence. */
+      tr.set = function (done, cur, sFrom, sTo) {
+        var key = done + "|" + cur + "|" + sFrom + "|" + sTo;
+        if (key === lastKey) { return; }
+        lastKey = key;
+        for (var j = 0; j < els.length; j++) {
+          var cls = j < done ? "w done" : j === cur ? "w cur" : (j >= sFrom && j < sTo) ? "w sent" : "w";
+          if (els[j].className !== cls) { els[j].className = cls; }
+        }
+        var el = cur >= 0 ? els[cur] : null;
+        if (el) {
+          var top = el.offsetTop;
+          if (top < raText.scrollTop || top + el.offsetHeight > raText.scrollTop + raText.clientHeight) {
+            raText.scrollTop = Math.max(0, top - 24);
+          }
+        }
+      };
+      tr.finish = function () { tr.set(tr.n, -1, 0, 0); };
+      tr.wordAt = function (pos) {
+        for (var j = 0; j < words.length; j++) { if (pos < words[j].e) { return j; } }
+        return Math.max(0, words.length - 1);
+      };
+      tr.wordForFraction = function (f) {
+        for (var j = 0; j < cum.length; j++) { if (f < cum[j]) { return j; } }
+        return Math.max(0, cum.length - 1);
+      };
+      tr.set(0, -1, 0, 0);
+      return tr;
+    }
+
+    /* ---- Playback ---- */
+    function clearTick() {
+      if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
+    }
+
+    function stopAll() {
+      speakSeq++;
+      if (activeXhr) { try { activeXhr.abort(); } catch (err) { /* ignore */ } activeXhr = null; }
+      clearTick();
+      if (player) {
+        try {
+          player.onended = null; player.onerror = null; player.onplaying = null;
+          player.pause();
+        } catch (err2) { /* ignore */ }
+      }
+      stopSpeech();
+      setHearState(false);
+    }
+
+    function cacheAudio(text, url) {
+      audioCache[text] = url;
+      audioCacheKeys.push(text);
+      if (audioCacheKeys.length > 8) {
+        var old = audioCacheKeys.shift();
+        try { window.URL.revokeObjectURL(audioCache[old]); } catch (err) { /* ignore */ }
+        delete audioCache[old];
+      }
+    }
+
+    function fetchAudio(text, cb) {
+      if (audioCache.hasOwnProperty(text)) { cb(audioCache[text]); return; }
+      var finished = false;
+      function finish(url) {
+        if (finished) { return; }
+        finished = true;
+        activeXhr = null;
+        cb(url);
+      }
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", TTS_URL, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.responseType = "blob";
+        xhr.timeout = 30000;
+        xhr.onload = function () {
+          var blob = xhr.response;
+          if (xhr.status === 200 && blob && blob.size > 0) {
+            var url = null;
+            try { url = window.URL.createObjectURL(blob); } catch (err) { url = null; }
+            if (url) { cacheAudio(text, url); }
+            finish(url);
+          } else {
+            finish(null);
+          }
+        };
+        xhr.onerror = function () { finish(null); };
+        xhr.ontimeout = function () { finish(null); };
+        xhr.onabort = function () { finished = true; };
+        activeXhr = xhr;
+        xhr.send(JSON.stringify({ text: text }));
+      } catch (err) {
+        finish(null);
+      }
+    }
+
+    function startTick(id, tr) {
+      clearTick();
+      tickTimer = setInterval(function () {
+        if (id !== speakSeq) { clearTick(); return; }
+        var d = player.duration, t = player.currentTime;
+        if (!(d > 0) || d === Infinity) { return; }
+        var idx = tr.wordForFraction(t / d);
+        tr.set(idx, idx, 0, 0);
+      }, 70);
+    }
+
+    function speakBrowser(text, id, tr) {
+      if (!canSpeak) {
+        tr.finish();
+        setHearState(false);
+        return;
+      }
       try {
         synth.cancel();
         if (!chosenVoice) { pickVoice(); }
-        var parts = String(text).match(/[^.!?\n]+[.!?]*\s*/g) || [String(text)];
+        var re = /[^.!?\n]+[.!?]*\s*/g, m, parts = [];
+        while ((m = re.exec(text)) !== null) { parts.push({ text: m[0], start: m.index }); }
+        if (!parts.length) { parts.push({ text: text, start: 0 }); }
+        var count = 0;
+        var utterances = [];
         for (var i = 0; i < parts.length; i++) {
-          var part = parts[i].replace(/^\s+|\s+$/g, "");
-          if (!part) { continue; }
-          var u = new window.SpeechSynthesisUtterance(part);
-          if (chosenVoice) { u.voice = chosenVoice; u.lang = chosenVoice.lang; } else { u.lang = "en-US"; }
-          u.rate = 0.95;
-          synth.speak(u);
+          (function (part, isLast) {
+            var lead = part.text.length - part.text.replace(/^\s+/, "").length;
+            var clean = part.text.replace(/^\s+|\s+$/g, "");
+            if (!clean) { return; }
+            var from = tr.wordAt(part.start + lead);
+            var to = tr.wordAt(part.start + lead + clean.length - 1) + 1;
+            var u = new window.SpeechSynthesisUtterance(clean);
+            if (chosenVoice) { u.voice = chosenVoice; u.lang = chosenVoice.lang; } else { u.lang = "en-US"; }
+            u.rate = 0.95;
+            u.onstart = function () {
+              if (id !== speakSeq) { return; }
+              tr.set(from, -1, from, to);  /* whole sentence until word boundaries arrive */
+            };
+            u.onboundary = function (e) {
+              if (id !== speakSeq || !e || (e.name && e.name !== "word")) { return; }
+              var wi = tr.wordAt(part.start + lead + (e.charIndex || 0));
+              tr.set(wi, wi, 0, 0);
+            };
+            u.onend = function () {
+              if (id !== speakSeq) { return; }
+              tr.set(to, -1, 0, 0);
+            };
+            utterances.push(u);
+          })(parts[i], i === parts.length - 1);
         }
+        if (!utterances.length) { tr.finish(); setHearState(false); return; }
+        var lastU = utterances[utterances.length - 1];
+        var prevEnd = lastU.onend;
+        var done = function () {
+          if (id !== speakSeq) { return; }
+          tr.finish();
+          setHearState(false);
+        };
+        lastU.onend = function () { prevEnd(); done(); };
+        lastU.onerror = done;
+        for (count = 0; count < utterances.length; count++) { synth.speak(utterances[count]); }
         if (synth.paused && typeof synth.resume === "function") { synth.resume(); }
-      } catch (err) { /* ignore */ }
+      } catch (err) {
+        tr.finish();
+        setHearState(false);
+      }
+    }
+
+    function speakNeural(text, id, tr) {
+      fetchAudio(text, function (url) {
+        if (id !== speakSeq) { return; }
+        var fell = false;
+        function fallback() {
+          if (fell || id !== speakSeq) { return; }
+          fell = true;
+          neuralBlockedUntil = new Date().getTime() + 120000;
+          clearTick();
+          try { player.onended = null; player.onerror = null; player.onplaying = null; player.pause(); } catch (err) { /* ignore */ }
+          speakBrowser(text, id, tr);
+        }
+        if (!url) { fallback(); return; }
+        var started = false;
+        player.onplaying = function () {
+          if (id !== speakSeq) { return; }
+          started = true;
+          startTick(id, tr);
+        };
+        player.onended = function () {
+          if (id !== speakSeq) { return; }
+          clearTick();
+          tr.finish();
+          setHearState(false);
+        };
+        player.onerror = function () {
+          if (id !== speakSeq) { return; }
+          if (!started) { fallback(); } else { clearTick(); tr.finish(); setHearState(false); }
+        };
+        try {
+          player.src = url;
+          var p = player.play();
+          if (p && typeof p.then === "function") {
+            p.then(null, function () { if (!started) { fallback(); } });
+          }
+        } catch (err2) {
+          fallback();
+        }
+      });
+    }
+
+    /* Speak text aloud (neural voice if available, otherwise the browser voice) with a read-along transcript. */
+    function say(text) {
+      text = String(text);
+      stopAll();
+      var id = speakSeq;
+      var tr = buildTranscript(text);
+      setHearState(true);
+      if (canAudio && new Date().getTime() >= neuralBlockedUntil) { speakNeural(text, id, tr); }
+      else { speakBrowser(text, id, tr); }
     }
 
     function setVoiceOn(on, save) {
@@ -617,24 +998,33 @@
       voiceBtn.setAttribute("aria-label", on ? "Reading Maria\u2019s replies aloud (tap to turn off)" : "Voice is off (tap to read Maria\u2019s replies aloud)");
       voiceBtn.title = on ? "Voice on" : "Voice off";
       if (save) { storeSet(VOICE_KEY, on ? "on" : "off"); }
-      if (!on) { stopSpeech(); }
+      if (!on) { stopAll(); }
     }
 
-    if (!canSpeak) {
+    if (!canSpeak && !canAudio) {
       voiceBtn.hidden = true;
       voiceBtn.style.display = "none";
+      hearBtn.hidden = true;
+      hearBtn.style.display = "none";
       voiceOn = false;
     } else {
       voiceOn = storeGet(VOICE_KEY) !== "off";
       setVoiceOn(voiceOn, false);
-      pickVoice();
-      if (typeof synth.addEventListener === "function") { synth.addEventListener("voiceschanged", pickVoice); }
-      else { synth.onvoiceschanged = pickVoice; }
+      if (canSpeak) {
+        pickVoice();
+        if (typeof synth.addEventListener === "function") { synth.addEventListener("voiceschanged", pickVoice); }
+        else { synth.onvoiceschanged = pickVoice; }
+      }
       voiceBtn.addEventListener("click", function () {
         setVoiceOn(!voiceOn, true);
-        if (voiceOn) { primeSpeech(); }
+        if (voiceOn) { primeSpeech(true); }
       });
-      window.addEventListener("pagehide", stopSpeech);
+      hearBtn.addEventListener("click", function () {
+        if (speaking) { stopAll(); return; }
+        primeSpeech(true);
+        say(GREETING);
+      });
+      window.addEventListener("pagehide", stopAll);
     }
 
     function readSettings() {
@@ -656,14 +1046,14 @@
       var el = document.createElement("div");
       el.className = "msg " + who;
       el.appendChild(document.createTextNode(text));
-      if (replayable && canSpeak) {
+      if (replayable && (canSpeak || canAudio)) {
         var btn = document.createElement("button");
         btn.type = "button";
         btn.className = "replay";
         btn.setAttribute("aria-label", "Play this reply");
         btn.title = "Play this reply";
         btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
-        btn.addEventListener("click", function () { speak(text); });
+        btn.addEventListener("click", function () { primeSpeech(true); say(text); });
         el.appendChild(btn);
       }
       log.appendChild(el);
@@ -733,7 +1123,7 @@
             history.push({ role: "user", content: text }, { role: "assistant", content: res.data.reply });
             history = history.slice(-MAX_TURNS);
             addMessage("maria", res.data.reply, true);
-            if (voiceOn) { speak(res.data.reply); }
+            if (voiceOn) { say(res.data.reply); }
           } else if (res.status === 429) {
             addMessage("maria", (res.data && res.data.reply) || "You\u2019ve reached today\u2019s message limit. Let\u2019s continue tomorrow!");
           } else {
@@ -754,13 +1144,13 @@
       return;
     }
 
-    addMessage("maria", "Hi, I\u2019m Maria! Tell me a little about your day, in English.");
+    addMessage("maria", GREETING);
     form.addEventListener("submit", function (event) {
       event.preventDefault();
       var text = input.value.replace(/^\s+|\s+$/g, "");
       if (!text || sending) { return; }
-      stopSpeech();
-      primeSpeech();
+      stopAll();
+      primeSpeech(false);
       send(text);
     });
   })();
@@ -820,7 +1210,7 @@
     }
 
     function imageChanged(cb) {
-      probe("HEAD", "yibu-tutor.png", null, function (err, status, tag) {
+      probe("HEAD", "yibu-tutor-holding-reader.png", null, function (err, status, tag) {
         if (err || status < 200 || status >= 300) { return cb(true); }
         if (!tag) { return cb(null, false); }
         if (imgTag === null) { imgTag = tag; return cb(null, false); }
