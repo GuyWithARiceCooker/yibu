@@ -403,6 +403,300 @@
 
     .chat-send:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
+    .chat-tools {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      margin-top: 12px;
+    }
+
+    .tool-btn {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 44px;
+      padding: 8px 16px;
+      border: 1px solid var(--teal-mid);
+      border-radius: 14px;
+      background: var(--teal-soft);
+      color: var(--teal-deep);
+      font: inherit;
+      font-weight: 650;
+      font-size: 0.95rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tool-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .tool-btn:hover:not(:disabled) { background: #d9f0eb; }
+
+    .tool-btn:focus { outline: none; }
+
+    .tool-btn:focus-visible { box-shadow: var(--focus); }
+
+    .tool-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .tool-note { color: var(--teal-dark); font-size: 0.88rem; font-weight: 600; }
+
+    .link-btn {
+      appearance: none;
+      margin-left: auto;
+      min-height: 44px;
+      padding: 8px 4px;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.88rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+
+    .link-btn:hover { color: var(--ink); }
+
+    .link-btn:focus { outline: none; }
+
+    .link-btn:focus-visible { box-shadow: var(--focus); border-radius: 8px; }
+
+    .msg-chip {
+      align-self: flex-start;
+      flex-shrink: 0;
+      margin-top: -4px;
+      min-height: 40px;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+    }
+
+    .quiz {
+      margin-top: 14px;
+      padding: 16px;
+      border: 1px solid var(--teal-mid);
+      border-radius: 16px;
+      background: #f7fcfb;
+    }
+
+    .quiz[hidden] { display: none; }
+
+    .quiz-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .quiz-progress {
+      margin: 0;
+      color: var(--teal-dark);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .quiz-close {
+      appearance: none;
+      width: 40px;
+      height: 40px;
+      margin: -8px -8px -8px 0;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .quiz-close:hover { background: rgba(13, 143, 126, 0.1); color: var(--ink); }
+
+    .quiz-close:focus { outline: none; }
+
+    .quiz-close:focus-visible { box-shadow: var(--focus); }
+
+    .quiz-q { margin: 0 0 12px; font-size: 1.02rem; font-weight: 600; line-height: 1.5; }
+
+    .quiz-q .blank {
+      display: inline-block;
+      min-width: 4.5em;
+      border-bottom: 2px solid var(--teal);
+      color: var(--teal-deep);
+      text-align: center;
+    }
+
+    .quiz-hint { margin: -6px 0 12px; color: var(--muted); font-size: 0.88rem; }
+
+    .quiz-choices { display: grid; gap: 8px; }
+
+    .quiz-choice {
+      appearance: none;
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.95rem;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .quiz-choice:hover:not(:disabled) { border-color: var(--teal-mid); background: var(--teal-soft); }
+
+    .quiz-choice:focus { outline: none; }
+
+    .quiz-choice:focus-visible { box-shadow: var(--focus); }
+
+    .quiz-choice:disabled { cursor: default; }
+
+    .quiz-choice.right { border-color: #2e9e6a; background: #e3f5ec; font-weight: 600; }
+
+    .quiz-choice.wrong { border-color: #d98c8c; background: #fdeeee; }
+
+    .quiz-fill { display: flex; gap: 8px; }
+
+    .quiz-fill input {
+      flex: 1 1 auto;
+      min-width: 0;
+      min-height: 46px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--ink);
+      font: inherit;
+      font-size: 16px;
+    }
+
+    .quiz-fill input:focus { outline: none; }
+
+    .quiz-fill input:focus-visible { box-shadow: var(--focus); border-color: var(--teal-mid); }
+
+    .quiz-fill input.right { border-color: #2e9e6a; background: #e3f5ec; }
+
+    .quiz-fill input.wrong { border-color: #d98c8c; background: #fdeeee; }
+
+    .quiz-feedback {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.93rem;
+      line-height: 1.5;
+    }
+
+    .quiz-feedback.ok { background: #e3f5ec; color: #17553a; }
+
+    .quiz-feedback.no { background: #fff4e3; color: #6b4310; }
+
+    .quiz-feedback strong { display: block; margin-bottom: 2px; }
+
+    .quiz-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+    .quiz-score { margin: 4px 0 6px; font-size: 1.35rem; font-weight: 700; color: var(--teal-deep); letter-spacing: -0.02em; }
+
+    .quiz-msg { margin: 0; color: var(--muted); line-height: 1.55; }
+
+    .words { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 6px; }
+
+    .words summary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      color: var(--teal-deep);
+      font-weight: 650;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .words summary::-webkit-details-marker { display: none; }
+
+    .words summary::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(-45deg);
+      transition: transform 0.15s;
+    }
+
+    .words[open] summary::before { transform: rotate(45deg); }
+
+    .words summary:focus { outline: none; }
+
+    .words summary:focus-visible { box-shadow: var(--focus); border-radius: 8px; }
+
+    .words-count {
+      min-width: 26px;
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: var(--teal-soft);
+      color: var(--teal-dark);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    .words-count.bump { animation: words-bump 0.6s ease; }
+
+    @keyframes words-bump { 40% { transform: scale(1.25); background: var(--teal-mid); } }
+
+    .words-empty { margin: 4px 0 8px; color: var(--muted); font-size: 0.9rem; }
+
+    .words-list {
+      display: grid;
+      gap: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin: 4px 0 6px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .words-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 10px 6px 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+    }
+
+    .word-body { flex: 1 1 auto; min-width: 0; font-size: 0.92rem; line-height: 1.45; overflow-wrap: anywhere; }
+
+    .word-term { font-weight: 700; color: var(--ink); }
+
+    .word-meaning { color: var(--ink); }
+
+    .word-example { display: block; margin-top: 2px; color: var(--muted); font-style: italic; }
+
+    .word-remove {
+      appearance: none;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 1.25rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .word-remove:hover { background: #fdeeee; color: #a33a3a; }
+
+    .word-remove:focus { outline: none; }
+
+    .word-remove:focus-visible { box-shadow: var(--focus); }
+
     .hero h2 {
       margin: 0 0 10px;
       font-size: 1.55rem;
@@ -476,11 +770,14 @@
       .features { grid-template-columns: 1fr; }
       .cta { width: 100%; }
       .msg { max-width: 94%; }
+      .quiz { padding: 14px 12px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .cta { transition: none; }
       .msg.typing span { animation: none; opacity: 0.7; }
+      .words-count.bump { animation: none; }
+      .words summary::before { transition: none; }
     }
   </style>
 </head>
@@ -526,6 +823,17 @@
           <input id="maria-input" type="text" maxlength="1000" placeholder="Write to Maria in English…" aria-label="Message to Maria">
           <button class="chat-send" id="maria-send" type="submit">Send</button>
         </form>
+        <div class="chat-tools">
+          <button class="tool-btn" id="maria-quiz-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Quiz</button>
+          <span class="tool-note" id="maria-note" role="status" aria-live="polite"></span>
+          <button class="link-btn" id="maria-forget" type="button" title="Delete what Maria remembers about you and your saved words">Forget me</button>
+        </div>
+        <div class="quiz" id="maria-quiz" hidden aria-live="polite"></div>
+        <details class="words" id="maria-words">
+          <summary>My words <span class="words-count" id="maria-words-count">0</span></summary>
+          <p class="words-empty" id="maria-words-empty">Useful words and phrases from your chats with Maria will appear here.</p>
+          <ul class="words-list" id="maria-words-list"></ul>
+        </details>
       </section>
 
       <div class="features">
@@ -570,6 +878,24 @@
     const storeSet = (key, value) => {
       try { window.localStorage.setItem(key, value); } catch (err) { /* ignore */ }
     };
+
+    /* Anonymous learner id: a random UUID kept in this browser only (no personal data). */
+    const USER_KEY = "yibu-user";
+    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const newUuid = () => {
+      if (window.crypto && typeof crypto.randomUUID === "function") return crypto.randomUUID();
+      const b = crypto.getRandomValues(new Uint8Array(16));
+      b[6] = (b[6] & 0x0f) | 0x40;
+      b[8] = (b[8] & 0x3f) | 0x80;
+      const h = [...b].map((x) => x.toString(16).padStart(2, "0")).join("");
+      return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+    };
+    let userId = storeGet(USER_KEY);
+    if (!userId || !UUID_RE.test(userId)) {
+      userId = newUuid();
+      storeSet(USER_KEY, userId);
+    }
+    const apiHeaders = () => ({ "Content-Type": "application/json", "X-Yibu-User": userId });
 
     /* Spoken replies: neural voice via the Worker's /tts route, Web Speech API as fallback */
     const VOICE_KEY = "yibu-voice";
@@ -766,7 +1092,7 @@
       const timer = setTimeout(() => ctrl.abort(), 30000);
       return fetch(TTS_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: apiHeaders(),
         body: JSON.stringify({ text }),
         signal: ctrl.signal
       }).then((r) => r.ok ? r.blob() : null).then((blob) => {
@@ -963,15 +1289,12 @@
       sendBtn.disabled = busy;
     };
 
-    const postJSON = (url, payload) => {
+    const api = (method, path, payload) => {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 60000);
-      return fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        signal: ctrl.signal
-      }).then((r) => r.json().catch(() => ({})).then((data) => ({ status: r.status, ok: r.ok, data })))
+      const init = { method, headers: apiHeaders(), signal: ctrl.signal };
+      if (payload !== undefined) init.body = JSON.stringify(payload);
+      return fetch(MARIA_ENDPOINT.replace(/\/+$/, "") + path, init).then((r) => r.json().catch(() => ({})).then((data) => ({ status: r.status, ok: r.ok, data })))
         .catch(() => null)
         .finally(() => clearTimeout(timer));
     };
@@ -983,7 +1306,7 @@
       setBusy(true);
       const typing = showTyping();
       const failed = "Sorry, I couldn’t answer just now. Please try again in a moment.";
-      postJSON(MARIA_ENDPOINT, payload).then((res) => {
+      api("POST", "/", payload).then((res) => {
         typing.remove();
         try {
           if (!res) {
@@ -993,6 +1316,8 @@
             history = history.slice(-MAX_TURNS);
             addMessage("maria", res.data.reply, true);
             if (voiceOn) say(res.data.reply);
+            if (Array.isArray(res.data.words)) gotWords(res.data.words, res.data.vocabCount);
+            if (res.data.suggestQuiz) addQuizChip();
           } else if (res.status === 429) {
             addMessage("maria", (res.data && res.data.reply) || "You’ve reached today’s message limit. Let’s continue tomorrow!");
           } else {
@@ -1005,15 +1330,289 @@
       });
     };
 
+
+    /* ---------- My words ---------- */
+    const wordsBox = document.getElementById("maria-words");
+    const wordsList = document.getElementById("maria-words-list");
+    const wordsCount = document.getElementById("maria-words-count");
+    const wordsEmpty = document.getElementById("maria-words-empty");
+    const note = document.getElementById("maria-note");
+    let words = [];
+    let noteTimer = 0;
+
+    const showNote = (text) => {
+      note.textContent = text;
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(() => { note.textContent = ""; }, 5000);
+    };
+    const normTerm = (t) => String(t || "").toLowerCase().replace(/[\u2018\u2019]/g, "'")
+      .replace(/\s+/g, " ").replace(/^[\s"'.,!?;:()\-]+|[\s"'.,!?;:()\-]+$/g, "").trim();
+
+    const renderWords = (count) => {
+      wordsCount.textContent = String(typeof count === "number" ? count : words.length);
+      wordsEmpty.hidden = words.length > 0;
+      wordsList.replaceChildren(...words.map((w) => {
+        const li = document.createElement("li");
+        const body = document.createElement("div");
+        body.className = "word-body";
+        const term = document.createElement("span");
+        term.className = "word-term";
+        term.textContent = w.term;
+        body.append(term, " — ");
+        const meaning = document.createElement("span");
+        meaning.className = "word-meaning";
+        meaning.textContent = w.meaning;
+        body.append(meaning);
+        if (w.example) {
+          const ex = document.createElement("span");
+          ex.className = "word-example";
+          ex.textContent = w.example;
+          body.append(ex);
+        }
+        const rm = document.createElement("button");
+        rm.type = "button";
+        rm.className = "word-remove";
+        rm.textContent = "×";
+        rm.setAttribute("aria-label", `Remove “${w.term}” from my words`);
+        rm.title = "Remove";
+        rm.addEventListener("click", () => removeWord(w, rm));
+        li.append(body, rm);
+        return li;
+      }));
+    };
+
+    const loadWords = () => api("GET", "/vocab").then((res) => {
+      if (res && res.ok && res.data && Array.isArray(res.data.items)) {
+        words = res.data.items;
+        renderWords(res.data.count);
+      }
+    });
+
+    const gotWords = (list, total) => {
+      const fresh = list.filter((w) => w && w.term && !words.some((x) => normTerm(x.term) === normTerm(w.term)));
+      if (!fresh.length) return;
+      words = [...fresh.reverse(), ...words];
+      renderWords(typeof total === "number" ? total : undefined);
+      showNote(fresh.length === 1 ? `New word saved: ${fresh[0].term}` : `${fresh.length} new words saved`);
+      wordsCount.classList.remove("bump");
+      void wordsCount.offsetWidth;
+      wordsCount.classList.add("bump");
+    };
+
+    const removeWord = (w, btn) => {
+      btn.disabled = true;
+      api("DELETE", "/vocab/" + encodeURIComponent(w.term)).then((res) => {
+        if (res && res.ok) {
+          words = words.filter((x) => normTerm(x.term) !== normTerm(w.term));
+          renderWords(res.data && typeof res.data.count === "number" ? res.data.count : undefined);
+          showNote(`Removed: ${w.term}`);
+        } else {
+          btn.disabled = false;
+          showNote("Couldn’t remove that word. Please try again.");
+        }
+      });
+    };
+
+    /* ---------- Quiz ---------- */
+    const quizBox = document.getElementById("maria-quiz");
+    const quizBtn = document.getElementById("maria-quiz-btn");
+    let quiz = null;
+
+    const el = (tag, cls, text) => {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text !== undefined) n.textContent = text;
+      return n;
+    };
+    const button = (cls, text, onClick) => {
+      const b = el("button", cls, text);
+      b.type = "button";
+      b.addEventListener("click", onClick);
+      return b;
+    };
+    const normAnswer = (t) => String(t || "").toLowerCase().replace(/[\u2018\u2019]/g, "'")
+      .replace(/[.,!?;:"]/g, "").replace(/\s+/g, " ").trim();
+
+    const closeQuiz = () => {
+      quiz = null;
+      quizBox.hidden = true;
+      quizBox.replaceChildren();
+      quizBtn.disabled = false;
+    };
+
+    const quizFrame = (label) => {
+      const head = el("div", "quiz-head");
+      head.append(el("p", "quiz-progress", label));
+      const x = button("quiz-close", "×", closeQuiz);
+      x.setAttribute("aria-label", "Close quiz");
+      head.append(x);
+      quizBox.replaceChildren(head);
+      quizBox.hidden = false;
+    };
+
+    const showQuizMessage = (text, retry) => {
+      quizFrame("Quiz");
+      quizBox.append(el("p", "quiz-msg", text));
+      if (retry) {
+        const actions = el("div", "quiz-actions");
+        actions.append(button("tool-btn", "Try again", startQuiz), button("tool-btn", "Back to chat", closeQuiz));
+        quizBox.append(actions);
+      }
+      quizBtn.disabled = false;
+    };
+
+    const showQuestion = () => {
+      const item = quiz.items[quiz.i];
+      quizFrame(`Question ${quiz.i + 1} of ${quiz.items.length} · Score ${quiz.score}`);
+      const q = el("p", "quiz-q");
+      let finish;
+      if (item.type === "mc") {
+        q.textContent = item.question;
+        quizBox.append(q);
+        const choices = el("div", "quiz-choices");
+        item.choices.forEach((c, idx) => {
+          choices.append(button("quiz-choice", c, () => {
+            [...choices.children].forEach((b, k) => {
+              b.disabled = true;
+              if (k === item.answer) b.classList.add("right");
+            });
+            if (idx !== item.answer) choices.children[idx].classList.add("wrong");
+            finish(idx === item.answer, item.choices[item.answer]);
+          }));
+        });
+        quizBox.append(choices);
+      } else {
+        const parts = item.sentence.split("___");
+        q.append(parts[0], el("span", "blank", "\u00a0"), parts.slice(1).join("___"));
+        quizBox.append(q);
+        if (item.hint) quizBox.append(el("p", "quiz-hint", `Hint: ${item.hint}`));
+        const f = el("form", "quiz-fill");
+        f.autocomplete = "off";
+        const inp = el("input");
+        inp.type = "text";
+        inp.maxLength = 60;
+        inp.placeholder = "Type the missing word";
+        inp.setAttribute("aria-label", "Your answer");
+        inp.autocapitalize = "off";
+        inp.spellcheck = false;
+        const check = el("button", "chat-send", "Check");
+        check.type = "submit";
+        f.append(inp, check);
+        f.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const val = normAnswer(inp.value);
+          if (!val || inp.disabled) return;
+          const ok = [item.answer, ...(item.accept || [])].some((a) => normAnswer(a) === val);
+          inp.disabled = true;
+          check.disabled = true;
+          inp.classList.add(ok ? "right" : "wrong");
+          q.querySelector(".blank").textContent = item.answer;
+          finish(ok, item.answer);
+        });
+        quizBox.append(f);
+        setTimeout(() => inp.focus({ preventScroll: true }), 0);
+      }
+      finish = (ok, answer) => {
+        if (ok) quiz.score += 1;
+        quizBox.querySelector(".quiz-progress").textContent =
+          `Question ${quiz.i + 1} of ${quiz.items.length} · Score ${quiz.score}`;
+        const fb = el("div", `quiz-feedback ${ok ? "ok" : "no"}`);
+        fb.append(el("strong", "", ok ? "Correct!" : `Not quite. The right answer: “${answer}”`));
+        if (item.explanation) fb.append(item.explanation);
+        const actions = el("div", "quiz-actions");
+        const last = quiz.i === quiz.items.length - 1;
+        const next = button("chat-send", last ? "See my score" : "Next question", () => {
+          quiz.i += 1;
+          if (quiz.i < quiz.items.length) showQuestion(); else showScore();
+        });
+        actions.append(next);
+        quizBox.append(fb, actions);
+        next.focus({ preventScroll: true });
+        quizBox.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      };
+    };
+
+    const showScore = () => {
+      const n = quiz.items.length;
+      quizFrame(quiz.title || "Quiz");
+      quizBox.append(el("p", "quiz-score", `You got ${quiz.score} out of ${n}!`));
+      const msg = quiz.score === n ? "Perfect score — fantastic work!"
+        : quiz.score >= n - 1 ? "Great job! You really know these words."
+        : quiz.score >= Math.ceil(n / 2) ? "Good effort! Keep practicing and you’ll get them all."
+        : "Nice try! Let’s keep practicing these words together.";
+      quizBox.append(el("p", "quiz-msg", msg));
+      const actions = el("div", "quiz-actions");
+      actions.append(button("chat-send", "New quiz", startQuiz), button("tool-btn", "Back to chat", closeQuiz));
+      quizBox.append(actions);
+      quizBtn.disabled = false;
+    };
+
+    const startQuiz = () => {
+      if (quiz === "loading") return;
+      quiz = "loading";
+      quizBtn.disabled = true;
+      quizFrame("Quiz");
+      quizBox.append(el("p", "quiz-msg", "Maria is making a quiz for you…"));
+      quizBox.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      api("POST", "/quiz", { settings: readSettings() }).then((res) => {
+        if (quiz !== "loading") return; // closed while loading
+        if (res && res.ok && res.data && res.data.quiz && Array.isArray(res.data.quiz.items) && res.data.quiz.items.length) {
+          quiz = { title: res.data.quiz.title, items: res.data.quiz.items, i: 0, score: 0 };
+          showQuestion();
+        } else if (res && res.status === 429) {
+          quiz = null;
+          showQuizMessage((res.data && res.data.message) || "That’s enough quizzes for today. Let’s do more tomorrow!", false);
+        } else {
+          quiz = null;
+          showQuizMessage("Sorry, I couldn’t make a quiz just now. Please try again in a moment.", true);
+        }
+      });
+    };
+
+    const addQuizChip = () => {
+      const chip = button("tool-btn msg-chip", "Take a quick quiz", () => { chip.remove(); startQuiz(); });
+      log.append(chip);
+      log.scrollTop = log.scrollHeight;
+    };
+
+    /* ---------- Forget me ---------- */
+    const forgetBtn = document.getElementById("maria-forget");
+    forgetBtn.addEventListener("click", () => {
+      if (!window.confirm("Forget me?\n\nMaria will forget your past conversations and delete your saved words. This can’t be undone.")) return;
+      forgetBtn.disabled = true;
+      api("DELETE", "/memory").then((res) => {
+        forgetBtn.disabled = false;
+        if (res && res.ok) {
+          userId = newUuid();
+          storeSet(USER_KEY, userId);
+          history = [];
+          words = [];
+          renderWords(0);
+          closeQuiz();
+          stopAll();
+          log.replaceChildren();
+          addMessage("maria", GREETING);
+          showNote("Done — Maria has forgotten your chats and words.");
+        } else {
+          showNote("Sorry, that didn’t work. Please try again.");
+        }
+      });
+    });
+
     if (!MARIA_ENDPOINT) {
       addMessage("maria", "Hi, I’m Maria! I’m getting ready — coming soon. Come back soon to practice English with me.");
       input.disabled = true;
       sendBtn.disabled = true;
+      quizBtn.disabled = true;
+      forgetBtn.disabled = true;
       input.placeholder = "Maria is getting ready — coming soon";
       return;
     }
 
     addMessage("maria", GREETING);
+    renderWords(0);
+    loadWords();
+    quizBtn.addEventListener("click", () => { primeSpeech(false); startQuiz(); });
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const text = input.value.trim();
@@ -1056,7 +1655,9 @@
 
     const chatActive = () => {
       const field = document.getElementById("maria-input");
-      return !!(document.querySelector("#maria-log .msg.user") || (field && field.value));
+      const quizOpen = document.getElementById("maria-quiz");
+      return !!(document.querySelector("#maria-log .msg.user") || (field && field.value) ||
+        (quizOpen && !quizOpen.hidden));
     };
 
     const check = () => {
