@@ -116,11 +116,78 @@
       box-shadow: var(--shadow);
     }
 
+    .chat-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
     .chat-card h2 {
-      margin: 0 0 12px;
+      margin: 0;
       font-size: 1.12rem;
       letter-spacing: -0.02em;
     }
+
+    .voice-toggle {
+      appearance: none;
+      display: inline-grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .voice-toggle[hidden] { display: none; }
+
+    .voice-toggle:hover { background: var(--bg-tint); }
+
+    .voice-toggle[aria-pressed="true"] {
+      color: var(--teal-dark);
+      background: var(--teal-soft);
+      border-color: var(--teal-mid);
+    }
+
+    .voice-toggle:focus { outline: none; }
+
+    .voice-toggle:focus-visible { box-shadow: var(--focus); }
+
+    .voice-toggle svg, .replay svg { display: block; }
+
+    .voice-toggle .off-icon { display: none; }
+
+    .voice-toggle[aria-pressed="false"] .on-icon { display: none; }
+
+    .voice-toggle[aria-pressed="false"] .off-icon { display: block; }
+
+    .replay {
+      appearance: none;
+      display: inline-grid;
+      place-items: center;
+      width: 26px;
+      height: 26px;
+      margin: 0 0 -6px 6px;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--teal-dark);
+      opacity: 0.6;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+
+    .replay:hover { opacity: 1; background: rgba(13, 143, 126, 0.1); }
+
+    .replay:focus { outline: none; }
+
+    .replay:focus-visible { opacity: 1; box-shadow: var(--focus); }
 
     .chat-log {
       display: flex;
@@ -325,7 +392,13 @@
       </section>
 
       <section class="card chat-card" aria-labelledby="maria-heading" id="maria-chat">
-        <h2 id="maria-heading">Chat with Maria</h2>
+        <div class="chat-head">
+          <h2 id="maria-heading">Chat with Maria</h2>
+          <button class="voice-toggle" id="maria-voice" type="button" aria-pressed="true" aria-label="Read Maria’s replies aloud" title="Read Maria’s replies aloud">
+            <svg class="on-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            <svg class="off-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
+          </button>
+        </div>
         <div class="chat-log" id="maria-log" role="log" aria-live="polite"></div>
         <form class="chat-form" id="maria-form" autocomplete="off">
           <input id="maria-input" type="text" maxlength="1000" placeholder="Write to Maria in English…" aria-label="Message to Maria">
@@ -369,6 +442,98 @@
     var history = [];
     var sending = false;
 
+    /* ---- Spoken replies (Web Speech API) ---- */
+    var VOICE_KEY = "yibu-voice";
+    var synth = window.speechSynthesis;
+    var canSpeak = !!(synth && window.SpeechSynthesisUtterance);
+    var voiceBtn = document.getElementById("maria-voice");
+    var voiceOn = true;
+    var chosenVoice = null;
+    var BAD_VOICES = /albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|princess|deranged|hysterical|grandma|grandpa|eddy|flo|reed|rocko|sandy|shelley/i;
+    var PREFERRED = ["samantha", "ava", "serena", "karen", "moira", "allison", "susan", "jenny", "aria", "google us english", "google uk english female"];
+
+    function scoreVoice(v) {
+      var lang = (v.lang || "").replace("_", "-").toLowerCase();
+      if (lang.indexOf("en") !== 0 || BAD_VOICES.test(v.name)) { return -1; }
+      var n = v.name.toLowerCase();
+      var score = lang === "en-us" ? 10 : lang === "en-gb" ? 9 : 5;
+      if (/premium/.test(n)) { score += 40; }
+      if (/enhanced|natural/.test(n)) { score += 30; }
+      for (var i = 0; i < PREFERRED.length; i++) {
+        if (n.indexOf(PREFERRED[i]) !== -1) { score += 20 - i; break; }
+      }
+      if (v.localService) { score += 2; }
+      return score;
+    }
+
+    function pickVoice() {
+      if (!canSpeak) { return; }
+      var best = null, bestScore = -1;
+      synth.getVoices().forEach(function (v) {
+        var sc = scoreVoice(v);
+        if (sc > bestScore) { best = v; bestScore = sc; }
+      });
+      chosenVoice = best;
+    }
+
+    function stopSpeech() {
+      if (canSpeak) { try { synth.cancel(); } catch (err) { /* ignore */ } }
+    }
+
+    /* Call from a click/submit handler: unlocks speech on iOS/iPadOS Safari so later async replies can play. */
+    function primeSpeech() {
+      if (!canSpeak || !voiceOn) { return; }
+      try {
+        synth.cancel();
+        var u = new SpeechSynthesisUtterance(" ");
+        u.volume = 0;
+        u.lang = "en-US";
+        synth.speak(u);
+      } catch (err) { /* ignore */ }
+    }
+
+    function speak(text) {
+      if (!canSpeak) { return; }
+      try {
+        synth.cancel();
+        if (!chosenVoice) { pickVoice(); }
+        var parts = text.match(/[^.!?\n]+[.!?]*\s*/g) || [text];
+        parts.forEach(function (part) {
+          if (!part.trim()) { return; }
+          var u = new SpeechSynthesisUtterance(part.trim());
+          if (chosenVoice) { u.voice = chosenVoice; u.lang = chosenVoice.lang; } else { u.lang = "en-US"; }
+          u.rate = 0.95;
+          synth.speak(u);
+        });
+        if (synth.paused) { synth.resume(); }
+      } catch (err) { /* ignore */ }
+    }
+
+    function setVoiceOn(on, save) {
+      voiceOn = on;
+      voiceBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      voiceBtn.setAttribute("aria-label", on ? "Reading Maria\u2019s replies aloud (tap to turn off)" : "Voice is off (tap to read Maria\u2019s replies aloud)");
+      voiceBtn.title = on ? "Voice on" : "Voice off";
+      if (save) { try { localStorage.setItem(VOICE_KEY, on ? "on" : "off"); } catch (err) { /* ignore */ } }
+      if (!on) { stopSpeech(); }
+    }
+
+    if (!canSpeak) {
+      voiceBtn.hidden = true;
+      voiceOn = false;
+    } else {
+      try { voiceOn = localStorage.getItem(VOICE_KEY) !== "off"; } catch (err) { voiceOn = true; }
+      setVoiceOn(voiceOn, false);
+      pickVoice();
+      if (typeof synth.addEventListener === "function") { synth.addEventListener("voiceschanged", pickVoice); }
+      else { synth.onvoiceschanged = pickVoice; }
+      voiceBtn.addEventListener("click", function () {
+        setVoiceOn(!voiceOn, true);
+        if (voiceOn) { primeSpeech(); }
+      });
+      window.addEventListener("pagehide", stopSpeech);
+    }
+
     function readSettings() {
       var s = { correction: DEFAULTS.correction, topic: DEFAULTS.topic, interruption: DEFAULTS.interruption };
       try {
@@ -382,10 +547,20 @@
       return { correctionLevel: s.correction, topicStyle: s.topic, interruptionFrequency: s.interruption };
     }
 
-    function addMessage(who, text) {
+    function addMessage(who, text, replayable) {
       var el = document.createElement("div");
       el.className = "msg " + who;
       el.textContent = text;
+      if (replayable && canSpeak) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "replay";
+        btn.setAttribute("aria-label", "Play this reply");
+        btn.title = "Play this reply";
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
+        btn.addEventListener("click", function () { speak(text); });
+        el.appendChild(btn);
+      }
       log.appendChild(el);
       log.scrollTop = log.scrollHeight;
       return el;
@@ -426,7 +601,8 @@
         if (res.ok && res.data && typeof res.data.reply === "string") {
           history.push({ role: "user", content: text }, { role: "assistant", content: res.data.reply });
           history = history.slice(-MAX_TURNS);
-          addMessage("maria", res.data.reply);
+          addMessage("maria", res.data.reply, true);
+          if (voiceOn) { speak(res.data.reply); }
         } else if (res.status === 429) {
           addMessage("maria", (res.data && res.data.reply) || "You\u2019ve reached today\u2019s message limit. Let\u2019s continue tomorrow!");
         } else {
@@ -454,6 +630,8 @@
       event.preventDefault();
       var text = input.value.trim();
       if (!text || sending) { return; }
+      stopSpeech();
+      primeSpeech();
       send(text);
     });
   })();
