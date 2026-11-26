@@ -6,43 +6,29 @@
   <meta name="color-scheme" content="light">
   <title>Yibu — English learning app</title>
   <style>
-    :root {
-      --teal: #0d8f7e;
-      --teal-dark: #0a6e61;
-      --teal-deep: #08574d;
-      --teal-soft: #e7f6f3;
-      --teal-mid: #b9e3db;
-      --bg: #f3f7f6;
-      --bg-tint: #eaf3f1;
-      --card: #ffffff;
-      --ink: #142421;
-      --muted: #5a6e69;
-      --line: #d5e3df;
-      --learner: #eef2f1;
-      --shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
-      --radius: 20px;
-      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-      --focus: 0 0 0 3px var(--card), 0 0 0 5px var(--teal);
-    }
-
     * { box-sizing: border-box; }
 
     html, body { margin: 0; padding: 0; }
 
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
     body {
-      font-family: var(--font);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "Noto Sans", sans-serif;
+      background-color: #f3f7f6;
       background:
         radial-gradient(1200px 500px at 10% -10%, #d9f3ee 0%, transparent 55%),
         radial-gradient(900px 400px at 100% 0%, #e8f4e8 0%, transparent 50%),
-        var(--bg);
-      color: var(--ink);
+        #f3f7f6;
+      color: #142421;
       line-height: 1.5;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
     .app {
-      width: min(720px, calc(100% - 32px));
+      width: 688px;
+      width: calc(100% - 32px);
+      max-width: 720px;
       margin: 0 auto;
       padding: 28px 0 48px;
       padding-left: env(safe-area-inset-left);
@@ -50,25 +36,38 @@
     }
 
     header {
+      display: -webkit-box;
+      display: -webkit-flex;
       display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
       align-items: center;
-      gap: 14px;
       margin-bottom: 24px;
     }
 
     .mark {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
       width: 48px;
       height: 48px;
+      margin-right: 14px;
       border-radius: 14px;
-      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
+      background: #0a6e61;
+      background: linear-gradient(160deg, #19b39f 0%, #0a6e61 100%);
       color: #fff;
       font-weight: 750;
       font-size: 1.35rem;
       line-height: 1;
       text-align: center;
-      display: grid;
-      place-items: center;
       box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28);
+      -webkit-flex-shrink: 0;
       flex-shrink: 0;
     }
 
@@ -83,20 +82,22 @@
       font-weight: 550;
       font-size: 0.72em;
       letter-spacing: 0;
-      color: var(--muted);
+      color: #5a6e69;
+      margin-left: 0.35em;
+      -webkit-margin-start: 0.35em;
       margin-inline-start: 0.35em;
     }
 
     .brand p {
       margin: 2px 0 0;
-      color: var(--muted);
+      color: #5a6e69;
       font-size: 0.92rem;
     }
 
     .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
       border: 1px solid rgba(213, 227, 223, 0.8);
       padding: 22px 22px 20px;
     }
@@ -111,54 +112,65 @@
       aspect-ratio: 1 / 1;
       margin: 0 0 18px;
       border-radius: 50%;
+      -o-object-fit: cover;
       object-fit: cover;
-      border: 3px solid var(--teal-mid);
-      box-shadow: var(--shadow);
+      border: 3px solid #b9e3db;
+      box-shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
     }
 
     .chat-head {
+      display: -webkit-box;
+      display: -webkit-flex;
       display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
       align-items: center;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
       justify-content: space-between;
-      gap: 12px;
       margin-bottom: 12px;
     }
 
     .chat-card h2 {
-      margin: 0;
+      margin: 0 12px 0 0;
+      min-width: 0;
       font-size: 1.12rem;
       letter-spacing: -0.02em;
     }
 
     .voice-toggle {
+      -webkit-appearance: none;
       appearance: none;
-      display: inline-grid;
-      place-items: center;
-      width: 40px;
-      height: 40px;
+      display: inline-block;
+      -webkit-flex-shrink: 0;
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      margin: 0;
       padding: 0;
-      border: 1px solid var(--line);
+      border: 1px solid #d5e3df;
       border-radius: 12px;
       background: transparent;
-      color: var(--muted);
+      color: #5a6e69;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .voice-toggle[hidden] { display: none; }
 
-    .voice-toggle:hover { background: var(--bg-tint); }
+    .voice-toggle:hover { background: #eaf3f1; }
 
     .voice-toggle[aria-pressed="true"] {
-      color: var(--teal-dark);
-      background: var(--teal-soft);
-      border-color: var(--teal-mid);
+      color: #0a6e61;
+      background: #e7f6f3;
+      border-color: #b9e3db;
     }
 
-    .voice-toggle:focus { outline: none; }
+    .voice-toggle:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e; }
 
-    .voice-toggle:focus-visible { box-shadow: var(--focus); }
+    .voice-toggle:focus:not(:focus-visible) { box-shadow: none; }
 
-    .voice-toggle svg, .replay svg { display: block; }
+    .voice-toggle svg, .replay svg { display: block; margin: 0 auto; }
 
     .voice-toggle .off-icon { display: none; }
 
@@ -167,128 +179,168 @@
     .voice-toggle[aria-pressed="false"] .off-icon { display: block; }
 
     .replay {
+      -webkit-appearance: none;
       appearance: none;
-      display: inline-grid;
-      place-items: center;
-      width: 26px;
-      height: 26px;
-      margin: 0 0 -6px 6px;
+      display: inline-block;
+      width: 44px;
+      height: 44px;
+      margin: -15px -10px -15px -4px;
       padding: 0;
       border: 0;
-      border-radius: 8px;
+      border-radius: 12px;
       background: transparent;
-      color: var(--teal-dark);
+      color: #0a6e61;
       opacity: 0.6;
       cursor: pointer;
       vertical-align: middle;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .replay:hover { opacity: 1; background: rgba(13, 143, 126, 0.1); }
 
-    .replay:focus { outline: none; }
+    .replay:focus { outline: none; opacity: 1; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e; }
 
-    .replay:focus-visible { opacity: 1; box-shadow: var(--focus); }
+    .replay:focus:not(:focus-visible) { opacity: 0.6; box-shadow: none; }
 
     .chat-log {
+      display: -webkit-box;
+      display: -webkit-flex;
       display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-flex-direction: column;
       flex-direction: column;
-      gap: 10px;
       max-height: 320px;
       min-height: 72px;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       padding: 2px 2px 6px;
     }
 
     .msg {
+      -webkit-flex-shrink: 0;
+      flex-shrink: 0;
       max-width: 88%;
       padding: 10px 14px;
       border-radius: 16px;
       font-size: 0.95rem;
       line-height: 1.55;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
       overflow-wrap: anywhere;
       white-space: pre-wrap;
     }
 
+    .msg + .msg { margin-top: 10px; }
+
     .msg.maria {
+      -webkit-align-self: flex-start;
       align-self: flex-start;
-      background: var(--teal-soft);
+      background: #e7f6f3;
       border: 1px solid #cfeae5;
       border-bottom-left-radius: 6px;
     }
 
     .msg.user {
+      -webkit-align-self: flex-end;
       align-self: flex-end;
-      background: var(--learner);
+      background: #eef2f1;
       border-bottom-right-radius: 6px;
     }
 
-    .msg.typing { display: inline-flex; gap: 5px; align-items: center; min-height: 40px; }
+    .msg.typing {
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: inline-flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      min-height: 40px;
+    }
 
     .msg.typing span {
       width: 7px;
       height: 7px;
+      margin-right: 5px;
       border-radius: 50%;
-      background: var(--teal);
+      background: #0d8f7e;
       opacity: 0.35;
+      -webkit-animation: maria-dot 1.1s infinite ease-in-out;
       animation: maria-dot 1.1s infinite ease-in-out;
     }
 
-    .msg.typing span:nth-child(2) { animation-delay: 0.18s; }
+    .msg.typing span:nth-child(2) { -webkit-animation-delay: 0.18s; animation-delay: 0.18s; }
 
-    .msg.typing span:nth-child(3) { animation-delay: 0.36s; }
+    .msg.typing span:nth-child(3) { -webkit-animation-delay: 0.36s; animation-delay: 0.36s; margin-right: 0; }
+
+    @-webkit-keyframes maria-dot {
+      0%, 80%, 100% { opacity: 0.35; -webkit-transform: translateY(0); transform: translateY(0); }
+      40% { opacity: 1; -webkit-transform: translateY(-3px); transform: translateY(-3px); }
+    }
 
     @keyframes maria-dot {
-      0%, 80%, 100% { opacity: 0.35; transform: translateY(0); }
-      40% { opacity: 1; transform: translateY(-3px); }
+      0%, 80%, 100% { opacity: 0.35; -webkit-transform: translateY(0); transform: translateY(0); }
+      40% { opacity: 1; -webkit-transform: translateY(-3px); transform: translateY(-3px); }
     }
 
     .chat-form {
+      display: -webkit-box;
+      display: -webkit-flex;
       display: flex;
-      gap: 10px;
       margin-top: 14px;
     }
 
     .chat-form input {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1 auto;
       flex: 1 1 auto;
       min-width: 0;
       min-height: 48px;
+      margin: 0 10px 0 0;
       padding: 10px 14px;
-      border: 1px solid var(--line);
+      border: 1px solid #d5e3df;
       border-radius: 14px;
-      background: var(--card);
-      color: var(--ink);
+      -webkit-appearance: none;
+      appearance: none;
+      background: #fff;
+      color: #142421;
       font: inherit;
-      font-size: 1rem;
+      font-size: 16px;
     }
 
-    .chat-form input::placeholder { color: var(--muted); }
+    .chat-form input::-webkit-input-placeholder { color: #5a6e69; opacity: 1; }
 
-    .chat-form input:focus { outline: none; }
+    .chat-form input::placeholder { color: #5a6e69; opacity: 1; }
 
-    .chat-form input:focus-visible { box-shadow: var(--focus); border-color: var(--teal-mid); }
+    .chat-form input:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e; border-color: #b9e3db; }
 
-    .chat-form input:disabled { background: var(--bg-tint); }
+    .chat-form input:disabled { background: #eaf3f1; }
 
     .chat-send {
+      -webkit-appearance: none;
       appearance: none;
+      -webkit-flex-shrink: 0;
+      flex-shrink: 0;
       border: 0;
       cursor: pointer;
       min-height: 48px;
+      margin: 0;
       padding: 10px 20px;
       border-radius: 14px;
-      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
+      background: #0a6e61;
+      background: linear-gradient(160deg, #19b39f 0%, #0a6e61 100%);
       color: #fff;
       font: inherit;
       font-weight: 650;
-      font-size: 1rem;
+      font-size: 16px;
       box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28);
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .chat-send:hover:not(:disabled) { filter: brightness(1.05); }
+    .chat-send:hover:not(:disabled) { -webkit-filter: brightness(1.05); filter: brightness(1.05); }
 
-    .chat-send:focus { outline: none; }
+    .chat-send:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e, 0 6px 16px rgba(13, 143, 126, 0.28); }
 
-    .chat-send:focus-visible { box-shadow: var(--focus), 0 6px 16px rgba(13, 143, 126, 0.28); }
+    .chat-send:focus:not(:focus-visible) { box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28); }
 
     .chat-send:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
@@ -301,19 +353,26 @@
 
     .hero .lede {
       margin: 0 0 22px;
-      color: var(--muted);
+      color: #5a6e69;
       font-size: 1rem;
       line-height: 1.65;
     }
 
     .cta {
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
       display: inline-flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
       align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
       justify-content: center;
       min-height: 48px;
       padding: 10px 20px;
       border-radius: 14px;
-      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
+      background: #0a6e61;
+      background: linear-gradient(160deg, #19b39f 0%, #0a6e61 100%);
       color: #fff;
       font: inherit;
       font-weight: 650;
@@ -322,23 +381,29 @@
       box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28);
     }
 
-    .cta:hover { filter: brightness(1.05); }
+    .cta:hover { -webkit-filter: brightness(1.05); filter: brightness(1.05); }
 
-    .cta:focus { outline: none; }
+    .cta:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e, 0 6px 16px rgba(13, 143, 126, 0.28); }
 
-    .cta:focus-visible { box-shadow: var(--focus), 0 6px 16px rgba(13, 143, 126, 0.28); }
+    .cta:focus:not(:focus-visible) { box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28); }
 
+    /* Feature cards: flexbox first (Safari 9), CSS Grid where supported. */
     .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 16px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      margin: 16px -6px 0;
     }
 
     .feature {
-      background: var(--card);
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1 0%;
+      flex: 1 1 0%;
+      min-width: 0;
+      margin: 0 6px;
+      background: #fff;
       border-radius: 16px;
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
       border: 1px solid rgba(213, 227, 223, 0.8);
       padding: 16px 16px 15px;
     }
@@ -347,29 +412,50 @@
       margin: 0 0 6px;
       font-size: 0.98rem;
       letter-spacing: -0.02em;
-      color: var(--teal-deep);
+      color: #08574d;
     }
 
     .feature p {
       margin: 0;
-      color: var(--muted);
+      color: #5a6e69;
       font-size: 0.88rem;
       line-height: 1.55;
     }
 
+    @supports (display: grid) {
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 12px;
+        gap: 12px;
+        margin: 16px 0 0;
+      }
+
+      .feature { margin: 0; }
+    }
+
     @media (max-width: 520px) {
-      .app { width: min(720px, calc(100% - 20px)); padding-top: 20px; }
+      .app { width: 100%; width: calc(100% - 20px); padding-top: 20px; }
       .card { padding: 18px 16px 16px; border-radius: 16px; }
       .hero h2 { font-size: 1.35rem; }
       .tutor-img { width: 160px; margin-left: auto; margin-right: auto; }
-      .features { grid-template-columns: 1fr; }
-      .cta { width: 100%; }
+      .features { display: block; margin: 16px 0 0; }
+      .feature { margin: 0 0 12px; }
+      .feature:last-child { margin-bottom: 0; }
+      .cta { display: -webkit-flex; display: flex; width: 100%; }
       .msg { max-width: 94%; }
+    }
+
+    @supports (display: grid) {
+      @media (max-width: 520px) {
+        .features { display: grid; grid-template-columns: 1fr; grid-gap: 12px; gap: 12px; }
+        .feature, .feature:last-child { margin: 0; }
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .cta { transition: none; }
-      .msg.typing span { animation: none; opacity: 0.7; }
+      .msg.typing span { -webkit-animation: none; animation: none; opacity: 0.7; }
     }
   </style>
 </head>
@@ -424,7 +510,8 @@
   </div>
   <script>
   (function () {
-    const MARIA_ENDPOINT = "https://maria-tutor.yibu-tutor.workers.dev";
+    "use strict";
+    var MARIA_ENDPOINT = "https://maria-tutor.yibu-tutor.workers.dev";
 
     var STORAGE_KEY = "yibu-settings";
     var DEFAULTS = { correction: "light", topic: "free-chat", interruption: "when-needed" };
@@ -442,10 +529,20 @@
     var history = [];
     var sending = false;
 
+    /* ---- Safe localStorage (can throw in private mode or when blocked) ---- */
+    function storeGet(key) {
+      try { return window.localStorage.getItem(key); } catch (err) { return null; }
+    }
+    function storeSet(key, value) {
+      try { window.localStorage.setItem(key, value); } catch (err) { /* ignore */ }
+    }
+
     /* ---- Spoken replies (Web Speech API) ---- */
     var VOICE_KEY = "yibu-voice";
-    var synth = window.speechSynthesis;
-    var canSpeak = !!(synth && window.SpeechSynthesisUtterance);
+    var synth = null;
+    try { synth = window.speechSynthesis || null; } catch (err) { synth = null; }
+    var canSpeak = !!(synth && window.SpeechSynthesisUtterance &&
+      typeof synth.speak === "function" && typeof synth.cancel === "function");
     var voiceBtn = document.getElementById("maria-voice");
     var voiceOn = true;
     var chosenVoice = null;
@@ -453,9 +550,10 @@
     var PREFERRED = ["samantha", "ava", "serena", "karen", "moira", "allison", "susan", "jenny", "aria", "google us english", "google uk english female"];
 
     function scoreVoice(v) {
-      var lang = (v.lang || "").replace("_", "-").toLowerCase();
-      if (lang.indexOf("en") !== 0 || BAD_VOICES.test(v.name)) { return -1; }
-      var n = v.name.toLowerCase();
+      var lang = String(v.lang || "").replace("_", "-").toLowerCase();
+      var name = String(v.name || "");
+      if (lang.indexOf("en") !== 0 || BAD_VOICES.test(name)) { return -1; }
+      var n = name.toLowerCase();
       var score = lang === "en-us" ? 10 : lang === "en-gb" ? 9 : 5;
       if (/premium/.test(n)) { score += 40; }
       if (/enhanced|natural/.test(n)) { score += 30; }
@@ -469,10 +567,13 @@
     function pickVoice() {
       if (!canSpeak) { return; }
       var best = null, bestScore = -1;
-      synth.getVoices().forEach(function (v) {
-        var sc = scoreVoice(v);
-        if (sc > bestScore) { best = v; bestScore = sc; }
-      });
+      try {
+        var voices = synth.getVoices() || [];
+        for (var i = 0; i < voices.length; i++) {
+          var sc = scoreVoice(voices[i]);
+          if (sc > bestScore) { best = voices[i]; bestScore = sc; }
+        }
+      } catch (err) { /* ignore */ }
       chosenVoice = best;
     }
 
@@ -485,7 +586,7 @@
       if (!canSpeak || !voiceOn) { return; }
       try {
         synth.cancel();
-        var u = new SpeechSynthesisUtterance(" ");
+        var u = new window.SpeechSynthesisUtterance(" ");
         u.volume = 0;
         u.lang = "en-US";
         synth.speak(u);
@@ -497,15 +598,16 @@
       try {
         synth.cancel();
         if (!chosenVoice) { pickVoice(); }
-        var parts = text.match(/[^.!?\n]+[.!?]*\s*/g) || [text];
-        parts.forEach(function (part) {
-          if (!part.trim()) { return; }
-          var u = new SpeechSynthesisUtterance(part.trim());
+        var parts = String(text).match(/[^.!?\n]+[.!?]*\s*/g) || [String(text)];
+        for (var i = 0; i < parts.length; i++) {
+          var part = parts[i].replace(/^\s+|\s+$/g, "");
+          if (!part) { continue; }
+          var u = new window.SpeechSynthesisUtterance(part);
           if (chosenVoice) { u.voice = chosenVoice; u.lang = chosenVoice.lang; } else { u.lang = "en-US"; }
           u.rate = 0.95;
           synth.speak(u);
-        });
-        if (synth.paused) { synth.resume(); }
+        }
+        if (synth.paused && typeof synth.resume === "function") { synth.resume(); }
       } catch (err) { /* ignore */ }
     }
 
@@ -514,15 +616,16 @@
       voiceBtn.setAttribute("aria-pressed", on ? "true" : "false");
       voiceBtn.setAttribute("aria-label", on ? "Reading Maria\u2019s replies aloud (tap to turn off)" : "Voice is off (tap to read Maria\u2019s replies aloud)");
       voiceBtn.title = on ? "Voice on" : "Voice off";
-      if (save) { try { localStorage.setItem(VOICE_KEY, on ? "on" : "off"); } catch (err) { /* ignore */ } }
+      if (save) { storeSet(VOICE_KEY, on ? "on" : "off"); }
       if (!on) { stopSpeech(); }
     }
 
     if (!canSpeak) {
       voiceBtn.hidden = true;
+      voiceBtn.style.display = "none";
       voiceOn = false;
     } else {
-      try { voiceOn = localStorage.getItem(VOICE_KEY) !== "off"; } catch (err) { voiceOn = true; }
+      voiceOn = storeGet(VOICE_KEY) !== "off";
       setVoiceOn(voiceOn, false);
       pickVoice();
       if (typeof synth.addEventListener === "function") { synth.addEventListener("voiceschanged", pickVoice); }
@@ -537,11 +640,13 @@
     function readSettings() {
       var s = { correction: DEFAULTS.correction, topic: DEFAULTS.topic, interruption: DEFAULTS.interruption };
       try {
-        var p = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+        var p = JSON.parse(storeGet(STORAGE_KEY) || "null");
         if (p && typeof p === "object") {
-          Object.keys(ALLOWED).forEach(function (k) {
+          var keys = ["correction", "topic", "interruption"];
+          for (var i = 0; i < keys.length; i++) {
+            var k = keys[i];
             if (ALLOWED[k].indexOf(p[k]) !== -1) { s[k] = p[k]; }
-          });
+          }
         }
       } catch (err) { /* use defaults */ }
       return { correctionLevel: s.correction, topicStyle: s.topic, interruptionFrequency: s.interruption };
@@ -550,7 +655,7 @@
     function addMessage(who, text, replayable) {
       var el = document.createElement("div");
       el.className = "msg " + who;
-      el.textContent = text;
+      el.appendChild(document.createTextNode(text));
       if (replayable && canSpeak) {
         var btn = document.createElement("button");
         btn.type = "button";
@@ -564,6 +669,10 @@
       log.appendChild(el);
       log.scrollTop = log.scrollHeight;
       return el;
+    }
+
+    function removeNode(el) {
+      if (el && el.parentNode) { el.parentNode.removeChild(el); }
     }
 
     function showTyping() {
@@ -581,6 +690,33 @@
       sendBtn.disabled = busy;
     }
 
+    /* POST JSON with XMLHttpRequest (works everywhere, no fetch needed). done({status, ok, data}) or done(null) on network error. */
+    function postJSON(url, payload, done) {
+      var finished = false;
+      function finish(res) {
+        if (finished) { return; }
+        finished = true;
+        done(res);
+      }
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.timeout = 60000;
+        xhr.onload = function () {
+          var data = {};
+          try { data = JSON.parse(xhr.responseText) || {}; } catch (err) { data = {}; }
+          finish({ status: xhr.status, ok: xhr.status >= 200 && xhr.status < 300, data: data });
+        };
+        xhr.onerror = function () { finish(null); };
+        xhr.ontimeout = function () { finish(null); };
+        xhr.onabort = function () { finish(null); };
+        xhr.send(JSON.stringify(payload));
+      } catch (err) {
+        finish(null);
+      }
+    }
+
     function send(text) {
       var payload = { message: text, history: history.slice(-MAX_TURNS), settings: readSettings() };
       addMessage("user", text);
@@ -588,32 +724,25 @@
       setBusy(true);
       var typing = showTyping();
       var failed = "Sorry, I couldn\u2019t answer just now. Please try again in a moment.";
-      fetch(MARIA_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).then(function (r) {
-        return r.json().catch(function () { return {}; }).then(function (data) {
-          return { status: r.status, ok: r.ok, data: data };
-        });
-      }).then(function (res) {
-        typing.remove();
-        if (res.ok && res.data && typeof res.data.reply === "string") {
-          history.push({ role: "user", content: text }, { role: "assistant", content: res.data.reply });
-          history = history.slice(-MAX_TURNS);
-          addMessage("maria", res.data.reply, true);
-          if (voiceOn) { speak(res.data.reply); }
-        } else if (res.status === 429) {
-          addMessage("maria", (res.data && res.data.reply) || "You\u2019ve reached today\u2019s message limit. Let\u2019s continue tomorrow!");
-        } else {
-          addMessage("maria", (res.data && res.data.reply) || failed);
+      postJSON(MARIA_ENDPOINT, payload, function (res) {
+        removeNode(typing);
+        try {
+          if (!res) {
+            addMessage("maria", failed);
+          } else if (res.ok && res.data && typeof res.data.reply === "string") {
+            history.push({ role: "user", content: text }, { role: "assistant", content: res.data.reply });
+            history = history.slice(-MAX_TURNS);
+            addMessage("maria", res.data.reply, true);
+            if (voiceOn) { speak(res.data.reply); }
+          } else if (res.status === 429) {
+            addMessage("maria", (res.data && res.data.reply) || "You\u2019ve reached today\u2019s message limit. Let\u2019s continue tomorrow!");
+          } else {
+            addMessage("maria", (res.data && res.data.reply) || failed);
+          }
+        } finally {
+          setBusy(false);
+          input.focus();
         }
-      }, function () {
-        typing.remove();
-        addMessage("maria", failed);
-      }).then(function () {
-        setBusy(false);
-        input.focus();
       });
     }
 
@@ -628,7 +757,7 @@
     addMessage("maria", "Hi, I\u2019m Maria! Tell me a little about your day, in English.");
     form.addEventListener("submit", function (event) {
       event.preventDefault();
-      var text = input.value.trim();
+      var text = input.value.replace(/^\s+|\s+$/g, "");
       if (!text || sending) { return; }
       stopSpeech();
       primeSpeech();
@@ -638,62 +767,102 @@
   </script>
   <script>
   (function () {
+    "use strict";
     var FAST = 30000, SLOW = 60000, QUIET = 600000;
-    var started = Date.now();
+    var started = new Date().getTime();
     var pageTag = null, imgTag = null;
     var busy = false, timer = null;
 
-    function tagOf(r) {
-      return r.headers.get('etag') || r.headers.get('last-modified') || '';
+    function isHidden() {
+      if (typeof document.hidden !== "undefined") { return !!document.hidden; }
+      if (typeof document.webkitHidden !== "undefined") { return !!document.webkitHidden; }
+      return false;
     }
 
-    function pageChanged() {
-      var headers = {};
-      if (pageTag) { headers['If-None-Match'] = pageTag; }
-      return fetch(location.pathname, { cache: 'no-store', headers: headers }).then(function (r) {
-        if (r.status === 304) { return false; }
-        if (!r.ok) { throw new Error(r.status); }
-        var tag = tagOf(r);
-        if (!tag) { return false; }
-        if (pageTag === null) { pageTag = tag; return false; }
-        return tag !== pageTag;
+    /* Conditional request via XMLHttpRequest. cb(err, status, tag). */
+    function probe(method, url, ifNoneMatch, cb) {
+      var finished = false;
+      function finish(err, status, tag) {
+        if (finished) { return; }
+        finished = true;
+        cb(err, status, tag);
+      }
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url, true);
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("Pragma", "no-cache");
+        if (ifNoneMatch) { xhr.setRequestHeader("If-None-Match", ifNoneMatch); }
+        xhr.timeout = 20000;
+        xhr.onload = function () {
+          var tag = xhr.getResponseHeader("etag") || xhr.getResponseHeader("last-modified") || "";
+          finish(null, xhr.status, tag);
+        };
+        xhr.onerror = function () { finish(true); };
+        xhr.ontimeout = function () { finish(true); };
+        xhr.onabort = function () { finish(true); };
+        xhr.send();
+      } catch (err) {
+        finish(true);
+      }
+    }
+
+    /* cb(err, changed) */
+    function pageChanged(cb) {
+      probe("GET", location.pathname, pageTag, function (err, status, tag) {
+        if (err) { return cb(true); }
+        if (status === 304) { return cb(null, false); }
+        if (status < 200 || status >= 300) { return cb(true); }
+        if (!tag) { return cb(null, false); }
+        if (pageTag === null) { pageTag = tag; return cb(null, false); }
+        cb(null, tag !== pageTag);
       });
     }
 
-    function imageChanged() {
-      return fetch('yibu-tutor.png', { method: 'HEAD', cache: 'no-store' }).then(function (r) {
-        if (!r.ok) { throw new Error(r.status); }
-        var tag = tagOf(r);
-        if (!tag) { return false; }
-        if (imgTag === null) { imgTag = tag; return false; }
-        return tag !== imgTag;
+    function imageChanged(cb) {
+      probe("HEAD", "yibu-tutor.png", null, function (err, status, tag) {
+        if (err || status < 200 || status >= 300) { return cb(true); }
+        if (!tag) { return cb(null, false); }
+        if (imgTag === null) { imgTag = tag; return cb(null, false); }
+        cb(null, tag !== imgTag);
       });
     }
 
     function chatActive() {
-      var input = document.getElementById('maria-input');
-      return !!(document.querySelector('#maria-log .msg.user') || (input && input.value));
+      var input = document.getElementById("maria-input");
+      return !!(document.querySelector("#maria-log .msg.user") || (input && input.value));
     }
 
-    function check() {
-      if (document.hidden || busy) { return Promise.resolve(); }
+    function check(done) {
+      if (isHidden() || busy) { return done(); }
       busy = true;
-      return Promise.all([pageChanged(), imageChanged()]).then(function (c) {
+      var results = [], failed = false, pending = 2;
+      function got(err, changed) {
+        if (err) { failed = true; }
+        results.push(!!changed);
+        pending--;
+        if (pending > 0) { return; }
         busy = false;
-        if ((c[0] || c[1]) && !chatActive()) { location.reload(); }
-      }, function () { busy = false; });
+        if (!failed && (results[0] || results[1]) && !chatActive()) { location.reload(); }
+        done();
+      }
+      pageChanged(got);
+      imageChanged(got);
     }
 
     function schedule() {
       clearTimeout(timer);
-      timer = setTimeout(function () { check().then(schedule); },
-        Date.now() - started > QUIET ? SLOW : FAST);
+      timer = setTimeout(function () { check(schedule); },
+        new Date().getTime() - started > QUIET ? SLOW : FAST);
     }
 
-    document.addEventListener('visibilitychange', function () {
-      if (!document.hidden) { check().then(schedule); }
-    });
-    check().then(schedule);
+    function onVisible() {
+      if (!isHidden()) { check(schedule); }
+    }
+
+    document.addEventListener("visibilitychange", onVisible);
+    document.addEventListener("webkitvisibilitychange", onVisible);
+    check(schedule);
   })();
   </script>
 </body>
