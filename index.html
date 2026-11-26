@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="color-scheme" content="light">
-  <title>⁦一步 Yibu⁩ — אפליקציה ללימוד אנגלית</title>
+  <title>Yibu — English learning app</title>
   <style>
     :root {
       --teal: #0d8f7e;
@@ -21,7 +21,7 @@
       --learner: #eef2f1;
       --shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
       --radius: 20px;
-      --font: ui-sans-serif, system-ui, -apple-system, "Noto Sans Hebrew", "Arial Hebrew", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
       --focus: 0 0 0 3px var(--card), 0 0 0 5px var(--teal);
     }
 
@@ -32,8 +32,8 @@
     body {
       font-family: var(--font);
       background:
-        radial-gradient(1200px 500px at 90% -10%, #d9f3ee 0%, transparent 55%),
-        radial-gradient(900px 400px at 0% 0%, #e8f4e8 0%, transparent 50%),
+        radial-gradient(1200px 500px at 10% -10%, #d9f3ee 0%, transparent 55%),
+        radial-gradient(900px 400px at 100% 0%, #e8f4e8 0%, transparent 50%),
         var(--bg);
       color: var(--ink);
       line-height: 1.5;
@@ -60,7 +60,7 @@
       width: 48px;
       height: 48px;
       border-radius: 14px;
-      background: linear-gradient(200deg, #19b39f 0%, var(--teal-dark) 100%);
+      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
       color: #fff;
       font-weight: 750;
       font-size: 1.35rem;
@@ -74,8 +74,16 @@
     .brand h1 {
       margin: 0;
       font-size: 1.35rem;
-      letter-spacing: 0;
+      letter-spacing: -0.03em;
       line-height: 1.2;
+    }
+
+    .cn-name {
+      font-weight: 550;
+      font-size: 0.72em;
+      letter-spacing: 0;
+      color: var(--muted);
+      margin-inline-start: 0.35em;
     }
 
     .brand p {
@@ -97,7 +105,7 @@
     .hero h2 {
       margin: 0 0 10px;
       font-size: 1.55rem;
-      letter-spacing: 0;
+      letter-spacing: -0.03em;
       line-height: 1.3;
     }
 
@@ -115,7 +123,7 @@
       min-height: 48px;
       padding: 10px 20px;
       border-radius: 14px;
-      background: linear-gradient(200deg, #19b39f 0%, var(--teal-dark) 100%);
+      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
       color: #fff;
       font: inherit;
       font-weight: 650;
@@ -148,7 +156,7 @@
     .feature h3 {
       margin: 0 0 6px;
       font-size: 0.98rem;
-      letter-spacing: 0;
+      letter-spacing: -0.02em;
       color: var(--teal-deep);
     }
 
@@ -177,30 +185,30 @@
     <header>
       <div class="mark" aria-hidden="true">Y</div>
       <div class="brand">
-        <h1><bdi>一步 Yibu</bdi></h1>
-        <p>המורה הידידותית שלך לאנגלית</p>
+        <h1>Yibu <bdi class="cn-name">一步</bdi></h1>
+        <p>Your friendly English tutor</p>
       </div>
     </header>
 
     <main>
       <section class="card hero" aria-labelledby="hero-heading">
-        <h2 id="hero-heading">דברו בחופשיות, ותרגלו אנגלית יחד עם <bdi>一步</bdi></h2>
-        <p class="lede"><bdi>一步</bdi> היא אפליקציה ללימוד אנגלית. אפשר לשוחח עם המורה <bdi>一步</bdi> בכל רגע ולתרגל, לנהל שיחה סביב חדשות או נושאים שמעניינים אתכם, ולקבל תיקונים עדינים וברורים כשצריך. רוצים לראות קודם איך <bdi>一步</bdi> עונה? בואו לכוון את הגדרות המורה.</p>
-        <a class="cta" href="https://guywitharicecooker.github.io/yibu-settings/yibu-settings.html">פתיחת הגדרות המורה</a>
+        <h2 id="hero-heading">Speak freely, and practice English with Yibu</h2>
+        <p class="lede">Yibu is an English learning app. You can chat with tutor Yibu anytime to practice, talk about the news or topics you care about, and get gentle, clear corrections when you need them. Want to see how Yibu would reply first? Come adjust the tutor settings.</p>
+        <a class="cta" href="https://guywitharicecooker.github.io/yibu-settings/yibu-settings.html">Open tutor settings</a>
       </section>
 
       <div class="features">
         <section class="feature">
-          <h3>שיחה חופשית</h3>
-          <p>משוחחים באופן טבעי עם <bdi>一步</bdi>, מתרגלים דיבור בכל רגע, בלי לחשוש מטעויות.</p>
+          <h3>Free chat</h3>
+          <p>Chat naturally with Yibu, practice speaking anytime, and don’t worry about making mistakes.</p>
         </section>
         <section class="feature">
-          <h3>תיקונים עדינים</h3>
-          <p>מתיקון קל ועד הסבר מעמיק, אתם מחליטים עד כמה התיקונים יהיו מחמירים.</p>
+          <h3>Gentle corrections</h3>
+          <p>From a light recast to a careful explanation, you decide how strict the corrections are.</p>
         </section>
         <section class="feature">
-          <h3>לפי תחומי עניין</h3>
-          <p>שיחה חופשית, חדשות ואקטואליה, או תרגול סביב נושאים שאתם אוהבים.</p>
+          <h3>Follow your interests</h3>
+          <p>Free conversation, news and current events, or practice around topics you love.</p>
         </section>
       </div>
     </main>
