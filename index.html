@@ -510,7 +510,7 @@
           </button>
         </div>
         <div class="maria-profile">
-          <img class="tutor-img" src="yibu-tutor-holding-reader.png" alt="Maria, Yibu’s friendly language-learning tutor" width="96" height="96">
+          <img class="tutor-img" src="yibu-tutor-book.png" alt="Maria, Yibu’s friendly language-learning tutor" width="96" height="96">
           <div class="maria-info">
             <p class="maria-name">Maria</p>
             <p class="maria-role">Your English tutor</p>
@@ -1046,7 +1046,7 @@
       });
     };
 
-    const imageChanged = () => fetch("yibu-tutor-holding-reader.png", { method: "HEAD", cache: "no-store" }).then((r) => {
+    const imageChanged = () => fetch("yibu-tutor-book.png", { method: "HEAD", cache: "no-store" }).then((r) => {
       if (!r.ok) throw new Error(r.status);
       const tag = tagOf(r);
       if (!tag) return false;
