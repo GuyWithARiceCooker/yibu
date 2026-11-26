@@ -6,6 +6,25 @@
   <meta name="color-scheme" content="light">
   <title>Yibu — English learning app</title>
   <style>
+    :root {
+      --teal: #0d8f7e;
+      --teal-dark: #0a6e61;
+      --teal-deep: #08574d;
+      --teal-soft: #e7f6f3;
+      --teal-mid: #b9e3db;
+      --bg: #f3f7f6;
+      --bg-tint: #eaf3f1;
+      --card: #ffffff;
+      --ink: #142421;
+      --muted: #5a6e69;
+      --line: #d5e3df;
+      --learner: #eef2f1;
+      --shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
+      --radius: 20px;
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      --focus: 0 0 0 3px var(--card), 0 0 0 5px var(--teal);
+    }
+
     * { box-sizing: border-box; }
 
     html, body { margin: 0; padding: 0; }
@@ -13,22 +32,19 @@
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
     body {
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, "Noto Sans", sans-serif;
-      background-color: #f3f7f6;
+      font-family: var(--font);
       background:
         radial-gradient(1200px 500px at 10% -10%, #d9f3ee 0%, transparent 55%),
         radial-gradient(900px 400px at 100% 0%, #e8f4e8 0%, transparent 50%),
-        #f3f7f6;
-      color: #142421;
+        var(--bg);
+      color: var(--ink);
       line-height: 1.5;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
     .app {
-      width: 688px;
-      width: calc(100% - 32px);
-      max-width: 720px;
+      width: min(720px, calc(100% - 32px));
       margin: 0 auto;
       padding: 28px 0 48px;
       padding-left: env(safe-area-inset-left);
@@ -36,38 +52,25 @@
     }
 
     header {
-      display: -webkit-box;
-      display: -webkit-flex;
       display: flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
       align-items: center;
+      gap: 14px;
       margin-bottom: 24px;
     }
 
     .mark {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       width: 48px;
       height: 48px;
-      margin-right: 14px;
       border-radius: 14px;
-      background: #0a6e61;
-      background: linear-gradient(160deg, #19b39f 0%, #0a6e61 100%);
+      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
       color: #fff;
       font-weight: 750;
       font-size: 1.35rem;
       line-height: 1;
       text-align: center;
       box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28);
-      -webkit-flex-shrink: 0;
       flex-shrink: 0;
     }
 
@@ -82,64 +85,61 @@
       font-weight: 550;
       font-size: 0.72em;
       letter-spacing: 0;
-      color: #5a6e69;
-      margin-left: 0.35em;
-      -webkit-margin-start: 0.35em;
+      color: var(--muted);
       margin-inline-start: 0.35em;
     }
 
     .brand p {
       margin: 2px 0 0;
-      color: #5a6e69;
+      color: var(--muted);
       font-size: 0.92rem;
     }
 
     .card {
-      background: #fff;
-      border-radius: 20px;
-      box-shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       border: 1px solid rgba(213, 227, 223, 0.8);
       padding: 22px 22px 20px;
     }
 
     .card + .card { margin-top: 16px; }
 
-    /* Chat header and Maria profile use floats/absolute positioning only (no flex), so they work on Safari 9. */
     .chat-head {
-      position: relative;
-      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       margin-bottom: 12px;
-      padding-right: 56px;
     }
 
     .chat-card h2 {
       margin: 0;
+      min-width: 0;
       font-size: 1.12rem;
-      line-height: 44px;
       letter-spacing: -0.02em;
     }
 
-    .chat-head .voice-toggle { position: absolute; top: 0; right: 0; }
-
-    .maria-profile { margin-bottom: 12px; }
-
-    .maria-profile:after { content: ""; display: block; clear: both; }
+    .maria-profile {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
 
     .tutor-img {
-      float: left;
       display: block;
       width: 96px;
       height: 96px;
-      margin: 0 16px 0 0;
+      flex-shrink: 0;
       border-radius: 50%;
-      -o-object-fit: cover;
       object-fit: cover;
-      border: 3px solid #b9e3db;
-      background: #e7f6f3;
-      box-shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
+      border: 3px solid var(--teal-mid);
+      background: var(--teal-soft);
+      box-shadow: var(--shadow);
     }
 
-    .maria-info { margin-left: 112px; padding-top: 4px; }
+    .maria-info { flex: 1; min-width: 0; padding-top: 4px; }
 
     .maria-name {
       margin: 0;
@@ -151,48 +151,52 @@
 
     .maria-role {
       margin: 0 0 8px;
-      color: #5a6e69;
+      color: var(--muted);
       font-size: 0.88rem;
       line-height: 1.4;
     }
 
     .hear-btn {
-      -webkit-appearance: none;
       appearance: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       min-height: 44px;
       margin: 0;
       padding: 10px 18px;
-      border: 1px solid #0a6e61;
+      border: 1px solid var(--teal-dark);
       border-radius: 14px;
-      background: #0a6e61;
-      background: linear-gradient(160deg, #19b39f 0%, #0a6e61 100%);
+      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
       color: #fff;
       font: inherit;
       font-weight: 650;
       font-size: 1rem;
       line-height: 1.2;
-      text-align: center;
       cursor: pointer;
       box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28);
       -webkit-tap-highlight-color: transparent;
     }
 
-    .hear-btn svg { display: inline-block; width: 18px; height: 18px; margin: -3px 8px 0 0; vertical-align: middle; }
+    .hear-btn svg { display: block; width: 18px; height: 18px; flex-shrink: 0; }
 
-    .hear-btn:hover { -webkit-filter: brightness(1.05); filter: brightness(1.05); }
+    .hear-btn:hover { filter: brightness(1.05); }
 
-    .hear-btn.speaking { background: #e7f6f3; border-color: #b9e3db; color: #0a6e61; box-shadow: none; }
+    .hear-btn.speaking {
+      background: var(--teal-soft);
+      border-color: var(--teal-mid);
+      color: var(--teal-dark);
+      box-shadow: none;
+    }
 
-    .hear-btn:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e, 0 6px 16px rgba(13, 143, 126, 0.28); }
+    .hear-btn:focus { outline: none; }
 
-    .hear-btn:focus:not(:focus-visible) { box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28); }
+    .hear-btn:focus-visible { box-shadow: var(--focus), 0 6px 16px rgba(13, 143, 126, 0.28); }
 
-    .hear-btn.speaking:focus:not(:focus-visible) { box-shadow: none; }
+    .hear-btn.speaking:focus-visible { box-shadow: var(--focus); }
 
     .readalong {
       display: none;
-      position: relative;
       margin: 0 0 12px;
       padding: 10px 14px 12px;
       border: 1px solid #cfeae5;
@@ -204,7 +208,7 @@
 
     .ra-label {
       margin: 0 0 4px;
-      color: #5a6e69;
+      color: var(--muted);
       font-size: 0.72rem;
       font-weight: 650;
       letter-spacing: 0.06em;
@@ -212,59 +216,55 @@
     }
 
     .ra-text {
-      position: relative;
       max-height: 120px;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      color: #5a6e69;
+      color: var(--muted);
       font-size: 1rem;
       line-height: 1.7;
       white-space: pre-wrap;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
+      overflow-wrap: anywhere;
     }
 
     .ra-text .w { padding: 1px 2px; margin: 0 -2px; border-radius: 5px; }
 
-    .ra-text .w.done { color: #142421; }
+    .ra-text .w.done { color: var(--ink); }
 
-    .ra-text .w.sent { color: #142421; background: #e7f6f3; }
+    .ra-text .w.sent { color: var(--ink); background: var(--teal-soft); }
 
-    .ra-text .w.cur { color: #08574d; background: #cdeee8; }
+    .ra-text .w.cur { color: var(--teal-deep); background: #cdeee8; }
 
     .voice-toggle {
-      -webkit-appearance: none;
       appearance: none;
-      display: inline-block;
-      -webkit-flex-shrink: 0;
+      display: inline-grid;
+      place-items: center;
       flex-shrink: 0;
       width: 44px;
       height: 44px;
       margin: 0;
       padding: 0;
-      border: 1px solid #d5e3df;
+      border: 1px solid var(--line);
       border-radius: 12px;
       background: transparent;
-      color: #5a6e69;
+      color: var(--muted);
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
 
     .voice-toggle[hidden] { display: none; }
 
-    .voice-toggle:hover { background: #eaf3f1; }
+    .voice-toggle:hover { background: var(--bg-tint); }
 
     .voice-toggle[aria-pressed="true"] {
-      color: #0a6e61;
-      background: #e7f6f3;
-      border-color: #b9e3db;
+      color: var(--teal-dark);
+      background: var(--teal-soft);
+      border-color: var(--teal-mid);
     }
 
-    .voice-toggle:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e; }
+    .voice-toggle:focus { outline: none; }
 
-    .voice-toggle:focus:not(:focus-visible) { box-shadow: none; }
+    .voice-toggle:focus-visible { box-shadow: var(--focus); }
 
-    .voice-toggle svg, .replay svg { display: block; margin: 0 auto; }
+    .voice-toggle svg, .replay svg { display: block; }
 
     .voice-toggle .off-icon { display: none; }
 
@@ -273,9 +273,9 @@
     .voice-toggle[aria-pressed="false"] .off-icon { display: block; }
 
     .replay {
-      -webkit-appearance: none;
       appearance: none;
-      display: inline-block;
+      display: inline-grid;
+      place-items: center;
       width: 44px;
       height: 44px;
       margin: -15px -10px -15px -4px;
@@ -283,7 +283,7 @@
       border: 0;
       border-radius: 12px;
       background: transparent;
-      color: #0a6e61;
+      color: var(--teal-dark);
       opacity: 0.6;
       cursor: pointer;
       vertical-align: middle;
@@ -292,136 +292,101 @@
 
     .replay:hover { opacity: 1; background: rgba(13, 143, 126, 0.1); }
 
-    .replay:focus { outline: none; opacity: 1; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e; }
+    .replay:focus { outline: none; }
 
-    .replay:focus:not(:focus-visible) { opacity: 0.6; box-shadow: none; }
+    .replay:focus-visible { opacity: 1; box-shadow: var(--focus); }
 
     .chat-log {
-      display: -webkit-box;
-      display: -webkit-flex;
       display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-flex-direction: column;
       flex-direction: column;
+      gap: 10px;
       max-height: 320px;
       min-height: 72px;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
       padding: 2px 2px 6px;
     }
 
     .msg {
-      -webkit-flex-shrink: 0;
       flex-shrink: 0;
       max-width: 88%;
       padding: 10px 14px;
       border-radius: 16px;
       font-size: 0.95rem;
       line-height: 1.55;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
       overflow-wrap: anywhere;
       white-space: pre-wrap;
     }
 
-    .msg + .msg { margin-top: 10px; }
-
     .msg.maria {
-      -webkit-align-self: flex-start;
       align-self: flex-start;
-      background: #e7f6f3;
+      background: var(--teal-soft);
       border: 1px solid #cfeae5;
       border-bottom-left-radius: 6px;
     }
 
     .msg.user {
-      -webkit-align-self: flex-end;
       align-self: flex-end;
-      background: #eef2f1;
+      background: var(--learner);
       border-bottom-right-radius: 6px;
     }
 
-    .msg.typing {
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
-      display: inline-flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
-      align-items: center;
-      min-height: 40px;
-    }
+    .msg.typing { display: inline-flex; gap: 5px; align-items: center; min-height: 40px; }
 
     .msg.typing span {
       width: 7px;
       height: 7px;
-      margin-right: 5px;
       border-radius: 50%;
-      background: #0d8f7e;
+      background: var(--teal);
       opacity: 0.35;
-      -webkit-animation: maria-dot 1.1s infinite ease-in-out;
       animation: maria-dot 1.1s infinite ease-in-out;
     }
 
-    .msg.typing span:nth-child(2) { -webkit-animation-delay: 0.18s; animation-delay: 0.18s; }
+    .msg.typing span:nth-child(2) { animation-delay: 0.18s; }
 
-    .msg.typing span:nth-child(3) { -webkit-animation-delay: 0.36s; animation-delay: 0.36s; margin-right: 0; }
-
-    @-webkit-keyframes maria-dot {
-      0%, 80%, 100% { opacity: 0.35; -webkit-transform: translateY(0); transform: translateY(0); }
-      40% { opacity: 1; -webkit-transform: translateY(-3px); transform: translateY(-3px); }
-    }
+    .msg.typing span:nth-child(3) { animation-delay: 0.36s; }
 
     @keyframes maria-dot {
-      0%, 80%, 100% { opacity: 0.35; -webkit-transform: translateY(0); transform: translateY(0); }
-      40% { opacity: 1; -webkit-transform: translateY(-3px); transform: translateY(-3px); }
+      0%, 80%, 100% { opacity: 0.35; transform: translateY(0); }
+      40% { opacity: 1; transform: translateY(-3px); }
     }
 
     .chat-form {
-      display: -webkit-box;
-      display: -webkit-flex;
       display: flex;
+      gap: 10px;
       margin-top: 14px;
     }
 
     .chat-form input {
-      -webkit-box-flex: 1;
-      -webkit-flex: 1 1 auto;
       flex: 1 1 auto;
       min-width: 0;
       min-height: 48px;
-      margin: 0 10px 0 0;
       padding: 10px 14px;
-      border: 1px solid #d5e3df;
+      border: 1px solid var(--line);
       border-radius: 14px;
-      -webkit-appearance: none;
       appearance: none;
-      background: #fff;
-      color: #142421;
+      background: var(--card);
+      color: var(--ink);
       font: inherit;
       font-size: 16px;
     }
 
-    .chat-form input::-webkit-input-placeholder { color: #5a6e69; opacity: 1; }
+    .chat-form input::placeholder { color: var(--muted); }
 
-    .chat-form input::placeholder { color: #5a6e69; opacity: 1; }
+    .chat-form input:focus { outline: none; }
 
-    .chat-form input:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e; border-color: #b9e3db; }
+    .chat-form input:focus-visible { box-shadow: var(--focus); border-color: var(--teal-mid); }
 
-    .chat-form input:disabled { background: #eaf3f1; }
+    .chat-form input:disabled { background: var(--bg-tint); }
 
     .chat-send {
-      -webkit-appearance: none;
       appearance: none;
-      -webkit-flex-shrink: 0;
       flex-shrink: 0;
       border: 0;
       cursor: pointer;
       min-height: 48px;
-      margin: 0;
       padding: 10px 20px;
       border-radius: 14px;
-      background: #0a6e61;
-      background: linear-gradient(160deg, #19b39f 0%, #0a6e61 100%);
+      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
       color: #fff;
       font: inherit;
       font-weight: 650;
@@ -430,11 +395,11 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .chat-send:hover:not(:disabled) { -webkit-filter: brightness(1.05); filter: brightness(1.05); }
+    .chat-send:hover:not(:disabled) { filter: brightness(1.05); }
 
-    .chat-send:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e, 0 6px 16px rgba(13, 143, 126, 0.28); }
+    .chat-send:focus { outline: none; }
 
-    .chat-send:focus:not(:focus-visible) { box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28); }
+    .chat-send:focus-visible { box-shadow: var(--focus), 0 6px 16px rgba(13, 143, 126, 0.28); }
 
     .chat-send:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
@@ -447,26 +412,19 @@
 
     .hero .lede {
       margin: 0 0 22px;
-      color: #5a6e69;
+      color: var(--muted);
       font-size: 1rem;
       line-height: 1.65;
     }
 
     .cta {
-      display: -webkit-inline-box;
-      display: -webkit-inline-flex;
       display: inline-flex;
-      -webkit-box-align: center;
-      -webkit-align-items: center;
       align-items: center;
-      -webkit-box-pack: center;
-      -webkit-justify-content: center;
       justify-content: center;
       min-height: 48px;
       padding: 10px 20px;
       border-radius: 14px;
-      background: #0a6e61;
-      background: linear-gradient(160deg, #19b39f 0%, #0a6e61 100%);
+      background: linear-gradient(160deg, #19b39f 0%, var(--teal-dark) 100%);
       color: #fff;
       font: inherit;
       font-weight: 650;
@@ -475,29 +433,23 @@
       box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28);
     }
 
-    .cta:hover { -webkit-filter: brightness(1.05); filter: brightness(1.05); }
+    .cta:hover { filter: brightness(1.05); }
 
-    .cta:focus { outline: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px #0d8f7e, 0 6px 16px rgba(13, 143, 126, 0.28); }
+    .cta:focus { outline: none; }
 
-    .cta:focus:not(:focus-visible) { box-shadow: 0 6px 16px rgba(13, 143, 126, 0.28); }
+    .cta:focus-visible { box-shadow: var(--focus), 0 6px 16px rgba(13, 143, 126, 0.28); }
 
-    /* Feature cards: flexbox first (Safari 9), CSS Grid where supported. */
     .features {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      margin: 16px -6px 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
     }
 
     .feature {
-      -webkit-box-flex: 1;
-      -webkit-flex: 1 1 0%;
-      flex: 1 1 0%;
-      min-width: 0;
-      margin: 0 6px;
-      background: #fff;
+      background: var(--card);
       border-radius: 16px;
-      box-shadow: 0 8px 28px rgba(20, 36, 33, 0.08), 0 1px 2px rgba(20, 36, 33, 0.04);
+      box-shadow: var(--shadow);
       border: 1px solid rgba(213, 227, 223, 0.8);
       padding: 16px 16px 15px;
     }
@@ -506,51 +458,29 @@
       margin: 0 0 6px;
       font-size: 0.98rem;
       letter-spacing: -0.02em;
-      color: #08574d;
+      color: var(--teal-deep);
     }
 
     .feature p {
       margin: 0;
-      color: #5a6e69;
+      color: var(--muted);
       font-size: 0.88rem;
       line-height: 1.55;
     }
 
-    @supports (display: grid) {
-      .features {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 12px;
-        gap: 12px;
-        margin: 16px 0 0;
-      }
-
-      .feature { margin: 0; }
-    }
-
     @media (max-width: 520px) {
-      .app { width: 100%; width: calc(100% - 20px); padding-top: 20px; }
+      .app { width: min(720px, calc(100% - 20px)); padding-top: 20px; }
       .card { padding: 18px 16px 16px; border-radius: 16px; }
       .hero h2 { font-size: 1.35rem; }
-      .tutor-img { width: 80px; height: 80px; margin-right: 14px; }
-      .maria-info { margin-left: 94px; }
-      .features { display: block; margin: 16px 0 0; }
-      .feature { margin: 0 0 12px; }
-      .feature:last-child { margin-bottom: 0; }
-      .cta { display: -webkit-flex; display: flex; width: 100%; }
+      .tutor-img { width: 80px; height: 80px; }
+      .features { grid-template-columns: 1fr; }
+      .cta { width: 100%; }
       .msg { max-width: 94%; }
-    }
-
-    @supports (display: grid) {
-      @media (max-width: 520px) {
-        .features { display: grid; grid-template-columns: 1fr; grid-gap: 12px; gap: 12px; }
-        .feature, .feature:last-child { margin: 0; }
-      }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .cta { transition: none; }
-      .msg.typing span { -webkit-animation: none; animation: none; opacity: 0.7; }
+      .msg.typing span { animation: none; opacity: 0.7; }
     }
   </style>
 </head>
@@ -615,391 +545,350 @@
     </main>
   </div>
   <script>
-  (function () {
-    "use strict";
-    var MARIA_ENDPOINT = "https://maria-tutor.yibu-tutor.workers.dev";
+  (() => {
+    const MARIA_ENDPOINT = "https://maria-tutor.yibu-tutor.workers.dev";
 
-    var STORAGE_KEY = "yibu-settings";
-    var DEFAULTS = { correction: "light", topic: "free-chat", interruption: "when-needed" };
-    var ALLOWED = {
+    const STORAGE_KEY = "yibu-settings";
+    const DEFAULTS = { correction: "light", topic: "free-chat", interruption: "when-needed" };
+    const ALLOWED = {
       correction: ["off", "light", "strict"],
       topic: ["free-chat", "news", "interests"],
       interruption: ["never", "when-needed", "often"]
     };
-    var MAX_TURNS = 12;
+    const MAX_TURNS = 12;
 
-    var log = document.getElementById("maria-log");
-    var form = document.getElementById("maria-form");
-    var input = document.getElementById("maria-input");
-    var sendBtn = document.getElementById("maria-send");
-    var history = [];
-    var sending = false;
+    const log = document.getElementById("maria-log");
+    const form = document.getElementById("maria-form");
+    const input = document.getElementById("maria-input");
+    const sendBtn = document.getElementById("maria-send");
+    let history = [];
+    let sending = false;
 
-    /* ---- Safe localStorage (can throw in private mode or when blocked) ---- */
-    function storeGet(key) {
+    const storeGet = (key) => {
       try { return window.localStorage.getItem(key); } catch (err) { return null; }
-    }
-    function storeSet(key, value) {
+    };
+    const storeSet = (key, value) => {
       try { window.localStorage.setItem(key, value); } catch (err) { /* ignore */ }
-    }
+    };
 
-    /* ---- Spoken replies: neural voice via the Worker's /tts route, Web Speech API as fallback ---- */
-    var VOICE_KEY = "yibu-voice";
-    var GREETING = "Hi, I\u2019m Maria! Tell me a little about your day, in English.";
-    var TTS_URL = MARIA_ENDPOINT ? String(MARIA_ENDPOINT).replace(/\/+$/, "") + "/tts" : "";
-    var SILENT_WAV = null;
-    var synth = null;
+    /* Spoken replies: neural voice via the Worker's /tts route, Web Speech API as fallback */
+    const VOICE_KEY = "yibu-voice";
+    const GREETING = "Hi, I’m Maria! Tell me a little about your day, in English.";
+    const TTS_URL = MARIA_ENDPOINT ? `${String(MARIA_ENDPOINT).replace(/\/+$/, "")}/tts` : "";
+    let silentWav = null;
+    let synth = null;
     try { synth = window.speechSynthesis || null; } catch (err) { synth = null; }
-    var canSpeak = !!(synth && window.SpeechSynthesisUtterance &&
+    const canSpeak = !!(synth && window.SpeechSynthesisUtterance &&
       typeof synth.speak === "function" && typeof synth.cancel === "function");
-    var player = null;
-    var canAudio = false;
+    let player = null;
+    let canAudio = false;
     try {
       player = window.Audio ? new window.Audio() : null;
       canAudio = !!(TTS_URL && player && typeof player.play === "function" &&
         window.Blob && window.URL && window.URL.createObjectURL);
     } catch (err) { player = null; canAudio = false; }
-    var voiceBtn = document.getElementById("maria-voice");
-    var hearBtn = document.getElementById("maria-hear");
-    var hearLabel = document.getElementById("maria-hear-label");
-    var raBox = document.getElementById("maria-readalong");
-    var raText = document.getElementById("maria-readalong-text");
-    var voiceOn = true;
-    var chosenVoice = null;
-    var speakSeq = 0;
-    var speaking = false;
-    var activeXhr = null;
-    var tickTimer = null;
-    var neuralBlockedUntil = 0;
-    var audioCache = {};
-    var audioCacheKeys = [];
-    var BAD_VOICES = /albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|princess|deranged|hysterical|grandma|grandpa|eddy|flo|reed|rocko|sandy|shelley/i;
-    var PREFERRED = ["samantha", "ava", "serena", "karen", "moira", "allison", "susan", "jenny", "aria", "google us english", "google uk english female"];
+    const voiceBtn = document.getElementById("maria-voice");
+    const hearBtn = document.getElementById("maria-hear");
+    const hearLabel = document.getElementById("maria-hear-label");
+    const raBox = document.getElementById("maria-readalong");
+    const raText = document.getElementById("maria-readalong-text");
+    let voiceOn = true;
+    let chosenVoice = null;
+    let speakSeq = 0;
+    let speaking = false;
+    let activeAbort = null;
+    let tickTimer = null;
+    let neuralBlockedUntil = 0;
+    const audioCache = new Map();
+    const BAD_VOICES = /albert|bad news|bahh|bells|boing|bubbles|cellos|good news|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|kathy|ralph|princess|deranged|hysterical|grandma|grandpa|eddy|flo|reed|rocko|sandy|shelley/i;
+    const PREFERRED = ["samantha", "ava", "serena", "karen", "moira", "allison", "susan", "jenny", "aria", "google us english", "google uk english female"];
 
-    function scoreVoice(v) {
-      var lang = String(v.lang || "").replace("_", "-").toLowerCase();
-      var name = String(v.name || "");
-      if (lang.indexOf("en") !== 0 || BAD_VOICES.test(name)) { return -1; }
-      var n = name.toLowerCase();
-      var score = lang === "en-us" ? 10 : lang === "en-gb" ? 9 : 5;
-      if (/premium/.test(n)) { score += 40; }
-      if (/enhanced|natural/.test(n)) { score += 30; }
-      for (var i = 0; i < PREFERRED.length; i++) {
-        if (n.indexOf(PREFERRED[i]) !== -1) { score += 20 - i; break; }
-      }
-      if (v.localService) { score += 2; }
+    const scoreVoice = (v) => {
+      const lang = String(v.lang || "").replace("_", "-").toLowerCase();
+      const name = String(v.name || "");
+      if (!lang.startsWith("en") || BAD_VOICES.test(name)) return -1;
+      const n = name.toLowerCase();
+      let score = lang === "en-us" ? 10 : lang === "en-gb" ? 9 : 5;
+      if (/premium/.test(n)) score += 40;
+      if (/enhanced|natural/.test(n)) score += 30;
+      const pref = PREFERRED.findIndex((p) => n.includes(p));
+      if (pref !== -1) score += 20 - pref;
+      if (v.localService) score += 2;
       return score;
-    }
+    };
 
-    function pickVoice() {
-      if (!canSpeak) { return; }
-      var best = null, bestScore = -1;
+    const pickVoice = () => {
+      if (!canSpeak) return;
+      let best = null, bestScore = -1;
       try {
-        var voices = synth.getVoices() || [];
-        for (var i = 0; i < voices.length; i++) {
-          var sc = scoreVoice(voices[i]);
-          if (sc > bestScore) { best = voices[i]; bestScore = sc; }
+        for (const v of synth.getVoices() || []) {
+          const sc = scoreVoice(v);
+          if (sc > bestScore) { best = v; bestScore = sc; }
         }
       } catch (err) { /* ignore */ }
       chosenVoice = best;
-    }
+    };
 
-    function stopSpeech() {
+    const stopSpeech = () => {
       if (canSpeak) { try { synth.cancel(); } catch (err) { /* ignore */ } }
-    }
+    };
 
-    /* A short silent WAV (as a data: URI) used to unlock audio playback inside a user gesture. */
-    function makeSilentWav() {
-      var n = 400, i, d;
-      function u32(v) { return String.fromCharCode(v & 255, (v >> 8) & 255, (v >> 16) & 255, (v >> 24) & 255); }
-      function u16(v) { return String.fromCharCode(v & 255, (v >> 8) & 255); }
-      d = "RIFF" + u32(36 + n) + "WAVEfmt " + u32(16) + u16(1) + u16(1) + u32(8000) + u32(8000) + u16(1) + u16(8) + "data" + u32(n);
-      for (i = 0; i < n; i++) { d += "\x80"; }
+    const makeSilentWav = () => {
+      const n = 400;
+      const u32 = (v) => String.fromCharCode(v & 255, (v >> 8) & 255, (v >> 16) & 255, (v >> 24) & 255);
+      const u16 = (v) => String.fromCharCode(v & 255, (v >> 8) & 255);
+      let d = "RIFF" + u32(36 + n) + "WAVEfmt " + u32(16) + u16(1) + u16(1) + u32(8000) + u32(8000) + u16(1) + u16(8) + "data" + u32(n);
+      for (let i = 0; i < n; i++) d += "\x80";
       return "data:audio/wav;base64," + window.btoa(d);
-    }
+    };
 
-    /* Call from a click/submit handler: unlocks speech and audio on iOS/iPadOS Safari so later async replies can play. */
-    function primeSpeech(force) {
-      if (!force && !voiceOn) { return; }
+    /* Unlock audio and speech inside a click/submit handler so later async replies can play on iOS. */
+    const primeSpeech = (force) => {
+      if (!force && !voiceOn) return;
       if (canAudio) {
         try {
-          if (!SILENT_WAV) { SILENT_WAV = makeSilentWav(); }
-          player.src = SILENT_WAV;
-          var pp = player.play();
-          if (pp && typeof pp.then === "function") { pp.then(null, function () { /* ignore */ }); }
+          if (!silentWav) silentWav = makeSilentWav();
+          player.src = silentWav;
+          const pp = player.play();
+          if (pp && typeof pp.then === "function") pp.catch(() => {});
         } catch (err) { /* ignore */ }
       }
       if (canSpeak) {
         try {
           synth.cancel();
-          var u = new window.SpeechSynthesisUtterance(" ");
+          const u = new window.SpeechSynthesisUtterance(" ");
           u.volume = 0;
           u.lang = "en-US";
           synth.speak(u);
-        } catch (err2) { /* ignore */ }
+        } catch (err) { /* ignore */ }
       }
-    }
+    };
 
-    /* ---- Read-along transcript ---- */
-    function setHearState(on) {
+    const setHearState = (on) => {
       speaking = on;
-      if (!hearBtn) { return; }
+      if (!hearBtn) return;
       hearBtn.className = on ? "hear-btn speaking" : "hear-btn";
       hearBtn.setAttribute("aria-label", on ? "Stop Maria speaking" : "Hear Maria speak");
-      if (hearLabel) { hearLabel.firstChild.nodeValue = on ? "Stop" : "Hear Maria"; }
-    }
+      if (hearLabel) hearLabel.textContent = on ? "Stop" : "Hear Maria";
+    };
 
-    function buildTranscript(text) {
-      while (raText.firstChild) { raText.removeChild(raText.firstChild); }
-      var words = [], els = [], re = /\S+/g, m, last = 0;
+    const buildTranscript = (text) => {
+      raText.replaceChildren();
+      const words = [];
+      const els = [];
+      const re = /\S+/g;
+      let m, last = 0;
       while ((m = re.exec(text)) !== null) {
-        if (m.index > last) { raText.appendChild(document.createTextNode(text.slice(last, m.index))); }
-        var span = document.createElement("span");
+        if (m.index > last) raText.append(text.slice(last, m.index));
+        const span = document.createElement("span");
         span.className = "w";
-        span.appendChild(document.createTextNode(m[0]));
-        raText.appendChild(span);
+        span.textContent = m[0];
+        raText.append(span);
         words.push({ s: m.index, e: m.index + m[0].length, t: m[0] });
         els.push(span);
         last = m.index + m[0].length;
       }
       raText.scrollTop = 0;
       raBox.className = "readalong on";
-      /* Cumulative time weights per word (longer words and sentence ends take longer). */
-      var cum = [], total = 0, i;
-      for (i = 0; i < words.length; i++) {
-        var wt = words[i].t.length + 1;
-        if (/[.!?]["\u201d\u2019')]*$/.test(words[i].t)) { wt += 4; }
-        else if (/[,;:]$/.test(words[i].t)) { wt += 2; }
+      const cum = [];
+      let total = 0;
+      for (const w of words) {
+        let wt = w.t.length + 1;
+        if (/[.!?]["\u201d\u2019')]*$/.test(w.t)) wt += 4;
+        else if (/[,;:]$/.test(w.t)) wt += 2;
         total += wt;
         cum.push(total);
       }
-      for (i = 0; i < cum.length; i++) { cum[i] = cum[i] / total; }
-      var lastKey = "";
-      var tr = { n: words.length, words: words, cum: cum };
-      /* done = words before this index are marked read; cur = current word (or -1); sFrom..sTo = highlighted sentence. */
-      tr.set = function (done, cur, sFrom, sTo) {
-        var key = done + "|" + cur + "|" + sFrom + "|" + sTo;
-        if (key === lastKey) { return; }
+      for (let i = 0; i < cum.length; i++) cum[i] /= total;
+      let lastKey = "";
+      const tr = { n: words.length, words, cum };
+      tr.set = (done, cur, sFrom, sTo) => {
+        const key = `${done}|${cur}|${sFrom}|${sTo}`;
+        if (key === lastKey) return;
         lastKey = key;
-        for (var j = 0; j < els.length; j++) {
-          var cls = j < done ? "w done" : j === cur ? "w cur" : (j >= sFrom && j < sTo) ? "w sent" : "w";
-          if (els[j].className !== cls) { els[j].className = cls; }
-        }
-        var el = cur >= 0 ? els[cur] : null;
+        els.forEach((el, j) => {
+          const cls = j < done ? "w done" : j === cur ? "w cur" : (j >= sFrom && j < sTo) ? "w sent" : "w";
+          if (el.className !== cls) el.className = cls;
+        });
+        const el = cur >= 0 ? els[cur] : null;
         if (el) {
-          var top = el.offsetTop;
+          const top = el.offsetTop;
           if (top < raText.scrollTop || top + el.offsetHeight > raText.scrollTop + raText.clientHeight) {
             raText.scrollTop = Math.max(0, top - 24);
           }
         }
       };
-      tr.finish = function () { tr.set(tr.n, -1, 0, 0); };
-      tr.wordAt = function (pos) {
-        for (var j = 0; j < words.length; j++) { if (pos < words[j].e) { return j; } }
-        return Math.max(0, words.length - 1);
+      tr.finish = () => tr.set(tr.n, -1, 0, 0);
+      tr.wordAt = (pos) => {
+        const i = words.findIndex((w) => pos < w.e);
+        return i === -1 ? Math.max(0, words.length - 1) : i;
       };
-      tr.wordForFraction = function (f) {
-        for (var j = 0; j < cum.length; j++) { if (f < cum[j]) { return j; } }
-        return Math.max(0, cum.length - 1);
+      tr.wordForFraction = (f) => {
+        const i = cum.findIndex((c) => f < c);
+        return i === -1 ? Math.max(0, cum.length - 1) : i;
       };
       tr.set(0, -1, 0, 0);
       return tr;
-    }
+    };
 
-    /* ---- Playback ---- */
-    function clearTick() {
+    const clearTick = () => {
       if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
-    }
+    };
 
-    function stopAll() {
+    const stopAll = () => {
       speakSeq++;
-      if (activeXhr) { try { activeXhr.abort(); } catch (err) { /* ignore */ } activeXhr = null; }
+      if (activeAbort) { try { activeAbort.abort(); } catch (err) { /* ignore */ } activeAbort = null; }
       clearTick();
       if (player) {
         try {
           player.onended = null; player.onerror = null; player.onplaying = null;
           player.pause();
-        } catch (err2) { /* ignore */ }
+        } catch (err) { /* ignore */ }
       }
       stopSpeech();
       setHearState(false);
-    }
+    };
 
-    function cacheAudio(text, url) {
-      audioCache[text] = url;
-      audioCacheKeys.push(text);
-      if (audioCacheKeys.length > 8) {
-        var old = audioCacheKeys.shift();
-        try { window.URL.revokeObjectURL(audioCache[old]); } catch (err) { /* ignore */ }
-        delete audioCache[old];
+    const cacheAudio = (text, url) => {
+      if (audioCache.has(text)) return;
+      audioCache.set(text, url);
+      if (audioCache.size > 8) {
+        const [old, oldUrl] = audioCache.entries().next().value;
+        audioCache.delete(old);
+        try { window.URL.revokeObjectURL(oldUrl); } catch (err) { /* ignore */ }
       }
-    }
+    };
 
-    function fetchAudio(text, cb) {
-      if (audioCache.hasOwnProperty(text)) { cb(audioCache[text]); return; }
-      var finished = false;
-      function finish(url) {
-        if (finished) { return; }
-        finished = true;
-        activeXhr = null;
-        cb(url);
-      }
-      try {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", TTS_URL, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.responseType = "blob";
-        xhr.timeout = 30000;
-        xhr.onload = function () {
-          var blob = xhr.response;
-          if (xhr.status === 200 && blob && blob.size > 0) {
-            var url = null;
-            try { url = window.URL.createObjectURL(blob); } catch (err) { url = null; }
-            if (url) { cacheAudio(text, url); }
-            finish(url);
-          } else {
-            finish(null);
-          }
-        };
-        xhr.onerror = function () { finish(null); };
-        xhr.ontimeout = function () { finish(null); };
-        xhr.onabort = function () { finished = true; };
-        activeXhr = xhr;
-        xhr.send(JSON.stringify({ text: text }));
-      } catch (err) {
-        finish(null);
-      }
-    }
+    const fetchAudio = (text) => {
+      if (audioCache.has(text)) return Promise.resolve(audioCache.get(text));
+      const ctrl = new AbortController();
+      activeAbort = ctrl;
+      const timer = setTimeout(() => ctrl.abort(), 30000);
+      return fetch(TTS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+        signal: ctrl.signal
+      }).then((r) => r.ok ? r.blob() : null).then((blob) => {
+        if (activeAbort === ctrl) activeAbort = null;
+        if (blob && blob.size > 0) {
+          let url = null;
+          try { url = window.URL.createObjectURL(blob); } catch (err) { url = null; }
+          if (url) cacheAudio(text, url);
+          return url;
+        }
+        return null;
+      }).catch(() => {
+        if (activeAbort === ctrl) activeAbort = null;
+        return null;
+      }).finally(() => clearTimeout(timer));
+    };
 
-    function startTick(id, tr) {
+    const startTick = (id, tr) => {
       clearTick();
-      tickTimer = setInterval(function () {
+      tickTimer = setInterval(() => {
         if (id !== speakSeq) { clearTick(); return; }
-        var d = player.duration, t = player.currentTime;
-        if (!(d > 0) || d === Infinity) { return; }
-        var idx = tr.wordForFraction(t / d);
+        const d = player.duration, t = player.currentTime;
+        if (!(d > 0) || d === Infinity) return;
+        const idx = tr.wordForFraction(t / d);
         tr.set(idx, idx, 0, 0);
       }, 70);
-    }
+    };
 
-    function speakBrowser(text, id, tr) {
-      if (!canSpeak) {
-        tr.finish();
-        setHearState(false);
-        return;
-      }
+    const speakBrowser = (text, id, tr) => {
+      if (!canSpeak) { tr.finish(); setHearState(false); return; }
       try {
         synth.cancel();
-        if (!chosenVoice) { pickVoice(); }
-        var re = /[^.!?\n]+[.!?]*\s*/g, m, parts = [];
-        while ((m = re.exec(text)) !== null) { parts.push({ text: m[0], start: m.index }); }
-        if (!parts.length) { parts.push({ text: text, start: 0 }); }
-        var count = 0;
-        var utterances = [];
-        for (var i = 0; i < parts.length; i++) {
-          (function (part, isLast) {
-            var lead = part.text.length - part.text.replace(/^\s+/, "").length;
-            var clean = part.text.replace(/^\s+|\s+$/g, "");
-            if (!clean) { return; }
-            var from = tr.wordAt(part.start + lead);
-            var to = tr.wordAt(part.start + lead + clean.length - 1) + 1;
-            var u = new window.SpeechSynthesisUtterance(clean);
-            if (chosenVoice) { u.voice = chosenVoice; u.lang = chosenVoice.lang; } else { u.lang = "en-US"; }
-            u.rate = 0.95;
-            u.onstart = function () {
-              if (id !== speakSeq) { return; }
-              tr.set(from, -1, from, to);  /* whole sentence until word boundaries arrive */
-            };
-            u.onboundary = function (e) {
-              if (id !== speakSeq || !e || (e.name && e.name !== "word")) { return; }
-              var wi = tr.wordAt(part.start + lead + (e.charIndex || 0));
-              tr.set(wi, wi, 0, 0);
-            };
-            u.onend = function () {
-              if (id !== speakSeq) { return; }
-              tr.set(to, -1, 0, 0);
-            };
-            utterances.push(u);
-          })(parts[i], i === parts.length - 1);
+        if (!chosenVoice) pickVoice();
+        const parts = [];
+        const re = /[^.!?\n]+[.!?]*\s*/g;
+        let m;
+        while ((m = re.exec(text)) !== null) parts.push({ text: m[0], start: m.index });
+        if (!parts.length) parts.push({ text, start: 0 });
+        const utterances = [];
+        for (const part of parts) {
+          const lead = part.text.length - part.text.trimStart().length;
+          const clean = part.text.trim();
+          if (!clean) continue;
+          const from = tr.wordAt(part.start + lead);
+          const to = tr.wordAt(part.start + lead + clean.length - 1) + 1;
+          const u = new window.SpeechSynthesisUtterance(clean);
+          if (chosenVoice) { u.voice = chosenVoice; u.lang = chosenVoice.lang; } else { u.lang = "en-US"; }
+          u.rate = 0.95;
+          u.onstart = () => { if (id === speakSeq) tr.set(from, -1, from, to); };
+          u.onboundary = (e) => {
+            if (id !== speakSeq || !e || (e.name && e.name !== "word")) return;
+            const wi = tr.wordAt(part.start + lead + (e.charIndex || 0));
+            tr.set(wi, wi, 0, 0);
+          };
+          u.onend = () => { if (id === speakSeq) tr.set(to, -1, 0, 0); };
+          utterances.push(u);
         }
         if (!utterances.length) { tr.finish(); setHearState(false); return; }
-        var lastU = utterances[utterances.length - 1];
-        var prevEnd = lastU.onend;
-        var done = function () {
-          if (id !== speakSeq) { return; }
-          tr.finish();
-          setHearState(false);
-        };
-        lastU.onend = function () { prevEnd(); done(); };
+        const lastU = utterances[utterances.length - 1];
+        const prevEnd = lastU.onend;
+        const done = () => { if (id !== speakSeq) return; tr.finish(); setHearState(false); };
+        lastU.onend = () => { prevEnd(); done(); };
         lastU.onerror = done;
-        for (count = 0; count < utterances.length; count++) { synth.speak(utterances[count]); }
-        if (synth.paused && typeof synth.resume === "function") { synth.resume(); }
+        utterances.forEach((u) => synth.speak(u));
+        if (synth.paused && typeof synth.resume === "function") synth.resume();
       } catch (err) {
         tr.finish();
         setHearState(false);
       }
-    }
+    };
 
-    function speakNeural(text, id, tr) {
-      fetchAudio(text, function (url) {
-        if (id !== speakSeq) { return; }
-        var fell = false;
-        function fallback() {
-          if (fell || id !== speakSeq) { return; }
+    const speakNeural = (text, id, tr) => {
+      fetchAudio(text).then((url) => {
+        if (id !== speakSeq) return;
+        let fell = false;
+        const fallback = () => {
+          if (fell || id !== speakSeq) return;
           fell = true;
-          neuralBlockedUntil = new Date().getTime() + 120000;
+          neuralBlockedUntil = Date.now() + 120000;
           clearTick();
           try { player.onended = null; player.onerror = null; player.onplaying = null; player.pause(); } catch (err) { /* ignore */ }
           speakBrowser(text, id, tr);
-        }
+        };
         if (!url) { fallback(); return; }
-        var started = false;
-        player.onplaying = function () {
-          if (id !== speakSeq) { return; }
-          started = true;
-          startTick(id, tr);
-        };
-        player.onended = function () {
-          if (id !== speakSeq) { return; }
-          clearTick();
-          tr.finish();
-          setHearState(false);
-        };
-        player.onerror = function () {
-          if (id !== speakSeq) { return; }
-          if (!started) { fallback(); } else { clearTick(); tr.finish(); setHearState(false); }
+        let started = false;
+        player.onplaying = () => { if (id !== speakSeq) return; started = true; startTick(id, tr); };
+        player.onended = () => { if (id !== speakSeq) return; clearTick(); tr.finish(); setHearState(false); };
+        player.onerror = () => {
+          if (id !== speakSeq) return;
+          if (!started) fallback();
+          else { clearTick(); tr.finish(); setHearState(false); }
         };
         try {
           player.src = url;
-          var p = player.play();
-          if (p && typeof p.then === "function") {
-            p.then(null, function () { if (!started) { fallback(); } });
-          }
-        } catch (err2) {
+          const p = player.play();
+          if (p && typeof p.then === "function") p.catch(() => { if (!started) fallback(); });
+        } catch (err) {
           fallback();
         }
       });
-    }
+    };
 
-    /* Speak text aloud (neural voice if available, otherwise the browser voice) with a read-along transcript. */
-    function say(text) {
+    const say = (text) => {
       text = String(text);
       stopAll();
-      var id = speakSeq;
-      var tr = buildTranscript(text);
+      const id = speakSeq;
+      const tr = buildTranscript(text);
       setHearState(true);
-      if (canAudio && new Date().getTime() >= neuralBlockedUntil) { speakNeural(text, id, tr); }
-      else { speakBrowser(text, id, tr); }
-    }
+      if (canAudio && Date.now() >= neuralBlockedUntil) speakNeural(text, id, tr);
+      else speakBrowser(text, id, tr);
+    };
 
-    function setVoiceOn(on, save) {
+    const setVoiceOn = (on, save) => {
       voiceOn = on;
       voiceBtn.setAttribute("aria-pressed", on ? "true" : "false");
-      voiceBtn.setAttribute("aria-label", on ? "Reading Maria\u2019s replies aloud (tap to turn off)" : "Voice is off (tap to read Maria\u2019s replies aloud)");
+      voiceBtn.setAttribute("aria-label", on
+        ? "Reading Maria’s replies aloud (tap to turn off)"
+        : "Voice is off (tap to read Maria’s replies aloud)");
       voiceBtn.title = on ? "Voice on" : "Voice off";
-      if (save) { storeSet(VOICE_KEY, on ? "on" : "off"); }
-      if (!on) { stopAll(); }
-    }
+      if (save) storeSet(VOICE_KEY, on ? "on" : "off");
+      if (!on) stopAll();
+    };
 
     if (!canSpeak && !canAudio) {
       voiceBtn.hidden = true;
@@ -1012,14 +901,14 @@
       setVoiceOn(voiceOn, false);
       if (canSpeak) {
         pickVoice();
-        if (typeof synth.addEventListener === "function") { synth.addEventListener("voiceschanged", pickVoice); }
-        else { synth.onvoiceschanged = pickVoice; }
+        if (typeof synth.addEventListener === "function") synth.addEventListener("voiceschanged", pickVoice);
+        else synth.onvoiceschanged = pickVoice;
       }
-      voiceBtn.addEventListener("click", function () {
+      voiceBtn.addEventListener("click", () => {
         setVoiceOn(!voiceOn, true);
-        if (voiceOn) { primeSpeech(true); }
+        if (voiceOn) primeSpeech(true);
       });
-      hearBtn.addEventListener("click", function () {
+      hearBtn.addEventListener("click", () => {
         if (speaking) { stopAll(); return; }
         primeSpeech(true);
         say(GREETING);
@@ -1027,95 +916,75 @@
       window.addEventListener("pagehide", stopAll);
     }
 
-    function readSettings() {
-      var s = { correction: DEFAULTS.correction, topic: DEFAULTS.topic, interruption: DEFAULTS.interruption };
+    const readSettings = () => {
+      const s = { correction: DEFAULTS.correction, topic: DEFAULTS.topic, interruption: DEFAULTS.interruption };
       try {
-        var p = JSON.parse(storeGet(STORAGE_KEY) || "null");
+        const p = JSON.parse(storeGet(STORAGE_KEY) || "null");
         if (p && typeof p === "object") {
-          var keys = ["correction", "topic", "interruption"];
-          for (var i = 0; i < keys.length; i++) {
-            var k = keys[i];
-            if (ALLOWED[k].indexOf(p[k]) !== -1) { s[k] = p[k]; }
+          for (const k of Object.keys(ALLOWED)) {
+            if (ALLOWED[k].includes(p[k])) s[k] = p[k];
           }
         }
       } catch (err) { /* use defaults */ }
       return { correctionLevel: s.correction, topicStyle: s.topic, interruptionFrequency: s.interruption };
-    }
+    };
 
-    function addMessage(who, text, replayable) {
-      var el = document.createElement("div");
-      el.className = "msg " + who;
-      el.appendChild(document.createTextNode(text));
+    const addMessage = (who, text, replayable) => {
+      const el = document.createElement("div");
+      el.className = `msg ${who}`;
+      el.append(text);
       if (replayable && (canSpeak || canAudio)) {
-        var btn = document.createElement("button");
+        const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "replay";
         btn.setAttribute("aria-label", "Play this reply");
         btn.title = "Play this reply";
         btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>';
-        btn.addEventListener("click", function () { primeSpeech(true); say(text); });
-        el.appendChild(btn);
+        btn.addEventListener("click", () => { primeSpeech(true); say(text); });
+        el.append(btn);
       }
-      log.appendChild(el);
+      log.append(el);
       log.scrollTop = log.scrollHeight;
       return el;
-    }
+    };
 
-    function removeNode(el) {
-      if (el && el.parentNode) { el.parentNode.removeChild(el); }
-    }
-
-    function showTyping() {
-      var el = document.createElement("div");
+    const showTyping = () => {
+      const el = document.createElement("div");
       el.className = "msg maria typing";
       el.setAttribute("aria-label", "Maria is typing");
       el.innerHTML = "<span></span><span></span><span></span>";
-      log.appendChild(el);
+      log.append(el);
       log.scrollTop = log.scrollHeight;
       return el;
-    }
+    };
 
-    function setBusy(busy) {
+    const setBusy = (busy) => {
       sending = busy;
       sendBtn.disabled = busy;
-    }
+    };
 
-    /* POST JSON with XMLHttpRequest (works everywhere, no fetch needed). done({status, ok, data}) or done(null) on network error. */
-    function postJSON(url, payload, done) {
-      var finished = false;
-      function finish(res) {
-        if (finished) { return; }
-        finished = true;
-        done(res);
-      }
-      try {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.timeout = 60000;
-        xhr.onload = function () {
-          var data = {};
-          try { data = JSON.parse(xhr.responseText) || {}; } catch (err) { data = {}; }
-          finish({ status: xhr.status, ok: xhr.status >= 200 && xhr.status < 300, data: data });
-        };
-        xhr.onerror = function () { finish(null); };
-        xhr.ontimeout = function () { finish(null); };
-        xhr.onabort = function () { finish(null); };
-        xhr.send(JSON.stringify(payload));
-      } catch (err) {
-        finish(null);
-      }
-    }
+    const postJSON = (url, payload) => {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 60000);
+      return fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: ctrl.signal
+      }).then((r) => r.json().catch(() => ({})).then((data) => ({ status: r.status, ok: r.ok, data })))
+        .catch(() => null)
+        .finally(() => clearTimeout(timer));
+    };
 
-    function send(text) {
-      var payload = { message: text, history: history.slice(-MAX_TURNS), settings: readSettings() };
+    const send = (text) => {
+      const payload = { message: text, history: history.slice(-MAX_TURNS), settings: readSettings() };
       addMessage("user", text);
       input.value = "";
       setBusy(true);
-      var typing = showTyping();
-      var failed = "Sorry, I couldn\u2019t answer just now. Please try again in a moment.";
-      postJSON(MARIA_ENDPOINT, payload, function (res) {
-        removeNode(typing);
+      const typing = showTyping();
+      const failed = "Sorry, I couldn’t answer just now. Please try again in a moment.";
+      postJSON(MARIA_ENDPOINT, payload).then((res) => {
+        typing.remove();
         try {
           if (!res) {
             addMessage("maria", failed);
@@ -1123,9 +992,9 @@
             history.push({ role: "user", content: text }, { role: "assistant", content: res.data.reply });
             history = history.slice(-MAX_TURNS);
             addMessage("maria", res.data.reply, true);
-            if (voiceOn) { say(res.data.reply); }
+            if (voiceOn) say(res.data.reply);
           } else if (res.status === 429) {
-            addMessage("maria", (res.data && res.data.reply) || "You\u2019ve reached today\u2019s message limit. Let\u2019s continue tomorrow!");
+            addMessage("maria", (res.data && res.data.reply) || "You’ve reached today’s message limit. Let’s continue tomorrow!");
           } else {
             addMessage("maria", (res.data && res.data.reply) || failed);
           }
@@ -1134,21 +1003,21 @@
           input.focus();
         }
       });
-    }
+    };
 
     if (!MARIA_ENDPOINT) {
-      addMessage("maria", "Hi, I\u2019m Maria! I\u2019m getting ready \u2014 coming soon. Come back soon to practice English with me.");
+      addMessage("maria", "Hi, I’m Maria! I’m getting ready — coming soon. Come back soon to practice English with me.");
       input.disabled = true;
       sendBtn.disabled = true;
-      input.placeholder = "Maria is getting ready \u2014 coming soon";
+      input.placeholder = "Maria is getting ready — coming soon";
       return;
     }
 
     addMessage("maria", GREETING);
-    form.addEventListener("submit", function (event) {
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
-      var text = input.value.replace(/^\s+|\s+$/g, "");
-      if (!text || sending) { return; }
+      const text = input.value.trim();
+      if (!text || sending) return;
       stopAll();
       primeSpeech(false);
       send(text);
@@ -1156,103 +1025,58 @@
   })();
   </script>
   <script>
-  (function () {
-    "use strict";
-    var FAST = 30000, SLOW = 60000, QUIET = 600000;
-    var started = new Date().getTime();
-    var pageTag = null, imgTag = null;
-    var busy = false, timer = null;
+  (() => {
+    const FAST = 30000, SLOW = 60000, QUIET = 600000;
+    const started = Date.now();
+    let pageTag = null, imgTag = null;
+    let busy = false, timer = null;
 
-    function isHidden() {
-      if (typeof document.hidden !== "undefined") { return !!document.hidden; }
-      if (typeof document.webkitHidden !== "undefined") { return !!document.webkitHidden; }
-      return false;
-    }
+    const tagOf = (r) => r.headers.get("etag") || r.headers.get("last-modified") || "";
 
-    /* Conditional request via XMLHttpRequest. cb(err, status, tag). */
-    function probe(method, url, ifNoneMatch, cb) {
-      var finished = false;
-      function finish(err, status, tag) {
-        if (finished) { return; }
-        finished = true;
-        cb(err, status, tag);
-      }
-      try {
-        var xhr = new XMLHttpRequest();
-        xhr.open(method, url, true);
-        xhr.setRequestHeader("Cache-Control", "no-cache");
-        xhr.setRequestHeader("Pragma", "no-cache");
-        if (ifNoneMatch) { xhr.setRequestHeader("If-None-Match", ifNoneMatch); }
-        xhr.timeout = 20000;
-        xhr.onload = function () {
-          var tag = xhr.getResponseHeader("etag") || xhr.getResponseHeader("last-modified") || "";
-          finish(null, xhr.status, tag);
-        };
-        xhr.onerror = function () { finish(true); };
-        xhr.ontimeout = function () { finish(true); };
-        xhr.onabort = function () { finish(true); };
-        xhr.send();
-      } catch (err) {
-        finish(true);
-      }
-    }
-
-    /* cb(err, changed) */
-    function pageChanged(cb) {
-      probe("GET", location.pathname, pageTag, function (err, status, tag) {
-        if (err) { return cb(true); }
-        if (status === 304) { return cb(null, false); }
-        if (status < 200 || status >= 300) { return cb(true); }
-        if (!tag) { return cb(null, false); }
-        if (pageTag === null) { pageTag = tag; return cb(null, false); }
-        cb(null, tag !== pageTag);
+    const pageChanged = () => {
+      const headers = {};
+      if (pageTag) headers["If-None-Match"] = pageTag;
+      return fetch(location.pathname, { cache: "no-store", headers }).then((r) => {
+        if (r.status === 304) return false;
+        if (!r.ok) throw new Error(r.status);
+        const tag = tagOf(r);
+        if (!tag) return false;
+        if (pageTag === null) { pageTag = tag; return false; }
+        return tag !== pageTag;
       });
-    }
+    };
 
-    function imageChanged(cb) {
-      probe("HEAD", "yibu-tutor-holding-reader.png", null, function (err, status, tag) {
-        if (err || status < 200 || status >= 300) { return cb(true); }
-        if (!tag) { return cb(null, false); }
-        if (imgTag === null) { imgTag = tag; return cb(null, false); }
-        cb(null, tag !== imgTag);
-      });
-    }
+    const imageChanged = () => fetch("yibu-tutor-holding-reader.png", { method: "HEAD", cache: "no-store" }).then((r) => {
+      if (!r.ok) throw new Error(r.status);
+      const tag = tagOf(r);
+      if (!tag) return false;
+      if (imgTag === null) { imgTag = tag; return false; }
+      return tag !== imgTag;
+    });
 
-    function chatActive() {
-      var input = document.getElementById("maria-input");
-      return !!(document.querySelector("#maria-log .msg.user") || (input && input.value));
-    }
+    const chatActive = () => {
+      const field = document.getElementById("maria-input");
+      return !!(document.querySelector("#maria-log .msg.user") || (field && field.value));
+    };
 
-    function check(done) {
-      if (isHidden() || busy) { return done(); }
+    const check = () => {
+      if (document.hidden || busy) return Promise.resolve();
       busy = true;
-      var results = [], failed = false, pending = 2;
-      function got(err, changed) {
-        if (err) { failed = true; }
-        results.push(!!changed);
-        pending--;
-        if (pending > 0) { return; }
+      return Promise.all([pageChanged(), imageChanged()]).then((c) => {
         busy = false;
-        if (!failed && (results[0] || results[1]) && !chatActive()) { location.reload(); }
-        done();
-      }
-      pageChanged(got);
-      imageChanged(got);
-    }
+        if ((c[0] || c[1]) && !chatActive()) location.reload();
+      }, () => { busy = false; });
+    };
 
-    function schedule() {
+    const schedule = () => {
       clearTimeout(timer);
-      timer = setTimeout(function () { check(schedule); },
-        new Date().getTime() - started > QUIET ? SLOW : FAST);
-    }
+      timer = setTimeout(() => check().then(schedule), Date.now() - started > QUIET ? SLOW : FAST);
+    };
 
-    function onVisible() {
-      if (!isHidden()) { check(schedule); }
-    }
-
-    document.addEventListener("visibilitychange", onVisible);
-    document.addEventListener("webkitvisibilitychange", onVisible);
-    check(schedule);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) check().then(schedule);
+    });
+    check().then(schedule);
   })();
   </script>
 </body>
