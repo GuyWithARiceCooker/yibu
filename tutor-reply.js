@@ -319,7 +319,8 @@
       miniPhrase: "A handy {lang} phrase while we’re here: “{word}” — {meaning}. For example: {example}",
       greet: "Hi — good to see you.",
       yes: "Okay.",
-      thanks: "You’re welcome.",
+      // Light, optional acknowledgements for "thanks": used only now and then (see topicComment).
+      thanks: ["Glad it helped.", "Happy to help.", "Sure."],
       topicFood: "Food is a lovely way to practice.",
       topicTravel: "Travel stories are great practice.",
       topicHobby: "Hobbies are a nice place to find new words.",
@@ -338,7 +339,7 @@
       miniPhrase: "Egy hasznos {lang} kifejezés, amíg itt tartunk: „{word}” — {meaning}. Például: {example}",
       greet: "Szia — örülök, hogy itt vagy.",
       yes: "Rendben.",
-      thanks: "Szívesen.",
+      thanks: ["Örülök, hogy hasznos volt.", "Jó, hogy segített.", "Rendben."],
       topicFood: "Az evésről beszélgetni remek gyakorlás.",
       topicTravel: "Az utazós történetek nagyon jók gyakorlásnak.",
       topicHobby: "A hobbikból sok új szó jön elő.",
@@ -357,7 +358,7 @@
       miniPhrase: "顺便记一个有用的{lang}说法：“{word}”——{meaning}。比如：{example}",
       greet: "你好 — 很高兴见到你。",
       yes: "好的。",
-      thanks: "不客气。",
+      thanks: ["很高兴能帮上忙。", "好的。", "没问题。"],
       topicFood: "聊吃的，很适合练习。",
       topicTravel: "旅行的事很适合拿来练习。",
       topicHobby: "爱好里能碰到不少新词。",
@@ -1454,14 +1455,22 @@
     return opts[opts.length - 1].id;
   }
 
-  function topicComment(fr, topic) {
+  // Thanks: no automatic "you're welcome". Usually return nothing so the reply simply carries on;
+  // only about one time in four add a short, varied acknowledgement.
+  var THANKS_ACK_CHANCE = 0.25;
+
+  function topicComment(fr, topic, ctx) {
     if (topic === "food") return fr.topicFood;
     if (topic === "travel") return fr.topicTravel;
     if (topic === "hobby") return fr.topicHobby;
     if (topic === "work") return fr.topicWork;
     if (topic === "daily") return fr.topicDaily;
     if (topic === "hard") return fr.hardAck;
-    if (topic === "thanks") return fr.thanks;
+    if (topic === "thanks") {
+      var acks = fr.thanks;
+      if (!acks || !acks.length || typeof acks === "string" || rand(ctx) >= THANKS_ACK_CHANCE) return "";
+      return acks[Math.floor(rand(ctx) * acks.length) % acks.length];
+    }
     if (topic === "greet") return fr.greet;
     if (topic === "yes") return fr.yes;
     return "";
@@ -1497,6 +1506,11 @@
     var snippet = snippetFrom(text);
     var vars = { n: n, lang: langName(target, ui, ctx), word: newWordIn(texts) || "", snippet: snippet };
     var topic = topicOf(text);
+    // A plain "thanks" is not content to quote back ("You mentioned: thank you"); just move on.
+    if (topic === "thanks") {
+      snippet = "";
+      vars.snippet = "";
+    }
     var vocab = detectVocab(text, ctx);
     var level = inferLevel(ctx, texts);
     ctx.vocabSignal = vocab.strength;
@@ -1510,7 +1524,7 @@
     }
 
     if (move === "react") {
-      var react = topicComment(fr, topic);
+      var react = topicComment(fr, topic, ctx);
       if (!react && snippet) react = pickAvailable(ui, "contextComment", state, vars, true);
       if (!react) react = pickAvailable(ui, "comment", state, vars, true);
       if (react && longerThanBefore(texts)) {
