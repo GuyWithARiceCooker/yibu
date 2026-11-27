@@ -121,32 +121,15 @@
     main {
       flex: 1;
       width: 100%;
-      max-width: 1080px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: clamp(20px, 6vh, 64px) clamp(20px, 5vw, 48px) 48px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-areas: "hero" "chat" "features";
-      gap: 44px;
-      align-items: start;
+      padding: clamp(20px, 6vh, 48px) clamp(20px, 5vw, 32px) 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
     }
 
-    @media (min-width: 900px) {
-      main {
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-        grid-template-areas: "hero chat" "features chat";
-        grid-template-rows: auto 1fr;
-        column-gap: clamp(40px, 6vw, 88px);
-        row-gap: 36px;
-      }
-      .hero h2 { margin-top: 6px; }
-    }
-
-    .hero { grid-area: hero; }
-
-    .chat-card { grid-area: chat; min-width: 0; }
-
-    .features { grid-area: features; }
+    .chat-card { min-width: 0; }
 
     /* ---------- hero ---------- */
     .hero .label { margin: 0 0 6px; }
@@ -248,19 +231,9 @@
 
     .voice-toggle[aria-pressed="false"] .off-icon { display: block; }
 
-    .maria-profile { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .maria-profile { margin-bottom: 14px; }
 
-    .tutor-img {
-      display: block;
-      width: 56px;
-      height: 56px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      object-fit: cover;
-      background: var(--soft);
-    }
-
-    .maria-info { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; }
+    .maria-info { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; }
 
     .maria-name { margin: 0; font-size: 21px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.2; }
 
@@ -385,31 +358,33 @@
 
     .msg-chip { align-self: flex-start; flex-shrink: 0; margin-top: -2px; }
 
-    /* voice panel: big round ink button, like the design's play button */
+    /* voice panel: compact rectangular mic, same height as Send */
     .voice-panel {
-      display: grid;
-      justify-items: center;
-      gap: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
       margin-top: 16px;
-      padding: 22px 12px 14px;
+      padding: 16px 0 8px;
       border-top: 1px solid var(--line);
-      text-align: center;
     }
 
     .voice-panel[hidden] { display: none; }
 
     .mic-btn {
-      position: relative;
-      display: grid;
-      place-items: center;
-      width: 116px;
-      height: 116px;
-      margin: 0 0 8px;
-      border: 0;
-      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-width: 48px;
+      min-height: 48px;
+      padding: 13px 18px;
+      border: 2px solid var(--ink);
       background: var(--ink);
       color: #fff;
-      transition: transform 0.15s, background 0.2s;
+      font-weight: 800;
+      font-size: 15px;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
       touch-action: manipulation;
       user-select: none;
       -webkit-user-select: none;
@@ -417,35 +392,23 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    .mic-btn svg { width: 38px; height: 38px; }
+    .mic-btn svg { width: 18px; height: 18px; display: block; }
 
-    .mic-btn:hover { transform: scale(1.04); }
+    .mic-btn:hover { background: #fff; color: var(--ink); }
 
-    .mic-btn:active { transform: scale(0.96); }
-
-    .mic-btn::after {
-      content: "";
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 2px solid var(--accent);
-      opacity: 0;
-      pointer-events: none;
+    .mic-btn.listening, .mic-btn.listening:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
     }
-
-    .mic-btn.listening { background: var(--accent); }
-
-    .mic-btn.listening::after { animation: mic-pulse 1.3s ease-out infinite; }
 
     .mic-btn.thinking { opacity: 0.55; }
 
-    @keyframes mic-pulse { 0% { opacity: 0.9; transform: scale(0.94); } 100% { opacity: 0; transform: scale(1.22); } }
+    .mic-status { margin: 0; flex: 1 1 160px; font-size: 15px; font-weight: 700; }
 
-    .mic-status { margin: 0; font-size: 15px; font-weight: 700; }
+    .mic-live { flex: 1 1 100%; min-height: 1.4em; max-width: 100%; margin: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
 
-    .mic-live { min-height: 1.4em; max-width: 100%; margin: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
-
-    .voice-opts { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 22px; margin-top: 4px; }
+    .voice-opts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; flex: 1 1 100%; margin-top: 2px; }
 
     .switch { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-size: 13px; font-weight: 700; cursor: pointer; }
 
@@ -667,28 +630,24 @@
 
     /* ---------- footer (footnote) ---------- */
     .site-foot {
-      padding: 0 clamp(20px, 5vw, 48px) 18px;
-      max-width: 1080px;
+      padding: 0 clamp(20px, 5vw, 32px) 18px;
+      max-width: 720px;
       width: 100%;
       margin: 0 auto;
       font: 10px/1.4 var(--mono);
       color: #a3a39d;
-      text-align: right;
     }
 
     .site-foot p { margin: 0; }
 
     @media (max-width: 560px) {
       header { gap: 14px; }
-      main { gap: 40px; }
+      main { gap: 32px; }
       .msg { max-width: 92%; }
-      .mic-btn { width: 104px; height: 104px; }
-      .site-foot { text-align: left; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
-      .mic-btn.listening::after { opacity: 0.8; }
     }
   </style>
 </head>
@@ -719,7 +678,6 @@
           </button>
         </div>
         <div class="maria-profile">
-          <img class="tutor-img" src="yibu-tutor-book.png" alt="Maria, Yibu’s friendly language-learning tutor" data-i18n-attr="alt:tutorAlt" width="96" height="96">
           <div class="maria-info">
             <p class="maria-name">Maria</p>
             <p class="maria-role" data-i18n="tutorRole">Your language tutor</p>
