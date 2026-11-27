@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Yibu dictation test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<style>
+html, body { margin: 0; padding: 0; background: #ffffff; color: #141414; }
+body { font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.45; -webkit-text-size-adjust: 100%; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 28px 20px 60px; }
+h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; letter-spacing: 0.01em; }
+p { margin: 0 0 14px; }
+.sub { color: #6b6b66; font-size: 15px; }
+ol { margin: 0 0 22px; padding-left: 22px; }
+li { margin-bottom: 6px; }
+.box { border: 1px solid #141414; padding: 16px; margin: 0 0 18px; }
+.lbl { display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #6b6b66; margin-bottom: 8px; }
+.pick { display: block; position: relative; overflow: hidden; border: 1px solid #141414; background: #141414; color: #ffffff; text-align: center; padding: 16px 12px; font-size: 18px; font-weight: 600; cursor: pointer; }
+.pick input { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; font-size: 100px; cursor: pointer; }
+button { -webkit-appearance: none; appearance: none; display: block; width: 100%; border: 1px solid #141414; background: #ffffff; color: #141414; padding: 14px 12px; font-size: 18px; font-weight: 600; border-radius: 0; margin-top: 12px; font-family: inherit; }
+button[disabled] { border-color: #bdbdb8; color: #bdbdb8; }
+.bar { height: 10px; border: 1px solid #141414; margin-top: 12px; }
+.bar div { height: 100%; width: 0; background: #141414; }
+table { border-collapse: collapse; width: 100%; }
+td { border-top: 1px solid #e6e6e1; padding: 7px 0; vertical-align: top; font-size: 16px; }
+td.k { color: #6b6b66; width: 42%; padding-right: 10px; }
+td.v { font-weight: 600; word-wrap: break-word; word-break: break-word; }
+.big { font-size: 20px; font-weight: 600; }
+.err { border: 1px solid #141414; padding: 10px; margin-top: 10px; font-size: 15px; word-wrap: break-word; }
+pre { white-space: pre-wrap; word-wrap: break-word; font-size: 12px; line-height: 1.35; border: 1px solid #e6e6e1; padding: 10px; margin: 0; max-height: 320px; overflow: auto; -webkit-overflow-scrolling: touch; }
+.hide { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Yibu dictation test</h1>
+  <p class="sub">Measures a short camera clip and tries to transcribe it. Test page, not part of Yibu.</p>
+  <ol>
+    <li>Tap <b>Record 10-second test clip</b>.</li>
+    <li>In the camera, record about 10 seconds of clear speech (any language). Hold the iPad about an arm's length away.</li>
+    <li>Tap <b>Use Video</b>. Wait for iOS to finish preparing it.</li>
+    <li>Check the file size below, then tap <b>Upload and transcribe</b>.</li>
+  </ol>
+
+  <div class="box">
+    <span class="lbl">1. Clip</span>
+    <label class="pick" id="pickLbl">Record 10-second test clip<input id="file" type="file" accept="video/*" capture="camcorder"></label>
+    <table id="local" class="hide">
+      <tr><td class="k">File name</td><td class="v" id="lName"></td></tr>
+      <tr><td class="k">Size on device</td><td class="v" id="lSize"></td></tr>
+      <tr><td class="k">Type</td><td class="v" id="lType"></td></tr>
+    </table>
+  </div>
+
+  <div class="box">
+    <span class="lbl">2. Upload</span>
+    <button id="go" disabled>Upload and transcribe</button>
+    <div class="bar"><div id="barFill"></div></div>
+    <p class="sub" id="prog" style="margin-top:8px">Waiting for a clip.</p>
+  </div>
+
+  <div class="box hide" id="resBox">
+    <span class="lbl">3. Result</span>
+    <div id="transcriptWrap" class="hide">
+      <span class="lbl">Transcript</span>
+      <p class="big" id="transcript"></p>
+    </div>
+    <div id="errors"></div>
+    <table id="tbl"></table>
+    <p class="sub" style="margin:14px 0 6px">Full result</p>
+    <pre id="raw"></pre>
+  </div>
+</div>
+
+<script>
+(function () {
+  var ENDPOINT = "https://yibu-stt-test.yibu-tutor.workers.dev/upload";
+  var MAX = 30 * 1024 * 1024;
+  var fileEl = document.getElementById("file");
+  var goEl = document.getElementById("go");
+  var progEl = document.getElementById("prog");
+  var barEl = document.getElementById("barFill");
+  var chosen = null;
+  var busy = false;
+
+  function $(id) { return document.getElementById(id); }
+  function fmtSize(n) {
+    if (n >= 1048576) return (n / 1048576).toFixed(2) + " MB (" + Math.round(n / 1024) + " KB)";
+    return (n / 1024).toFixed(1) + " KB";
+  }
+  function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+  function row(tbl, k, v) {
+    if (v === null || v === undefined || v === "") return;
+    var tr = document.createElement("tr");
+    var a = document.createElement("td"); a.className = "k"; a.appendChild(document.createTextNode(k));
+    var b = document.createElement("td"); b.className = "v"; b.appendChild(document.createTextNode(String(v)));
+    tr.appendChild(a); tr.appendChild(b); tbl.appendChild(tr);
+  }
+  function setProg(t) { clear(progEl); progEl.appendChild(document.createTextNode(t)); }
+
+  fileEl.onchange = function () {
+    var f = fileEl.files && fileEl.files[0];
+    if (!f) { return; }
+    chosen = f;
+    $("local").className = "";
+    $("lName").textContent = f.name || "(no name)";
+    $("lSize").textContent = fmtSize(f.size) + " = " + f.size + " bytes";
+    $("lType").textContent = f.type || "(none)";
+    barEl.style.width = "0";
+    if (f.size > MAX) {
+      goEl.disabled = true;
+      setProg("File is over 30 MB, the test service will refuse it.");
+    } else {
+      goEl.disabled = false;
+      setProg("Ready. Tap Upload and transcribe.");
+    }
+  };
+
+  function showResult(r, extra) {
+    $("resBox").className = "box";
+    var errs = $("errors"); clear(errs);
+    var tbl = $("tbl"); clear(tbl);
+    var tw = $("transcriptWrap");
+    function addErr(t) { var d = document.createElement("div"); d.className = "err"; d.appendChild(document.createTextNode(t)); errs.appendChild(d); }
+
+    if (!r || r.ok === false) {
+      tw.className = "hide";
+      addErr("Error: " + (r && r.error ? r.error : "unknown"));
+    } else {
+      if (r.transcript) { tw.className = ""; $("transcript").textContent = r.transcript; }
+      else { tw.className = "hide"; addErr("No transcript was produced."); }
+    }
+    if (r && r.attempts) {
+      for (var i = 0; i < r.attempts.length; i++) {
+        var a = r.attempts[i];
+        if (a.ok && a.text) continue;
+        if (a.skipped) continue;
+        addErr("Attempt \"" + a.attempt + "\"" + (a.model ? " (" + a.model + ")" : "") + ": " + (a.error || a.note || "no text"));
+      }
+    }
+    if (r && r.file) {
+      row(tbl, "Size received", fmtSize(r.file.bytes));
+      row(tbl, "Content type", r.file.contentType);
+      row(tbl, "File name", r.file.filename);
+      row(tbl, "Detected format", r.file.sniffed);
+    }
+    if (r && r.container) {
+      row(tbl, "Container", r.container.brand);
+      row(tbl, "Atom order", r.container.topLevelBoxes ? r.container.topLevelBoxes.join(", ") : null);
+      row(tbl, "Parse error", r.container.error);
+    }
+    var m = r && r.measurements;
+    if (m) {
+      if (m.durationSec !== undefined) row(tbl, "Duration", m.durationSec + " s");
+      if (m.video) {
+        row(tbl, "Resolution", m.video.width + " x " + m.video.height);
+        row(tbl, "Video codec", m.video.codec);
+        row(tbl, "Frames", m.video.frames);
+      }
+      if (m.audio) {
+        row(tbl, "Audio codec", m.audio.codec + (m.audio.aacObjectType === 2 ? " (AAC-LC)" : ""));
+        row(tbl, "Audio sample rate", m.audio.sampleRate ? m.audio.sampleRate + " Hz" : null);
+        row(tbl, "Audio channels", m.audio.channels);
+        row(tbl, "Audio bitrate", m.audio.estimatedBitrateKbps !== null ? m.audio.estimatedBitrateKbps + " kbit/s" : null);
+        row(tbl, "Audio size", m.audio.audioPayloadBytes !== null ? fmtSize(m.audio.audioPayloadBytes) : null);
+        row(tbl, "Audio per 10 s", m.audio.estimatedAudioKbPer10s !== null ? m.audio.estimatedAudioKbPer10s + " KB" : null);
+      }
+      row(tbl, "Overall bitrate", m.overallBitrateKbps ? m.overallBitrateKbps + " kbit/s" : null);
+      row(tbl, "Video share of file", m.videoSharePercent !== null && m.videoSharePercent !== undefined ? m.videoSharePercent + " %" : null);
+    }
+    if (r && r.transcriptPath) row(tbl, "Transcribed via", r.transcriptPath);
+    if (extra) {
+      row(tbl, "Upload time", extra.seconds + " s");
+      row(tbl, "Upload speed", extra.kbps + " KB/s");
+    }
+    var txt;
+    try { txt = JSON.stringify(r, null, 2); } catch (e) { txt = String(r); }
+    $("raw").textContent = txt;
+    try { $("resBox").scrollIntoView(); } catch (e2) {}
+  }
+
+  goEl.onclick = function () {
+    if (!chosen || busy) return;
+    busy = true; goEl.disabled = true;
+    barEl.style.width = "0";
+    setProg("Starting upload...");
+    var fd = new FormData();
+    fd.append("file", chosen, chosen.name || "clip.mov");
+    var xhr = new XMLHttpRequest();
+    var t0 = new Date().getTime();
+    var sentAt = null;
+    function done(msg, parsed) {
+      busy = false; goEl.disabled = false;
+      var secs = ((new Date().getTime() - t0) / 1000);
+      var upSecs = ((sentAt || new Date().getTime()) - t0) / 1000;
+      var extra = null;
+      if (sentAt && upSecs > 0) extra = { seconds: upSecs.toFixed(1), kbps: Math.round(chosen.size / 1024 / upSecs) };
+      if (msg) setProg(msg);
+      if (parsed !== undefined) showResult(parsed, extra);
+      return secs;
+    }
+    xhr.open("POST", ENDPOINT, true);
+    if (xhr.upload) {
+      xhr.upload.onprogress = function (e) {
+        if (e.lengthComputable && e.total) {
+          var p = Math.round(e.loaded * 100 / e.total);
+          barEl.style.width = p + "%";
+          setProg("Uploading: " + p + "% (" + Math.round(e.loaded / 1024) + " of " + Math.round(e.total / 1024) + " KB)");
+        } else {
+          setProg("Uploading: " + Math.round(e.loaded / 1024) + " KB");
+        }
+      };
+      xhr.upload.onload = function () {
+        sentAt = new Date().getTime();
+        barEl.style.width = "100%";
+        setProg("Uploaded. Transcribing, this can take a few seconds...");
+      };
+    }
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
+      var parsed = null;
+      try { parsed = JSON.parse(xhr.responseText); } catch (e) { parsed = null; }
+      if (xhr.status === 0) {
+        done("Network error: the upload did not complete.", { ok: false, error: "network error / blocked (status 0)" });
+      } else if (parsed) {
+        done("Done (HTTP " + xhr.status + ").", parsed);
+      } else {
+        done("Unexpected reply (HTTP " + xhr.status + ").", { ok: false, error: "HTTP " + xhr.status + ": " + String(xhr.responseText).substring(0, 300) });
+      }
+    };
+    xhr.timeout = 180000;
+    xhr.ontimeout = function () { done("Timed out.", { ok: false, error: "timed out after 180 s" }); };
+    xhr.send(fd);
+  };
+})();
+</script>
+</body>
+</html>
