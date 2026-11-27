@@ -3,7 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ffffff" id="theme-color">
+  <script>
+    /* Apply a saved theme before first paint (no flash). No saved choice = follow the system. */
+    (function () {
+      try {
+        var v = localStorage.getItem("yibu-theme");
+        if (v === "dark" || v === "light") document.documentElement.setAttribute("data-theme", v);
+      } catch (e) { /* ignore */ }
+    })();
+  </script>
   <title>Yibu — language learning app</title>
   <style>
     /* Visual language: Tomi's minimalist design — white, near-black ink, one red accent,
@@ -19,10 +29,59 @@
       --red: #b0291e;
       --red-bg: #fdf1ef;
       --focus: #2b66d9;
+      --bg: #ffffff;
+      --bg-glass: rgba(255, 255, 255, 0.92);
+      --faint: #a3a39d;
+      --chat-soft: #f2f2f2;
+      --chat-muted: #666666;
+      --chat-line: #e0e0e0;
       --font: "Helvetica Neue", Arial, Helvetica, sans-serif;
       --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
       --cjk: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
     }
+
+    /* ---------- dark theme: same variables, dark palette ---------- */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink: #edede8;
+        --muted: #9a9a94;
+        --line: #2a2a27;
+        --soft: #181817;
+        --accent: #ff6a4a;
+        --green: #6fcf9b;
+        --green-bg: #0e0e0e;
+        --red: #ff8a7a;
+        --red-bg: #0e0e0e;
+        --focus: #8ab0ff;
+        --bg: #0e0e0e;
+        --bg-glass: rgba(14, 14, 14, 0.92);
+        --faint: #85857e;
+        --chat-soft: #1a1a19;
+        --chat-muted: #9c9c96;
+        --chat-line: #2e2e2b;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --ink: #edede8;
+      --muted: #9a9a94;
+      --line: #2a2a27;
+      --soft: #181817;
+      --accent: #ff6a4a;
+      --green: #6fcf9b;
+      --green-bg: #0e0e0e;
+      --red: #ff8a7a;
+      --red-bg: #0e0e0e;
+      --focus: #8ab0ff;
+      --bg: #0e0e0e;
+      --bg-glass: rgba(14, 14, 14, 0.92);
+      --faint: #85857e;
+      --chat-soft: #1a1a19;
+      --chat-muted: #9c9c96;
+      --chat-line: #2e2e2b;
+      color-scheme: dark;
+    }
+    :root[data-theme="light"] { color-scheme: light; }
 
     * { box-sizing: border-box; }
 
@@ -33,7 +92,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: #fff;
+      background: var(--bg);
       color: var(--ink);
       font-family: var(--font);
       line-height: 1.5;
@@ -70,20 +129,20 @@
       display: flex;
       align-items: center;
       gap: 24px;
-      height: 64px;
+      height: 72px;
       padding: 0 clamp(18px, 4vw, 48px);
       padding-left: max(clamp(18px, 4vw, 48px), env(safe-area-inset-left));
       padding-right: max(clamp(18px, 4vw, 48px), env(safe-area-inset-right));
-      background: rgba(255, 255, 255, 0.92);
+      background: var(--bg-glass);
       -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
     }
 
     .mark {
       margin: 0;
-      font-size: 20px;
+      font-size: 26px;
       font-weight: 900;
-      letter-spacing: -1.2px;
+      letter-spacing: -1.6px;
       line-height: 1;
       white-space: nowrap;
     }
@@ -91,10 +150,10 @@
     .mark .dot { color: var(--accent); }
 
     .cn-name {
-      margin-left: 8px;
+      margin-left: 10px;
       font-family: var(--cjk);
-      font-size: 13px;
-      font-weight: 400;
+      font-size: 16px;
+      font-weight: 500;
       letter-spacing: 0;
       color: var(--muted);
     }
@@ -102,12 +161,12 @@
     .lang-switch { display: flex; gap: 4px; margin-left: auto; }
 
     .lang-switch button {
-      min-width: 34px;
-      min-height: 32px;
-      padding: 6px 7px;
+      min-width: 52px;
+      min-height: 38px;
+      padding: 7px 8px;
       border: 1px solid transparent;
       background: none;
-      font: 700 11px/1 var(--mono);
+      font: 700 13px/1 var(--mono);
       letter-spacing: 0.07em;
       text-transform: uppercase;
       color: var(--muted);
@@ -115,7 +174,22 @@
 
     .lang-switch button:hover { color: var(--ink); border-color: var(--ink); }
 
-    .lang-switch button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .lang-switch button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+
+    .theme-toggle {
+      min-width: 52px;
+      min-height: 38px;
+      margin-left: 4px;
+      padding: 7px 8px;
+      border: 1px solid var(--ink);
+      background: none;
+      font: 700 13px/1 var(--mono);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .theme-toggle:hover { background: var(--ink); color: var(--bg); }
 
     /* ---------- layout ---------- */
     main {
@@ -135,22 +209,29 @@
     .hero .label { margin: 0 0 6px; }
 
     .hero h2 {
-      margin: 10px 0 14px;
+      margin: 10px 0 10px;
       font-size: clamp(34px, 5.4vw, 56px);
       font-weight: 800;
       line-height: 0.98;
       letter-spacing: -0.055em;
     }
 
+    .hero .subline {
+      margin: 0 0 16px;
+      font: 11px/1.4 var(--mono);
+      letter-spacing: 0.02em;
+      color: var(--muted);
+    }
+
     .hero .lede {
       max-width: 520px;
-      margin: 0 0 30px;
+      margin: 0;
       color: var(--muted);
       font-size: 17px;
       line-height: 1.5;
     }
 
-    .cta, .chat-send {
+    .chat-send {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -158,14 +239,14 @@
       padding: 13px 22px;
       border: 2px solid var(--ink);
       background: var(--ink);
-      color: #fff;
+      color: var(--bg);
       font-weight: 800;
       font-size: 15px;
       text-decoration: none;
       transition: background 0.15s, color 0.15s;
     }
 
-    .cta:hover, .chat-send:hover:not(:disabled) { background: #fff; color: var(--ink); }
+    .chat-send:hover:not(:disabled) { background: var(--bg); color: var(--ink); }
 
     .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
 
@@ -213,13 +294,13 @@
       height: 40px;
       padding: 0;
       border: 1.5px solid var(--ink);
-      background: #fff;
+      background: var(--bg);
       transition: background 0.15s, color 0.15s;
     }
 
     .voice-toggle[hidden] { display: none; }
 
-    .voice-toggle:hover { background: var(--ink); color: #fff; }
+    .voice-toggle:hover { background: var(--ink); color: var(--bg); }
 
     .voice-toggle[aria-pressed="false"] { border-color: var(--line); color: var(--muted); }
 
@@ -231,9 +312,30 @@
 
     .voice-toggle[aria-pressed="false"] .off-icon { display: block; }
 
-    .maria-profile { margin-bottom: 14px; }
+    .maria-profile { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
 
-    .maria-info { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; }
+    .portrait {
+      display: block;
+      flex: none;
+      width: 96px;
+      height: 120px;
+      border: 1px solid var(--ink);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    @media (min-width: 600px) { .portrait { width: 120px; height: 150px; } }
+
+    /* dark theme: the black-on-white line art is inverted to light lines on the dark page */
+    :root[data-theme="dark"] .portrait img { filter: invert(1); mix-blend-mode: screen; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .portrait img { filter: invert(1); mix-blend-mode: screen; }
+    }
+
+
+    .maria-info { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; }
 
     .maria-name { margin: 0; font-size: 21px; font-weight: 800; letter-spacing: -0.035em; line-height: 1.2; }
 
@@ -329,7 +431,7 @@
 
     .msg.maria { align-self: flex-start; background: var(--soft); }
 
-    .msg.user { align-self: flex-end; background: var(--ink); color: #fff; }
+    .msg.user { align-self: flex-end; background: var(--ink); color: var(--bg); }
 
     .msg.typing { display: inline-flex; gap: 5px; align-items: center; min-height: 44px; }
 
@@ -357,75 +459,6 @@
     .replay:hover { color: var(--accent); }
 
     .msg-chip { align-self: flex-start; flex-shrink: 0; margin-top: -2px; }
-
-    /* voice panel: compact rectangular mic, same height as Send */
-    .voice-panel {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px 14px;
-      margin-top: 16px;
-      padding: 16px 0 8px;
-      border-top: 1px solid var(--line);
-    }
-
-    .voice-panel[hidden] { display: none; }
-
-    .mic-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      min-width: 48px;
-      min-height: 48px;
-      padding: 13px 18px;
-      border: 2px solid var(--ink);
-      background: var(--ink);
-      color: #fff;
-      font-weight: 800;
-      font-size: 15px;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-      touch-action: manipulation;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .mic-btn svg { width: 18px; height: 18px; display: block; }
-
-    .mic-btn:hover { background: #fff; color: var(--ink); }
-
-    .mic-btn.listening, .mic-btn.listening:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
-
-    .mic-btn.thinking { opacity: 0.55; }
-
-    .mic-status { margin: 0; flex: 1 1 160px; font-size: 15px; font-weight: 700; }
-
-    .mic-live { flex: 1 1 100%; min-height: 1.4em; max-width: 100%; margin: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
-
-    .voice-opts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; flex: 1 1 100%; margin-top: 2px; }
-
-    .switch { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; font-size: 13px; font-weight: 700; cursor: pointer; }
-
-    .switch input {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 16px;
-      height: 16px;
-      margin: 0;
-      border: 1.5px solid var(--ink);
-      background: #fff;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-    }
-
-    .switch input:checked { background: var(--ink); box-shadow: inset 0 0 0 3px #fff; }
 
     /* typed chat: underline input + black button */
     .chat-form { display: flex; gap: 14px; align-items: flex-end; margin-top: 16px; }
@@ -472,7 +505,7 @@
       min-height: 42px;
       padding: 10px 14px;
       border: 1px solid var(--ink);
-      background: #fff;
+      background: var(--bg);
       font-size: 13px;
       font-weight: 700;
       transition: background 0.15s, color 0.15s;
@@ -480,7 +513,7 @@
 
     .tool-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 
-    .tool-btn:hover:not(:disabled) { background: var(--ink); color: #fff; }
+    .tool-btn:hover:not(:disabled) { background: var(--ink); color: var(--bg); }
 
     .tool-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
@@ -519,14 +552,14 @@
       min-height: 56px;
       padding: 12px 16px;
       border: 1.5px solid var(--ink);
-      background: #fff;
+      background: var(--bg);
       font-weight: 700;
       font-size: 15px;
       text-align: left;
       transition: background 0.15s, color 0.15s, opacity 0.2s;
     }
 
-    .quiz-choice:hover:not(:disabled) { background: var(--ink); color: #fff; }
+    .quiz-choice:hover:not(:disabled) { background: var(--ink); color: var(--bg); }
 
     .quiz-choice:disabled { cursor: default; }
 
@@ -594,11 +627,11 @@
 
     .words[open] summary::after { content: "−"; }
 
-    .words-count { display: inline-block; min-width: 22px; padding: 4px 5px; background: var(--ink); color: #fff; text-align: center; }
+    .words-count { display: inline-block; min-width: 22px; padding: 4px 5px; background: var(--ink); color: var(--bg); text-align: center; }
 
     .words-count.bump { animation: words-bump 0.6s ease; }
 
-    @keyframes words-bump { 40% { background: var(--accent); } }
+    @keyframes words-bump { 40% { background: #777; } }
 
     .words-empty { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
 
@@ -620,25 +653,183 @@
       height: 34px;
       border: 1.5px solid var(--ink);
       border-radius: 50%;
-      background: #fff;
+      background: var(--bg);
       font-size: 16px;
       line-height: 1;
       transition: background 0.15s, color 0.15s;
     }
 
-    .word-remove:hover { background: var(--ink); color: #fff; }
+    .word-remove:hover { background: var(--ink); color: var(--bg); }
 
-    /* ---------- footer (footnote) ---------- */
-    .site-foot {
-      padding: 0 clamp(20px, 5vw, 32px) 18px;
-      max-width: 720px;
-      width: 100%;
-      margin: 0 auto;
-      font: 10px/1.4 var(--mono);
-      color: #a3a39d;
+    /* ---------- language picker ---------- */
+    .picker { margin-top: 26px; }
+
+    .picker .label { margin: 0 0 8px; }
+
+    .picker-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .pick, .pick-item {
+      border: 1px solid var(--ink);
+      background: var(--bg);
+      color: var(--ink);
+      font: 700 13px/1 var(--mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.15s, color 0.15s;
     }
 
-    .site-foot p { margin: 0; }
+    .pick { min-width: 56px; min-height: 44px; padding: 0 14px; }
+
+    .pick-more { padding: 0 16px; font-size: 18px; letter-spacing: 0; }
+
+    .pick:hover, .pick-item:hover { background: var(--ink); color: var(--bg); }
+
+    .pick[aria-pressed="true"], .pick-item[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+    .pick-more[aria-expanded="true"] { background: var(--ink); color: var(--bg); }
+
+    .picker-panel { margin-top: 12px; padding: 14px; border: 1px solid var(--ink); animation: enter 0.25s; }
+
+    .picker-panel[hidden] { display: none; }
+
+    .picker-panel input {
+      display: block;
+      width: 100%;
+      min-height: 44px;
+      margin: 0 0 12px;
+      padding: 10px 0;
+      border: 0;
+      border-bottom: 1.5px solid var(--ink);
+      border-radius: 0;
+      background: none;
+      color: var(--ink);
+      font: inherit;
+      font-size: 16px;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .picker-panel input:focus-visible { outline: none; border-bottom-width: 3px; }
+
+    .picker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      max-height: 300px;
+      margin: 0;
+      padding: 0;
+      overflow-y: auto;
+      list-style: none;
+    }
+
+    @media (min-width: 600px) { .picker-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+    @media (min-width: 900px) { .picker-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
+    .pick-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+      width: 100%;
+      min-height: 56px;
+      padding: 9px 10px;
+      text-align: left;
+    }
+
+    .pick-item b { font: inherit; }
+
+    .pick-item span { font: 400 12px/1.2 var(--font); letter-spacing: 0; text-transform: none; overflow-wrap: anywhere; }
+
+    .picker-none { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+    .picker-none[hidden] { display: none; }
+
+    /* ---------- chat pane: strictly black, white and grey (no accent colour, no tints) ---------- */
+    .chat-card {
+      --soft: var(--chat-soft);
+      --muted: var(--chat-muted);
+      --line: var(--chat-line);
+      --accent: var(--ink);
+      --focus: var(--ink);
+      --green: var(--ink);
+      --green-bg: var(--bg);
+      --red: var(--ink);
+      --red-bg: var(--bg);
+    }
+
+    .chat-card .link-btn:hover, .chat-card .hear-btn:hover, .chat-card .hear-btn.speaking { border-bottom-width: 3px; }
+
+    .chat-card .tool-note { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+    .chat-card .quiz-choice.right { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+
+    .chat-card .quiz-choice.wrong { background: var(--bg); border-style: dashed; color: var(--ink); text-decoration: line-through; }
+
+    .chat-card .quiz-fill input.right { border-bottom-width: 3px; color: var(--ink); }
+
+    .chat-card .quiz-fill input.wrong { border-bottom-style: dashed; color: var(--muted); text-decoration: line-through; }
+
+    .chat-card .quiz-feedback.ok strong { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ---------- voice panel: status indicator + mute toggle (the microphone is always on) ---------- */
+    .voice-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 12px;
+      margin-top: 16px;
+      padding: 14px 0 6px;
+      border-top: 1px solid var(--line);
+    }
+
+    .voice-panel[hidden] { display: none; }
+
+    .mic-dot { flex: none; width: 12px; height: 12px; border: 1.5px solid var(--ink); background: var(--bg); }
+
+    .mic-dot.s-off { border-color: var(--muted); }
+
+    .mic-dot.s-listening { background: radial-gradient(var(--ink) 0 2px, var(--bg) 2.5px); animation: mic-breathe 2.4s ease-in-out infinite; }
+
+    .mic-dot.s-hearing { background: var(--ink); }
+
+    .mic-dot.s-thinking { border-style: dashed; animation: mic-breathe 1.2s ease-in-out infinite; }
+
+    .mic-dot.s-speaking { background: var(--ink); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--ink); }
+
+    @keyframes mic-breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+    .mic-status { margin: 0; flex: 1 1 auto; font: 700 11px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .mic-btn {
+      display: inline-grid;
+      place-items: center;
+      flex: none;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 1.5px solid var(--ink);
+      background: var(--bg);
+      color: var(--ink);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .mic-btn svg { display: block; width: 18px; height: 18px; }
+
+    .mic-btn .slash { display: none; }
+
+    .mic-btn:hover { background: var(--ink); color: var(--bg); }
+
+    .mic-btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+    .mic-btn[aria-pressed="true"] .slash { display: block; stroke: var(--bg); }
+
+    .mic-btn[hidden], .mic-dot[hidden] { display: none; }
+
+    .mic-live { flex: 1 1 100%; min-height: 1.4em; margin: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+
+    .voice-opts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; flex: 1 1 100%; }
+
 
     @media (max-width: 560px) {
       header { gap: 14px; }
@@ -656,32 +847,42 @@
     <header>
       <h1 class="mark"><span translate="no">Yibu</span><span class="dot" aria-hidden="true">.</span><bdi class="cn-name">一步</bdi></h1>
       <div class="lang-switch" id="ui-lang-switch" role="group" aria-label="Interface language" data-i18n-attr="aria-label:langSwitch">
-        <button type="button" data-ui-lang="en" lang="en" aria-pressed="true" title="English">EN</button>
-        <button type="button" data-ui-lang="hu" lang="hu" aria-pressed="false" title="Magyar">HU</button>
+        <button type="button" data-ui-lang="en" lang="en" aria-pressed="true" title="English">ENG</button>
+        <button type="button" data-ui-lang="hu" lang="hu" aria-pressed="false" title="Magyar">HUN</button>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme" data-i18n-attr="aria-label:themeToDark;title:themeToDark">DRK</button>
       </div>
     </header>
 
     <main>
       <section class="card hero" aria-labelledby="hero-heading">
-        <p class="label" data-i18n="tagline">All the languages in one place*</p>
-        <h2 id="hero-heading" data-i18n="heroTitle">Speak freely and practice languages with Maria</h2>
-        <p class="lede" data-i18n="heroLede">Yibu is a language-learning app. Talk with tutor Maria anytime — out loud or in writing — practice the languages you need, chat about the news or the topics you care about, and get gentle, clear corrections when you need them. Want to fine-tune how Maria replies? Open the tutor settings.</p>
-        <a class="cta" href="https://guywitharicecooker.github.io/yibu-settings/yibu-settings.html" data-i18n="heroCta">Open tutor settings</a>
+        <p class="label" data-i18n="tagline">All the languages in one place</p>
+        <h2 id="hero-heading" data-i18n="heroTitle">Speak freely and practice languages with your tutor</h2>
+        <p class="subline" data-i18n="subline">Not all of them — but most of the main ones, and some more.</p>
+        <p class="lede" data-i18n="heroLede">Yibu is a language-learning app. Talk with Mária anytime — out loud or in writing — and practice the languages you need. Chat about the things you care about, and get honest, clear corrections that fit the way you learn.</p>
+        <div class="picker" id="lang-picker">
+          <p class="label" id="picker-label" data-i18n="learning">Learning</p>
+          <div class="picker-row" id="picker-row" role="group" aria-labelledby="picker-label"></div>
+          <div class="picker-panel" id="picker-panel" hidden>
+            <input id="picker-filter" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type to filter…" aria-label="Filter languages" data-i18n-attr="placeholder:pickFilter;aria-label:pickFilterAria">
+            <ul class="picker-grid" id="picker-grid"></ul>
+            <p class="picker-none" id="picker-none" hidden data-i18n="pickNone">No match</p>
+          </div>
+        </div>
       </section>
 
       <section class="card chat-card" aria-labelledby="maria-heading" id="maria-chat">
         <div class="chat-head">
-          <h2 id="maria-heading" data-i18n="chatTitle">Talk with Maria</h2>
-          <button class="voice-toggle" id="maria-voice" type="button" aria-pressed="true" aria-label="Read Maria’s replies aloud" title="Read Maria’s replies aloud">
+          <h2 id="maria-heading" data-i18n="chatTitle">Talk with Mária</h2>
+          <button class="voice-toggle" id="maria-voice" type="button" aria-pressed="true" aria-label="Read Mária’s replies aloud" title="Read Mária’s replies aloud">
             <svg class="on-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
             <svg class="off-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
           </button>
         </div>
         <div class="maria-profile">
+          <span class="portrait"><img src="maria-portrait.svg" width="600" height="750" alt="Mária, your language tutor — a simple line drawing of a calm face" data-i18n-attr="alt:portraitAlt" decoding="async"></span>
           <div class="maria-info">
-            <p class="maria-name">Maria</p>
-            <p class="maria-role" data-i18n="tutorRole">Your language tutor</p>
-            <button class="hear-btn" id="maria-hear" type="button" aria-label="Hear Maria speak" data-i18n-attr="aria-label:hearAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span id="maria-hear-label" data-i18n="hear">Hear Maria</span></button>
+            <p class="maria-name" data-i18n="tutorName">Mária</p>
+            <button class="hear-btn" id="maria-hear" type="button" aria-label="Listen to Mária" data-i18n-attr="aria-label:hearAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span id="maria-hear-label" data-i18n="hear">Listen</span></button>
           </div>
         </div>
         <p class="maria-practice" id="maria-practice" hidden><span id="maria-practice-label"></span><button class="link-btn" id="maria-change-langs" type="button" data-i18n="changeLangs">Change my languages</button></p>
@@ -691,27 +892,27 @@
         </div>
         <div class="chat-log" id="maria-log" role="log" aria-live="polite"></div>
         <div class="voice-panel" id="maria-voicepanel">
-          <button class="mic-btn" id="maria-mic" type="button" aria-pressed="false" aria-label="Start talking to Maria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg></button>
-          <p class="mic-status" id="maria-mic-status" role="status" aria-live="polite" data-i18n="micTap">Tap to talk — or hold while you speak</p>
+          <span class="mic-dot s-listening" id="maria-mic-dot" aria-hidden="true"></span>
+          <p class="mic-status" id="maria-mic-status" role="status" aria-live="polite"></p>
+          <button class="mic-btn" id="maria-mic" type="button" aria-pressed="false" aria-label="Mute the microphone" title="Mute the microphone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/><path class="slash" d="M3 3l18 18"/></svg></button>
           <p class="mic-live" id="maria-mic-live"></p>
           <div class="voice-opts">
-            <label class="switch" id="maria-convo-wrap" title="After Maria answers, the mic opens again automatically" data-i18n-attr="title:convoHint"><input type="checkbox" id="maria-convo"><span data-i18n="convoMode">Conversation mode</span></label>
             <button class="link-btn" id="maria-type-toggle" type="button" aria-expanded="false" aria-controls="maria-form">Type instead</button>
           </div>
         </div>
         <form class="chat-form" id="maria-form" autocomplete="off">
-          <input id="maria-input" type="text" maxlength="1000" placeholder="Write to Maria…" aria-label="Message to Maria" data-i18n-attr="placeholder:inputPlaceholder;aria-label:inputAria">
+          <input id="maria-input" type="text" maxlength="1000" placeholder="Write to Mária…" aria-label="Message to Mária" data-i18n-attr="placeholder:inputPlaceholder;aria-label:inputAria">
           <button class="chat-send" id="maria-send" type="submit" data-i18n="send">Send</button>
         </form>
         <div class="chat-tools">
           <button class="tool-btn" id="maria-quiz-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span data-i18n="quiz">Quiz</span></button>
           <span class="tool-note" id="maria-note" role="status" aria-live="polite"></span>
-          <button class="link-btn" id="maria-forget" type="button" title="Delete what Maria remembers about you, your languages and your saved words" data-i18n="forget" data-i18n-attr="title:forgetTitle">Forget me</button>
+          <button class="link-btn" id="maria-forget" type="button" title="Delete what Mária remembers about you, your languages and your saved words" data-i18n="forget" data-i18n-attr="title:forgetTitle">Forget me</button>
         </div>
         <div class="quiz" id="maria-quiz" hidden aria-live="polite"></div>
         <details class="words" id="maria-words">
           <summary><span data-i18n="myWords">My words</span> <span class="words-count" id="maria-words-count">0</span></summary>
-          <p class="words-empty" id="maria-words-empty" data-i18n="wordsEmpty">Useful words and phrases from your chats with Maria will appear here.</p>
+          <p class="words-empty" id="maria-words-empty" data-i18n="wordsEmpty">Useful words and phrases from your chats will appear here.</p>
           <ul class="words-list" id="maria-words-list"></ul>
         </details>
       </section>
@@ -719,33 +920,23 @@
       <div class="features">
         <section class="feature">
           <h3 data-i18n="feat1T">Talk out loud</h3>
-          <p data-i18n="feat1">Tap the mic and just speak — Maria answers out loud, and you can follow her words as she talks.</p>
+          <p data-i18n="feat1">Just speak — the microphone is always on. Mária answers out loud, and you can follow the words as they are spoken.</p>
         </section>
         <section class="feature">
-          <h3 data-i18n="feat2T">Gentle corrections</h3>
-          <p data-i18n="feat2">From a light recast to a careful explanation, you decide how strict the corrections are.</p>
+          <h3 data-i18n="feat2T">Honest corrections</h3>
+          <p data-i18n="feat2">A bit strict, never harsh: mistakes that matter get fixed, small slips wait for a pause, and Mária learns how you like to be corrected.</p>
         </section>
         <section class="feature">
-          <h3 data-i18n="feat3T">Your languages, your goals</h3>
-          <p data-i18n="feat3">Tell Maria what you speak and what you’re learning for — a trip, work or fun — and she’ll tailor every chat and quiz.</p>
+          <h3 data-i18n="feat3T">Your languages, your interests</h3>
+          <p data-i18n="feat3">Pick the language you’re learning. Mária chats about what you care about and remembers it — no fixed lessons.</p>
         </section>
       </div>
     </main>
-    <footer class="site-foot">
-      <p class="footnote" data-i18n="footnote">*Not all of them — but all the important ones.</p>
-    </footer>
   </div>
   <script>
   (() => {
     const MARIA_ENDPOINT = "https://maria-tutor.yibu-tutor.workers.dev";
 
-    const STORAGE_KEY = "yibu-settings";
-    const DEFAULTS = { correction: "light", topic: "free-chat", interruption: "when-needed" };
-    const ALLOWED = {
-      correction: ["off", "light", "strict"],
-      topic: ["free-chat", "news", "interests"],
-      interruption: ["never", "when-needed", "often"]
-    };
     const MAX_TURNS = 12;
 
     const log = document.getElementById("maria-log");
@@ -765,62 +956,55 @@
     /* ---------- Interface language (English by default) ---------- */
     const I18N = {
       en: {
+        portraitAlt: "{name}, your language tutor — a simple line drawing of a calm face",
+        themeToDark: "Switch to dark theme",
+        themeToLight: "Switch to light theme",
         title: "Yibu — language learning app",
-        tagline: "All the languages in one place*",
-        footnote: "*Not all of them — but all the important ones.",
+        tagline: "All the languages in one place",
+        subline: "Not all of them — but most of the main ones, and some more.",
         langSwitch: "Interface language",
-        heroTitle: "Speak freely and practice languages with Maria",
-        heroLede: "Yibu is a language-learning app. Talk with tutor Maria anytime — out loud or in writing — practice the languages you need, chat about the news or the topics you care about, and get gentle, clear corrections when you need them. Want to fine-tune how Maria replies? Open the tutor settings.",
-        heroCta: "Open tutor settings",
-        chatTitle: "Talk with Maria",
-        voiceOnLabel: "Reading Maria’s replies aloud (tap to turn off)",
-        voiceOffLabel: "Voice is off (tap to read Maria’s replies aloud)",
+        heroTitle: "Speak freely and practice languages with your tutor",
+        heroLede: "Yibu is a language-learning app. Talk with {name} anytime — out loud or in writing — and practice the languages you need. Chat about the things you care about, and get honest, clear corrections that fit the way you learn.",
+        chatTitle: "Talk with {name}",
+        voiceOnLabel: "Reading {name}’s replies aloud (tap to turn off)",
+        voiceOffLabel: "Voice is off (tap to read {name}’s replies aloud)",
         voiceOnTitle: "Voice on",
         voiceOffTitle: "Voice off",
-        tutorAlt: "Maria, Yibu’s friendly language-learning tutor",
-        tutorRole: "Your language tutor",
-        hear: "Hear Maria",
-        hearAria: "Hear Maria speak",
+        hear: "Listen",
+        hearAria: "Listen to {name}",
         stop: "Stop",
-        stopAria: "Stop Maria speaking",
+        stopAria: "Stop {name} speaking",
         practicing: "Practicing: {lang}",
         changeLangs: "Change my languages",
         changeLangsMsg: "I’d like to update my languages.",
         readAlong: "Read along",
-        micTap: "Tap to talk — or hold while you speak",
-        micListening: "Listening… tap again when you’re done",
-        micHolding: "Listening… let go to send",
-        micThinking: "Maria is thinking…",
-        micSpeaking: "Maria is speaking — tap the mic to interrupt",
-        micNoSpeech: "I didn’t catch that — tap the mic and try again.",
+        micListening: "Listening",
+        micThinking: "Thinking…",
+        micSpeaking: "Speaking",
         micBlocked: "Microphone access is blocked. Allow it in your browser settings, or type instead.",
-        micUnsupported: "Voice input isn’t available in this browser — you can type to Maria instead.",
+        micUnsupported: "Voice input isn’t available in this browser — you can type instead.",
         micError: "Voice input stopped. Tap the mic to try again.",
-        micAriaStart: "Start talking to Maria",
-        micAriaStop: "Stop listening and send",
-        convoMode: "Conversation mode",
-        convoHint: "After Maria answers, the mic opens again automatically",
         typeInstead: "Type instead",
         hideTyping: "Hide typing",
-        inputPlaceholder: "Write to Maria…",
-        inputAria: "Message to Maria",
+        inputPlaceholder: "Write to {name}…",
+        inputAria: "Message to {name}",
         send: "Send",
         quiz: "Quiz",
         forget: "Forget me",
-        forgetTitle: "Delete what Maria remembers about you, your languages and your saved words",
+        forgetTitle: "Delete what {name} remembers about you, your languages and your saved words",
         myWords: "My words",
-        wordsEmpty: "Useful words and phrases from your chats with Maria will appear here.",
+        wordsEmpty: "Useful words and phrases from your chats will appear here.",
         feat1T: "Talk out loud",
-        feat1: "Tap the mic and just speak — Maria answers out loud, and you can follow her words as she talks.",
-        feat2T: "Gentle corrections",
-        feat2: "From a light recast to a careful explanation, you decide how strict the corrections are.",
-        feat3T: "Your languages, your goals",
-        feat3: "Tell Maria what you speak and what you’re learning for — a trip, work or fun — and she’ll tailor every chat and quiz.",
+        feat1: "Just speak — the microphone is always on. {name} answers out loud, and you can follow the words as they are spoken.",
+        feat2T: "Honest corrections",
+        feat2: "A bit strict, never harsh: mistakes that matter get fixed, small slips wait for a pause, and {name} learns how you like to be corrected.",
+        feat3T: "Your languages, your interests",
+        feat3: "Pick the language you’re learning. {name} chats about what you care about and remembers it — no fixed lessons.",
         playReply: "Play this reply",
-        typing: "Maria is typing",
+        typing: "{name} is typing",
         failed: "Sorry, I couldn’t answer just now. Please try again in a moment.",
         limit: "I’ve really enjoyed our practice today! You’ve reached today’s message limit, so let’s continue tomorrow.",
-        opener: "Hi, I’m Maria — lovely to meet you! Before we dive in, I’d love to get to know you a little. What’s your native language, and are there any other languages you speak?",
+        opener: "Hi, I’m {name}, your language tutor — lovely to meet you! Before we dive in, I’d love to get to know you a little. What’s your native language, and are there any other languages you speak?",
         welcomeBack: "Welcome back! Shall we carry on practicing? Tell me, how’s your day going?",
         newWord: "New word saved: {term}",
         newWords: "{n} new words saved",
@@ -828,7 +1012,7 @@
         removeFail: "Couldn’t remove that word. Please try again.",
         removeAria: "Remove “{term}” from my words",
         removeTitle: "Remove",
-        quizMaking: "Maria is making a quiz for you…",
+        quizMaking: "Making a quiz for you…",
         quizProgress: "Question {i} of {n} · Score {s}",
         quizCorrect: "Correct!",
         quizWrong: "Not quite. The right answer: “{a}”",
@@ -851,67 +1035,70 @@
         quizFail: "Sorry, I couldn’t make a quiz just now. Please try again in a moment.",
         quizChip: "Take a quick quiz",
         quizTitle: "Quiz",
-        forgetConfirm: "Forget me?\n\nMaria will forget your conversations, your languages and your saved words. This can’t be undone.",
-        forgetDone: "Done — Maria has forgotten your chats, languages and words.",
-        forgetFail: "Sorry, that didn’t work. Please try again."
+        forgetConfirm: "Forget me?\n\n{name} will forget your conversations, your languages and your saved words. This can’t be undone.",
+        forgetDone: "Done — your chats, languages and words are forgotten.",
+        forgetFail: "Sorry, that didn’t work. Please try again.",
+        tutorName: "{name}",
+        micHearing: "Hearing you…",
+        micMuted: "Mic off",
+        micMuteAria: "Mute the microphone",
+        micUnmuteAria: "Turn the microphone on",
+        learning: "Learning",
+        pickMore: "More languages",
+        pickFilter: "Type to filter…",
+        pickFilterAria: "Filter languages",
+        pickNone: "No match"
       },
       hu: {
+        portraitAlt: "{name}, a nyelvtanárod — egyszerű vonalrajz egy nyugodt arcról",
+        themeToDark: "Váltás sötét témára",
+        themeToLight: "Váltás világos témára",
         title: "Yibu — nyelvtanuló alkalmazás",
-        tagline: "Minden nyelvet egy helyen*",
-        footnote: "*Nem mindet — de a legfontosabbakat igen.",
+        tagline: "Minden nyelvet egy helyen",
+        subline: "Nem mindet — de a legtöbb fontosat, és még néhányat.",
         langSwitch: "A felület nyelve",
-        heroTitle: "Beszélj bátran, és gyakorold a nyelveket Mariával",
-        heroLede: "A Yibu egy nyelvtanuló alkalmazás. Beszélgess Maria tanárnővel bármikor — hangosan vagy írásban —, gyakorold a számodra fontos nyelveket, beszélgessetek hírekről vagy a téged érdeklő témákról, és kapj kedves, világos javításokat, amikor szükséged van rájuk. Szeretnéd finomhangolni, hogyan válaszoljon Maria? Nyisd meg a tanári beállításokat.",
-        heroCta: "Tanári beállítások",
-        chatTitle: "Beszélgess Mariával",
-        voiceOnLabel: "Maria válaszait felolvassuk (koppints a kikapcsoláshoz)",
-        voiceOffLabel: "A hang ki van kapcsolva (koppints, és felolvassuk Maria válaszait)",
+        heroTitle: "Beszélj bátran, és gyakorold a nyelveket a tanároddal",
+        heroLede: "A Yibu egy nyelvtanuló alkalmazás. Beszélgess a tanároddal ({name}) bármikor — hangosan vagy írásban —, és gyakorold a számodra fontos nyelveket. Beszélgessetek azokról a témákról, amelyek érdekelnek, és kapj őszinte, világos javításokat, amelyek igazodnak ahhoz, ahogyan tanulsz.",
+        chatTitle: "Beszélgess a tanároddal ({name})",
+        voiceOnLabel: "{name} válaszait felolvassuk (koppints a kikapcsoláshoz)",
+        voiceOffLabel: "A hang ki van kapcsolva (koppints, és felolvassuk {name} válaszait)",
         voiceOnTitle: "Hang bekapcsolva",
         voiceOffTitle: "Hang kikapcsolva",
-        tutorAlt: "Maria, a Yibu barátságos nyelvtanára",
-        tutorRole: "A nyelvtanárod",
-        hear: "Meghallgatom",
-        hearAria: "Maria meghallgatása",
+        hear: "Hallgasd meg",
+        hearAria: "{name} szavainak meghallgatása",
         stop: "Leállítás",
-        stopAria: "Maria beszédének leállítása",
+        stopAria: "{name} beszédének leállítása",
         practicing: "Gyakorolt nyelv: {lang}",
         changeLangs: "Nyelveim módosítása",
         changeLangsMsg: "Szeretném módosítani a nyelveimet.",
         readAlong: "Olvasd vele",
-        micTap: "Koppints, és beszélj — vagy tartsd nyomva, amíg beszélsz",
-        micListening: "Figyelek… koppints újra, ha befejezted",
-        micHolding: "Figyelek… engedd el a küldéshez",
-        micThinking: "Maria gondolkodik…",
-        micSpeaking: "Maria beszél — koppints a mikrofonra, ha közbeszólnál",
-        micNoSpeech: "Ezt nem hallottam — koppints a mikrofonra, és próbáld újra.",
+        micListening: "Figyelek",
+        micThinking: "Gondolkodom…",
+        micSpeaking: "Beszélek",
         micBlocked: "A mikrofon le van tiltva. Engedélyezd a böngésző beállításaiban, vagy írj inkább.",
-        micUnsupported: "Ebben a böngészőben nem érhető el a hangbevitel — írásban is beszélgethetsz Mariával.",
+        micUnsupported: "Ebben a böngészőben nem érhető el a hangbevitel — írhatsz is.",
         micError: "A hangbevitel leállt. Koppints a mikrofonra, és próbáld újra.",
-        micAriaStart: "Beszélgetés indítása Mariával",
-        micAriaStop: "Hallgatás leállítása és küldés",
-        convoMode: "Beszélgetős mód",
-        convoHint: "Maria válasza után a mikrofon magától újra bekapcsol",
         typeInstead: "Inkább írok",
         hideTyping: "Írás elrejtése",
-        inputPlaceholder: "Írj Mariának…",
-        inputAria: "Üzenet Mariának",
+        inputPlaceholder: "Írj a tanárnak…",
+        inputAria: "Üzenet a tanárnak ({name})",
         send: "Küldés",
         quiz: "Kvíz",
         forget: "Felejts el",
-        forgetTitle: "Törli, amit Maria rólad, a nyelveidről és a mentett szavaidról tud",
+        forgetTitle: "Törli, amit {name} rólad, a nyelveidről és a mentett szavaidról tud",
         myWords: "Szavaim",
-        wordsEmpty: "Ide kerülnek a Mariával folytatott beszélgetéseidből a hasznos szavak és kifejezések.",
+        wordsEmpty: "Ide kerülnek a beszélgetéseidből a hasznos szavak és kifejezések.",
         feat1T: "Beszélj hangosan",
-        feat1: "Koppints a mikrofonra, és csak beszélj — Maria hangosan válaszol, a szavait pedig közben szemmel is követheted.",
-        feat2T: "Kedves javítások",
-        feat2: "A finom újrafogalmazástól az alapos magyarázatig te döntöd el, mennyire legyenek szigorúak a javítások.",
-        feat3T: "A te nyelveid, a te céljaid",
-        feat3: "Mondd el Mariának, milyen nyelveken beszélsz, és mire kell a nyelv — utazásra, munkához vagy csak kedvtelésből —, ő pedig ehhez igazít minden beszélgetést és kvízt.",
+        feat1: "Csak beszélj — a mikrofon mindig be van kapcsolva. {name} hangosan válaszol, a szavakat pedig közben szemmel is követheted.",
+        feat2T: "Őszinte javítások",
+        feat2: "Kicsit szigorú, de sosem bántó: a fontos hibákat kijavítja, az apró botlások egy szünetig várnak, és {name} megtanulja, hogyan szeretsz javítást kapni.",
+        feat3T: "A te nyelveid, az érdeklődési köröd",
+        feat3: "Válaszd ki a tanulni kívánt nyelvet. {name} arról beszélget veled, ami érdekel, és emlékszik rá — fix leckék nélkül.",
         playReply: "Válasz lejátszása",
-        typing: "Maria ír",
+        typing: "{name} ír",
         failed: "Bocsi, most nem tudtam válaszolni. Próbáld újra egy kicsit később.",
         limit: "Nagyon élveztem a mai gyakorlást! Elérted a mai üzenetkeretet, úgyhogy holnap folytassuk.",
-        opener: "Szia, Maria vagyok — nagyon örülök, hogy itt vagy! Mielőtt belevágunk, szeretnélek egy kicsit megismerni. Mi az anyanyelved, és beszélsz még más nyelveken is?",
+        opener: "Szia, {name} vagyok, a nyelvtanárod — nagyon örülök, hogy itt vagy! Mielőtt belevágunk, szeretnélek egy kicsit megismerni. Mi az anyanyelved, és beszélsz még más nyelveken is?",
         welcomeBack: "Örülök, hogy újra itt vagy! Folytassuk a gyakorlást? Mesélj, hogy telik a napod?",
         newWord: "Új szó mentve: {term}",
         newWords: "{n} új szó mentve",
@@ -919,7 +1106,7 @@
         removeFail: "Nem sikerült törölni a szót. Próbáld újra.",
         removeAria: "„{term}” törlése a szavaim közül",
         removeTitle: "Törlés",
-        quizMaking: "Maria összeállít neked egy kvízt…",
+        quizMaking: "Összeállítok neked egy kvízt…",
         quizProgress: "{i}. kérdés / {n} · Pontszám: {s}",
         quizCorrect: "Helyes!",
         quizWrong: "Nem egészen. A helyes válasz: „{a}”",
@@ -942,18 +1129,34 @@
         quizFail: "Bocsi, most nem sikerült kvízt összeállítanom. Próbáld újra egy kicsit később.",
         quizChip: "Jöhet egy gyors kvíz",
         quizTitle: "Kvíz",
-        forgetConfirm: "Biztosan törlöd az adataidat?\n\nMaria elfelejti a beszélgetéseiteket, a nyelveidet és a mentett szavaidat. Ez nem vonható vissza.",
-        forgetDone: "Kész — Maria elfelejtette a beszélgetéseidet, a nyelveidet és a szavaidat.",
-        forgetFail: "Bocsi, ez nem sikerült. Próbáld újra."
+        forgetConfirm: "Biztosan törlöd az adataidat?\n\n{name} elfelejti a beszélgetéseiteket, a nyelveidet és a mentett szavaidat. Ez nem vonható vissza.",
+        forgetDone: "Kész — a beszélgetéseid, a nyelveid és a szavaid elfelejtve.",
+        forgetFail: "Bocsi, ez nem sikerült. Próbáld újra.",
+        tutorName: "{name}",
+        micHearing: "Hallom…",
+        micMuted: "Mikrofon kikapcsolva",
+        micMuteAria: "Mikrofon némítása",
+        micUnmuteAria: "Mikrofon bekapcsolása",
+        learning: "Tanulom",
+        pickMore: "További nyelvek",
+        pickFilter: "Írj a szűréshez…",
+        pickFilterAria: "Nyelvek szűrése",
+        pickNone: "Nincs találat"
       }
     };
 
     const UI_KEY = "yibu-lang";
     let uiLang = storeGet(UI_KEY) === "hu" ? "hu" : "en";
+    /* The tutor's name: Mária by default; a learner can give her another name (kept in their profile). */
+    const DEFAULT_TUTOR = "Mária";
+    let tutorNm = DEFAULT_TUTOR;
+    const cleanTutorName = (v) => {
+      const n = typeof v === "string" ? v.replace(/\s+/g, " ").trim().slice(0, 24) : "";
+      return /^[\p{L}][\p{L} .'’-]*$/u.test(n) ? n : "";
+    };
     const t = (key, vars) => {
       let str = (I18N[uiLang] && I18N[uiLang][key]) || I18N.en[key] || key;
-      if (vars) str = str.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
-      return str;
+      return str.replace(/\{(\w+)\}/g, (m, k) => (vars && k in vars ? String(vars[k]) : k === "name" ? tutorNm : m));
     };
     const langLabel = (code) => {
       try {
@@ -988,12 +1191,21 @@
     const NEURAL_LANGS = new Set(["en", "de", "fr", "it", "ja", "ko", "ru", "tr", "vi", "zh", "hi", "bn", "id", "es", "pt", "ar"]);
     const speechTag = (code) => SPEECH_TAGS[code] || code || "en-US";
 
-    /* Learner language profile: learned by Maria in conversation, stored by the worker; cached here. */
+    /* Learner language profile: learned by the tutor in conversation, stored by the worker; cached here. */
     const PROFILE_KEY = "yibu-profile";
     let profile = null;
     try { profile = JSON.parse(storeGet(PROFILE_KEY) || "null"); } catch (err) { profile = null; }
+    tutorNm = cleanTutorName(profile && profile.tutorName) || DEFAULT_TUTOR;
+    if (tutorNm !== DEFAULT_TUTOR) applyI18n(); // a saved custom name shows from the first paint
+    let nameHook = null; // set once the voice/opener helpers exist: re-renders strings that carry the name
     const profileDone = () => !!(profile && profile.complete && profile.practice);
-    const practiceLang = () => (profileDone() ? profile.practice : uiLang);
+    /* The language the learner is learning: picked in the language picker (kept here and sent to the tutor). */
+    const PICK_KEY = "yibu-practice";
+    const SENT_KEY = "yibu-practice-sent";
+    const validLang = (c) => (typeof c === "string" && /^[a-z]{2,3}$/.test(c) ? c : "");
+    let picked = validLang(storeGet(PICK_KEY));
+    const pendingPractice = () => (picked && storeGet(SENT_KEY) !== picked ? picked : "");
+    const practiceLang = () => (profileDone() ? picked || profile.practice : uiLang);
 
     /* Anonymous learner id: a random UUID kept in this browser only (no personal data). */
     const USER_KEY = "yibu-user";
@@ -1377,19 +1589,6 @@
       window.addEventListener("pagehide", stopAll);
     }
 
-    const readSettings = () => {
-      const s = { correction: DEFAULTS.correction, topic: DEFAULTS.topic, interruption: DEFAULTS.interruption };
-      try {
-        const p = JSON.parse(storeGet(STORAGE_KEY) || "null");
-        if (p && typeof p === "object") {
-          for (const k of Object.keys(ALLOWED)) {
-            if (ALLOWED[k].includes(p[k])) s[k] = p[k];
-          }
-        }
-      } catch (err) { /* use defaults */ }
-      return { correctionLevel: s.correction, topicStyle: s.topic, interruptionFrequency: s.interruption };
-    };
-
     const addMessage = (who, text, replayable, replayLang) => {
       const el = document.createElement("div");
       el.className = `msg ${who}`;
@@ -1436,11 +1635,13 @@
     };
 
     const send = (text, viaVoice) => {
-      const payload = { message: text, history: history.slice(-MAX_TURNS), settings: readSettings(), uiLang };
+      const pp = pendingPractice();
+      const payload = { message: text, history: history.slice(-MAX_TURNS), via: viaVoice ? "voice" : "text", uiLang };
+      if (pp) payload.practice = pp;
       addMessage("user", text);
       input.value = "";
       setBusy(true);
-      setMicState("thinking");
+      refreshMic();
       const typing = showTyping();
       const failed = t("failed");
       api("POST", "/", payload).then((res) => {
@@ -1449,15 +1650,14 @@
           if (!res) {
             addMessage("maria", failed);
           } else if (res.ok && res.data && typeof res.data.reply === "string") {
+            if (pp) storeSet(SENT_KEY, pp);
             history.push({ role: "user", content: text }, { role: "assistant", content: res.data.reply });
             history = history.slice(-MAX_TURNS);
             const replyLang = typeof res.data.lang === "string" && res.data.lang ? res.data.lang : practiceLang();
             if (res.data.profile) setProfile(res.data.profile);
             addMessage("maria", res.data.reply, true, replyLang);
             lastMaria = { text: res.data.reply, lang: replyLang };
-            const again = () => { if (viaVoice && convoOn && inputMode === "voice") startListening(true); };
-            if (voiceOn && (canSpeak || canAudio)) say(res.data.reply, replyLang, again);
-            else setTimeout(again, 400);
+            if (voiceOn && (canSpeak || canAudio)) say(res.data.reply, replyLang);
             if (Array.isArray(res.data.words)) gotWords(res.data.words, res.data.vocabCount);
             if (res.data.suggestQuiz) addQuizChip();
           } else if (res.status === 429) {
@@ -1467,7 +1667,7 @@
           }
         } finally {
           setBusy(false);
-          if (!listening) setMicState(speaking ? "speaking" : "idle");
+          refreshMic();
           if (inputMode === "text") input.focus({ preventScroll: true });
         }
       });
@@ -1698,7 +1898,7 @@
       quizFrame(t("quizTitle"));
       quizBox.append(el("p", "quiz-msg", t("quizMaking")));
       quizBox.scrollIntoView({ block: "nearest", behavior: "smooth" });
-      api("POST", "/quiz", { settings: readSettings(), uiLang }).then((res) => {
+      api("POST", "/quiz", { uiLang, practice: pendingPractice() || undefined }).then((res) => {
         if (quiz !== "loading") return; // closed while loading
         if (res && res.ok && res.data && res.data.quiz && Array.isArray(res.data.quiz.items) && res.data.quiz.items.length) {
           quiz = { title: res.data.quiz.title, items: res.data.quiz.items, i: 0, score: 0 };
@@ -1733,7 +1933,9 @@
           renderWords(0);
           closeQuiz();
           stopAll();
-          stopListening(true);
+          discardHeard();
+          picked = "";
+          try { localStorage.removeItem(PICK_KEY); localStorage.removeItem(SENT_KEY); } catch (err) { /* ignore */ }
           setProfile(null);
           log.replaceChildren();
           openSession();
@@ -1754,13 +1956,117 @@
     };
     const setProfile = (p) => {
       profile = p && typeof p === "object" ? p : null;
+      const nm = cleanTutorName(profile && profile.tutorName) || DEFAULT_TUTOR;
+      if (nm !== tutorNm) { tutorNm = nm; applyI18n(); if (nameHook) nameHook(); }
       if (profile) storeSet(PROFILE_KEY, JSON.stringify(profile));
       else { try { localStorage.removeItem(PROFILE_KEY); } catch (err) { /* ignore */ } }
+      if (profileDone() && !pendingPractice() && profile.practice !== picked) {
+        picked = profile.practice; // a switch made in conversation moves the picker too
+        storeSet(PICK_KEY, picked);
+        storeSet(SENT_KEY, picked);
+      }
       renderPractice();
-      if (rec && !listening) rec = null;
+      renderPicker();
+      syncRecLang();
     };
 
-    /* Session opening: Maria greets; on a first visit she starts getting to know the learner. */
+    /* ---------- Language picker: the language being learnt (three-letter codes) ---------- */
+    const LANGS = [
+      ["ENG", "en", "English", "angol"], ["CHN", "zh", "Chinese", "kínai"], ["JPN", "ja", "Japanese", "japán"], ["KOR", "ko", "Korean", "koreai"],
+      ["HUN", "hu", "Hungarian", "magyar"], ["GER", "de", "German", "német"], ["FRA", "fr", "French", "francia"], ["SPA", "es", "Spanish", "spanyol"],
+      ["ITA", "it", "Italian", "olasz"], ["POR", "pt", "Portuguese", "portugál"], ["DUT", "nl", "Dutch", "holland"], ["POL", "pl", "Polish", "lengyel"],
+      ["CZE", "cs", "Czech", "cseh"], ["SVK", "sk", "Slovak", "szlovák"], ["ROM", "ro", "Romanian", "román"], ["CRO", "hr", "Croatian", "horvát"],
+      ["SRP", "sr", "Serbian", "szerb"], ["SLV", "sl", "Slovenian", "szlovén"], ["UKR", "uk", "Ukrainian", "ukrán"], ["RUS", "ru", "Russian", "orosz"],
+      ["GRE", "el", "Greek", "görög"], ["TUR", "tr", "Turkish", "török"], ["ARA", "ar", "Arabic", "arab"], ["HEB", "he", "Hebrew", "héber"],
+      ["HIN", "hi", "Hindi", "hindi"], ["BEN", "bn", "Bengali", "bengáli"], ["IND", "id", "Indonesian", "indonéz"], ["VIE", "vi", "Vietnamese", "vietnami"],
+      ["THA", "th", "Thai", "thai"], ["SWE", "sv", "Swedish", "svéd"], ["DAN", "da", "Danish", "dán"], ["NOR", "no", "Norwegian", "norvég"],
+      ["FIN", "fi", "Finnish", "finn"], ["EST", "et", "Estonian", "észt"], ["LAV", "lv", "Latvian", "lett"], ["LIT", "lt", "Lithuanian", "litván"],
+      ["BUL", "bg", "Bulgarian", "bolgár"], ["CAT", "ca", "Catalan", "katalán"], ["PER", "fa", "Persian", "perzsa"], ["URD", "ur", "Urdu", "urdu"],
+      ["SWA", "sw", "Swahili", "szuahéli"], ["TGL", "tl", "Tagalog", "tagalog"], ["MAY", "ms", "Malay", "maláj"], ["IRI", "ga", "Irish", "ír"],
+      ["LAT", "la", "Latin", "latin"], ["EPO", "eo", "Esperanto", "eszperantó"]
+    ];
+    const LANG_ALIASES = { zh: ["ch", "cn", "mandarin"], ja: ["jp"], ko: ["kr"], de: ["ger", "deu"], el: ["gr"], sv: ["se"], da: ["dk"], cs: ["cz"], uk: ["ua"], he: ["iw"], vi: ["vn"], fa: ["farsi"], nl: ["nld", "dutch"], hr: ["hrv"], sr: ["srb"] };
+    const QUICK_LANGS = ["en", "zh", "ja", "ko"];
+    const langByCode = new Map(LANGS.map((l) => [l[1], l]));
+    const pickerRow = document.getElementById("picker-row");
+    const pickerPanel = document.getElementById("picker-panel");
+    const pickerFilter = document.getElementById("picker-filter");
+    const pickerGrid = document.getElementById("picker-grid");
+    const pickerNone = document.getElementById("picker-none");
+    const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    const code3 = (c) => (langByCode.has(c) ? langByCode.get(c)[0] : String(c).toUpperCase());
+    const pickName = (c) => (langByCode.has(c) ? cap(langByCode.get(c)[uiLang === "hu" ? 3 : 2]) : String(c));
+    let pickerOpen = false;
+
+    const choose = (code) => {
+      picked = code;
+      storeSet(PICK_KEY, code); // not yet delivered: the next message to the tutor carries it
+      pickerOpen = false;
+      renderPicker();
+      renderPractice();
+      syncRecLang();
+    };
+    const pickBtn = (cls, code, children) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = cls;
+      b.dataset.lang = code;
+      b.setAttribute("aria-pressed", picked === code ? "true" : "false");
+      b.append(...children);
+      b.addEventListener("click", () => choose(code));
+      return b;
+    };
+    const matches = (l, q) => !q ||
+      l[0].toLowerCase().startsWith(q) || l[1].startsWith(q) || l[2].toLowerCase().includes(q) || l[3].toLowerCase().includes(q) ||
+      (LANG_ALIASES[l[1]] || []).some((a) => a.startsWith(q));
+    const renderGrid = () => {
+      const q = pickerFilter.value.trim().toLowerCase();
+      const list = LANGS.filter((l) => matches(l, q));
+      pickerGrid.replaceChildren(...list.map((l) => {
+        const li = document.createElement("li");
+        const b = document.createElement("b");
+        b.textContent = l[0];
+        const span = document.createElement("span");
+        span.textContent = pickName(l[1]);
+        li.append(pickBtn("pick-item", l[1], [b, span]));
+        return li;
+      }));
+      pickerNone.hidden = list.length > 0;
+    };
+    function renderPicker() {
+      const quick = QUICK_LANGS.slice();
+      if (picked && !quick.includes(picked)) quick.push(picked);
+      const more = document.createElement("button");
+      more.type = "button";
+      more.className = "pick pick-more";
+      more.id = "picker-more";
+      more.textContent = "…";
+      more.setAttribute("aria-expanded", pickerOpen ? "true" : "false");
+      more.setAttribute("aria-controls", "picker-panel");
+      more.setAttribute("aria-label", t("pickMore"));
+      more.title = t("pickMore");
+      more.addEventListener("click", () => {
+        pickerOpen = !pickerOpen;
+        renderPicker();
+        if (pickerOpen) pickerFilter.focus();
+      });
+      pickerRow.replaceChildren(...quick.map((c) => pickBtn("pick", c, [code3(c)])), more);
+      pickerPanel.hidden = !pickerOpen;
+      if (pickerOpen) renderGrid();
+    }
+    pickerFilter.addEventListener("input", renderGrid);
+    pickerFilter.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { pickerOpen = false; renderPicker(); document.getElementById("picker-more").focus(); }
+      else if (e.key === "Enter") {
+        e.preventDefault();
+        const q = pickerFilter.value.trim().toLowerCase();
+        const first = LANGS.find((l) => matches(l, q));
+        if (first) choose(first[1]);
+      }
+    });
+    renderPicker();
+
+    /* Session opening: the tutor greets; on a first visit she starts getting to know the learner. */
     const openerText = () => (profileDone() ? t("welcomeBack") : t("opener"));
     let openerEl = null;
     const openSession = () => {
@@ -1781,96 +2087,158 @@
       lastMaria = { text, lang: uiLang };
     };
 
-    /* ---------- Voice-first input: tap or hold the mic (Web Speech recognition) ---------- */
+    /* ---------- Voice-first input: the microphone is always on (Web Speech recognition) ---------- */
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
     const canListen = !!SR;
     const voicePanel = document.getElementById("maria-voicepanel");
     const mic = document.getElementById("maria-mic");
+    const micDot = document.getElementById("maria-mic-dot");
     const micStatus = document.getElementById("maria-mic-status");
     const micLive = document.getElementById("maria-mic-live");
-    const convoBox = document.getElementById("maria-convo");
-    const convoWrap = document.getElementById("maria-convo-wrap");
     const typeToggle = document.getElementById("maria-type-toggle");
     const INPUT_KEY = "yibu-input";
-    const CONVO_KEY = "yibu-convo";
+    const MIC_KEY = "yibu-mic";
+    const SILENCE_MS = 1400; // a turn ends after this much silence
     let inputMode = canListen && storeGet(INPUT_KEY) !== "text" ? "voice" : "text";
-    let convoOn = storeGet(CONVO_KEY) !== "off";
+    let muted = storeGet(MIC_KEY) === "off";
     let rec = null;
-    let listening = false;
-    let micState = "idle";
+    let recLang = "";
+    let recRunning = false;
+    let blocked = false;      // the learner (or the browser) denied microphone access
+    let needGesture = false;  // the browser wants one click or key press before it will listen
+    let gestured = false;
     let micNote = "";
+    let base = 0;             // results before this index belong to turns already handled
+    let lastLen = 0;
     let heard = "";
-    let recError = "";
-    let autoStarted = false;
-    let pressAt = 0;
-    let pointerStarted = false;
-    let skipClick = false;
+    let silenceTimer = null;
+    let restartTimer = null;
+    let restarts = 0;
+    let lastStart = 0;
 
-    const setMicState = (state, noteKey) => {
+    const micState = () => {
+      if (!canListen || muted || blocked || needGesture) return "off";
+      if (sending) return "thinking";
+      if (speaking) return "speaking";
+      return heard ? "hearing" : "listening";
+    };
+    const refreshMic = () => {
       if (!canListen) return;
-      micState = state;
-      micNote = noteKey || "";
-      mic.className = "mic-btn" + (state === "listening" || state === "holding" ? " listening" : state === "thinking" ? " thinking" : "");
-      mic.setAttribute("aria-pressed", state === "listening" || state === "holding" ? "true" : "false");
-      mic.setAttribute("aria-label", state === "listening" || state === "holding" ? t("micAriaStop") : t("micAriaStart"));
-      const key = noteKey || { idle: "micTap", listening: "micListening", holding: "micHolding", thinking: "micThinking", speaking: "micSpeaking" }[state];
-      micStatus.textContent = t(key);
-      document.documentElement.dataset.mariaBusy = state === "listening" || state === "holding" ? "1" : "";
+      const st = micState();
+      micDot.className = "mic-dot s-" + st;
+      mic.setAttribute("aria-pressed", muted ? "true" : "false");
+      const label = muted ? t("micUnmuteAria") : t("micMuteAria");
+      mic.setAttribute("aria-label", label);
+      mic.title = label;
+      const note = !muted && micNote && st === "off" ? micNote : "";
+      micStatus.textContent = t(note || { off: "micMuted", listening: "micListening", hearing: "micHearing", thinking: "micThinking", speaking: "micSpeaking" }[st]);
+      document.documentElement.dataset.mariaBusy = st === "hearing" || st === "thinking" ? "1" : "";
     };
-    onSpeakingChange = (on) => {
-      if (listening || sending) return;
-      setMicState(on ? "speaking" : "idle", on ? "" : micNote);
+    onSpeakingChange = () => refreshMic();
+
+    const tokens = (s) => String(s).toLowerCase().match(/[\p{L}\p{N}']+/gu) || [];
+    /* While the tutor talks, the microphone may hear her own voice: ignore text that is mostly what she is saying. */
+    const isEcho = (text) => {
+      const said = tokens(text);
+      if (!said.length) return true;
+      const ref = new Set(tokens(lastMaria.text));
+      return said.filter((w) => ref.has(w)).length / said.length >= 0.6;
     };
 
-    const startListening = (auto) => {
-      if (!canListen || listening || sending) return;
-      stopAll();
+    const discardHeard = () => {
+      clearTimeout(silenceTimer);
+      silenceTimer = null;
       heard = "";
-      recError = "";
-      autoStarted = !!auto;
       micLive.textContent = "";
+      base = lastLen;
+      refreshMic();
+    };
+    const submitTurn = () => {
+      clearTimeout(silenceTimer);
+      silenceTimer = null;
+      const text = heard.trim();
+      heard = "";
+      micLive.textContent = "";
+      base = lastLen;
+      refreshMic();
+      if (!text || sending) return;
+      if (document.activeElement === input && input.value.trim()) return; // they are typing: don't talk over it
+      send(text.slice(0, 1000), true);
+    };
+
+    const onResult = (e) => {
+      lastLen = e.results.length;
+      let fin = "", interim = "";
+      for (let i = base; i < lastLen; i++) {
+        const r = e.results[i];
+        if (r.isFinal) fin += r[0].transcript + " "; else interim += r[0].transcript;
+      }
+      const text = (fin + interim).replace(/\s+/g, " ").trim();
+      if (!text) return;
+      if (sending) { base = lastLen; return; }   // the turn is already on its way
+      if (speaking) {
+        if (isEcho(text)) { base = lastLen; return; }
+        stopAll();                                // barge-in: the learner talks over the tutor
+      }
+      heard = text;
+      micLive.textContent = text;
+      refreshMic();
+      clearTimeout(silenceTimer);
+      silenceTimer = setTimeout(submitTurn, SILENCE_MS);
+    };
+
+    const scheduleRestart = (ms) => {
+      clearTimeout(restartTimer);
+      restartTimer = setTimeout(() => startRec(), ms);
+    };
+    const startRec = () => {
+      if (!canListen || muted || blocked || recRunning) return;
       try {
-        rec = new SR();
-        rec.lang = speechTag(practiceLang());
-        rec.interimResults = true;
-        rec.continuous = false;
-        rec.maxAlternatives = 1;
-        rec.onresult = (e) => {
-          let fin = "", interim = "";
-          for (let i = 0; i < e.results.length; i++) {
-            const r = e.results[i];
-            if (r.isFinal) fin += r[0].transcript; else interim += r[0].transcript;
+        const r = new SR();
+        rec = r;
+        recLang = speechTag(practiceLang());
+        r.lang = recLang;
+        r.continuous = true;
+        r.interimResults = true;
+        r.maxAlternatives = 1;
+        base = 0;
+        lastLen = 0;
+        r.onstart = () => { if (r !== rec) return; micNote = ""; needGesture = false; refreshMic(); };
+        r.onresult = (e) => { if (r === rec) onResult(e); };
+        r.onerror = (e) => {
+          if (r !== rec) return;
+          const code = (e && e.error) || "error";
+          if (code === "not-allowed" || code === "service-not-allowed") {
+            if (!gestured) needGesture = true; else { blocked = true; micNote = "micBlocked"; }
+          } else if (code !== "no-speech" && code !== "aborted") {
+            micNote = "micError";
           }
-          if (fin) heard = fin;
-          micLive.textContent = `${fin} ${interim}`.trim();
+          refreshMic();
         };
-        rec.onerror = (e) => { recError = (e && e.error) || "error"; };
-        rec.onend = () => {
-          listening = false;
-          const text = (heard || micLive.textContent || "").trim();
-          micLive.textContent = "";
-          if (text) {
-            setMicState("idle");
-            send(text.slice(0, 1000), true);
-            return;
-          }
-          if (recError === "not-allowed" || recError === "service-not-allowed") setMicState("idle", autoStarted ? "" : "micBlocked");
-          else if (recError === "no-speech" || !recError) setMicState("idle", autoStarted ? "" : "micNoSpeech");
-          else if (recError === "aborted") setMicState("idle");
-          else setMicState("idle", "micError");
+        r.onend = () => {
+          if (r !== rec) return;
+          recRunning = false;
+          if (heard.trim()) submitTurn();
+          if (muted || blocked || needGesture) { refreshMic(); return; }
+          const quick = Date.now() - lastStart < 1200;
+          restarts = quick ? restarts + 1 : 0;
+          scheduleRestart(quick ? Math.min(6000, 300 * 2 ** restarts) : 120);
         };
-        rec.start();
-        listening = true;
-        setMicState(pointerStarted ? "holding" : "listening");
+        r.start();
+        recRunning = true;
+        lastStart = Date.now();
       } catch (err) {
-        listening = false;
-        setMicState("idle", "micError");
+        recRunning = false;
+        micNote = "micError";
+        refreshMic();
+        scheduleRestart(2000);
       }
     };
-    const stopListening = (discard) => {
-      if (!rec || !listening) return;
-      if (discard) { heard = ""; micLive.textContent = ""; }
-      try { discard ? rec.abort() : rec.stop(); } catch (err) { /* ignore */ }
+    const abortRec = () => {
+      if (rec && recRunning) { try { rec.abort(); } catch (err) { /* ignore */ } }
+    };
+    const syncRecLang = () => {
+      if (rec && recRunning && recLang !== speechTag(practiceLang())) abortRec(); // onend restarts it in the new language
     };
 
     const setInputMode = (mode, save) => {
@@ -1883,49 +2251,44 @@
 
     if (!canListen) {
       mic.hidden = true;
-      convoWrap.hidden = true;
+      micDot.hidden = true;
       typeToggle.hidden = true;
       micStatus.dataset.i18n = "micUnsupported";
       micStatus.textContent = t("micUnsupported");
       form.hidden = false;
       voicePanel.classList.add("no-mic");
     } else {
-      convoBox.checked = convoOn;
-      convoBox.addEventListener("change", () => {
-        convoOn = convoBox.checked;
-        storeSet(CONVO_KEY, convoOn ? "on" : "off");
-      });
       setInputMode(inputMode, false);
       typeToggle.addEventListener("click", () => {
         setInputMode(inputMode === "voice" ? "text" : "voice", true);
         if (inputMode === "text") input.focus();
       });
-      setMicState("idle");
-      mic.addEventListener("contextmenu", (e) => e.preventDefault());
-      mic.addEventListener("pointerdown", (e) => {
-        if (e.button && e.button !== 0) return;
-        skipClick = true;
-        primeSpeech(false);
-        if (listening) { pointerStarted = false; stopListening(false); return; }
-        if (sending) return;
-        pointerStarted = true;
-        pressAt = Date.now();
-        startListening(false);
-      });
-      const release = () => {
-        if (!pointerStarted) return;
-        pointerStarted = false;
-        if (listening && Date.now() - pressAt > 600) stopListening(false); // hold-to-talk
-        else if (listening) setMicState("listening");                     // tap-to-talk keeps listening
+      /* Some browsers only start listening (or playing audio) after one click or key press. */
+      const onGesture = () => {
+        if (!gestured) { gestured = true; primeSpeech(false); }
+        if (needGesture) { needGesture = false; restarts = 0; startRec(); refreshMic(); }
       };
-      mic.addEventListener("pointerup", release);
-      mic.addEventListener("pointercancel", release);
+      document.addEventListener("pointerdown", onGesture, true);
+      document.addEventListener("keydown", onGesture, true);
       mic.addEventListener("click", () => {
-        // Keyboard (Enter/Space) toggles; pointer presses are handled above.
-        if (skipClick) { skipClick = false; return; }
-        primeSpeech(false);
-        if (listening) stopListening(false); else startListening(false);
+        muted = !muted;
+        storeSet(MIC_KEY, muted ? "off" : "on");
+        micNote = "";
+        if (muted) {
+          clearTimeout(restartTimer);
+          discardHeard();
+          abortRec();
+        } else {
+          blocked = false;
+          needGesture = false;
+          restarts = 0;
+          startRec();
+        }
+        refreshMic();
       });
+      window.addEventListener("pagehide", () => { clearTimeout(restartTimer); abortRec(); });
+      refreshMic();
+      startRec(); // listening starts right away; the browser asks for permission once
     }
 
     changeLangsBtn.addEventListener("click", () => {
@@ -1934,13 +2297,46 @@
       send(t("changeLangsMsg"), false);
     });
 
+    /* ---------- Theme: follows the system unless the learner picks DRK / LGT ---------- */
+    const THEME_KEY = "yibu-theme";
+    const themeBtn = document.getElementById("theme-toggle");
+    const themeMeta = document.getElementById("theme-color");
+    const sysDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+    const effectiveTheme = () => {
+      const a = document.documentElement.getAttribute("data-theme");
+      return a === "dark" || a === "light" ? a : sysDark && sysDark.matches ? "dark" : "light";
+    };
+    const refreshTheme = () => {
+      const dark = effectiveTheme() === "dark";
+      themeBtn.textContent = dark ? "LGT" : "DRK";
+      const label = t(dark ? "themeToLight" : "themeToDark");
+      themeBtn.setAttribute("aria-label", label);
+      themeBtn.title = label;
+      themeBtn.dataset.i18nAttr = "aria-label:" + (dark ? "themeToLight" : "themeToDark") + ";title:" + (dark ? "themeToLight" : "themeToDark");
+      if (themeMeta) themeMeta.setAttribute("content", dark ? "#0e0e0e" : "#ffffff");
+    };
+    themeBtn.addEventListener("click", () => {
+      const next = effectiveTheme() === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      storeSet(THEME_KEY, next);
+      refreshTheme();
+    });
+    if (sysDark) {
+      const onSys = () => refreshTheme();
+      if (sysDark.addEventListener) sysDark.addEventListener("change", onSys);
+      else if (sysDark.addListener) sysDark.addListener(onSys);
+    }
+    refreshTheme();
+
     /* ---------- Interface language switch ---------- */
     const setUiLang = (lang) => {
       if (lang === uiLang || !I18N[lang]) return;
       uiLang = lang;
       storeSet(UI_KEY, lang);
       applyI18n();
-      if (canListen) { setInputMode(inputMode, false); if (!listening) setMicState(sending ? "thinking" : speaking ? "speaking" : "idle", micNote); }
+      if (canListen) { setInputMode(inputMode, false); refreshMic(); syncRecLang(); }
+      renderPicker();
+      refreshTheme();
       setVoiceOn(voiceOn, false);
       setHearState(speaking);
       renderPractice();
@@ -1950,14 +2346,15 @@
     document.querySelectorAll("#ui-lang-switch [data-ui-lang]").forEach((b) => {
       b.addEventListener("click", () => setUiLang(b.dataset.uiLang));
     });
+    nameHook = () => { refreshTheme(); setVoiceOn(voiceOn, false); setHearState(speaking); refreshOpener(); };
 
     if (!MARIA_ENDPOINT) {
-      addMessage("maria", "Hi, I’m Maria! I’m getting ready — coming soon. Come back soon to practice English with me.");
+      addMessage("maria", "Hi! I’m Mária — I’m getting ready, coming soon. Come back soon to practice with me.");
       input.disabled = true;
       sendBtn.disabled = true;
       quizBtn.disabled = true;
       forgetBtn.disabled = true;
-      input.placeholder = "Maria is getting ready — coming soon";
+      input.placeholder = "Mária is getting ready — coming soon";
       return;
     }
 
@@ -1977,7 +2374,7 @@
       const text = input.value.trim();
       if (!text || sending) return;
       stopAll();
-      stopListening(true);
+      discardHeard();
       primeSpeech(false);
       send(text, false);
     });
@@ -2005,7 +2402,7 @@
       });
     };
 
-    const imageChanged = () => fetch("yibu-tutor-book.png", { method: "HEAD", cache: "no-store" }).then((r) => {
+    const imageChanged = () => fetch("maria-portrait.svg", { method: "HEAD", cache: "no-store" }).then((r) => {
       if (!r.ok) throw new Error(r.status);
       const tag = tagOf(r);
       if (!tag) return false;
