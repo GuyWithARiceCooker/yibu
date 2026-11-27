@@ -602,6 +602,13 @@
     }
 
     .voice-wrap { position: relative; -webkit-flex-shrink: 0; flex-shrink: 0;}
+    .tts-voice { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-align: center; -webkit-align-items: center; align-items: center; -webkit-flex-shrink: 0; flex-shrink: 0; margin: 0;}
+    .tts-voice[hidden] { display: none;}
+    .tts-voice-label { margin-right: 8px; font: 700 11px/1.3 Menlo, "Courier New", Courier, monospace; font: 700 11px/1.3 var(--mono); letter-spacing: 0.07em; text-transform: uppercase; color: #666666; color: var(--muted);}
+    .tts-voice select { min-height: 40px; padding: 6px 8px; border: 1px solid #141414; border: 1px solid var(--ink); border-radius: 0; background: #ffffff; background: var(--bg); font: 700 13px/1 Menlo, "Courier New", Courier, monospace; font: 700 13px/1 var(--mono); color: #141414; color: var(--ink);}
+    :root[data-theme="dark"] .tts-voice-label { color: #9c9c96;}
+    :root[data-theme="dark"] .tts-voice select { border-color: #edede8; background: #0e0e0e; color: #edede8;}
+    :root[data-theme="grey"] .tts-voice select { border-color: #4a4a48; background: #fafaf8; color: #4a4a48;}
 
     .vol-pop {
       display: none;
@@ -1643,6 +1650,7 @@
 
       <section class="card chat-card" aria-label="Talk with your tutor" data-i18n-attr="aria-label:chatTitle" id="maria-chat">
         <div class="chat-head">
+          <label class="tts-voice" id="maria-tts-voice-wrap" hidden><span class="tts-voice-label" data-i18n="ttsVoice">Voice</span><select id="maria-tts-voice" aria-label="Tutor voice" title="Tutor voice" data-i18n-attr="aria-label:ttsVoiceAria;title:ttsVoiceAria"></select></label>
           <div class="voice-wrap">
             <button class="voice-toggle" id="maria-voice" type="button" aria-pressed="true" aria-label="Read the tutor’s replies aloud" title="Tap: voice on/off · Hold: volume">
               <svg class="on-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
@@ -1935,6 +1943,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       voiceOffTitle: "Voice off",
       volHint: "Tap: voice on/off · Hold: volume",
       volAria: "Tutor volume",
+      ttsVoice: "Voice",
+      ttsVoiceAria: "Tutor voice",
       hear: "Listen",
       hearAria: "Listen to the tutor",
       hearAriaNamed: "Listen to {name}",
@@ -2071,6 +2081,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       voiceOffTitle: "Hang kikapcsolva",
       volHint: "Koppintás: hang be/ki · Nyomva tartva: hangerő",
       volAria: "Tanár hangereje",
+      ttsVoice: "Hang",
+      ttsVoiceAria: "A tanár hangja",
       hear: "Hallgasd meg",
       hearAria: "A tanár szavainak meghallgatása",
       hearAriaNamed: "{name} szavainak meghallgatása",
@@ -2206,6 +2218,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       voiceOffTitle: "语音已关闭",
       volHint: "点按：开关语音 · 长按：音量",
       volAria: "老师音量",
+      ttsVoice: "声音",
+      ttsVoiceAria: "老师的声音",
       hear: "听一听",
       hearAria: "听老师说",
       hearAriaNamed: "听{name}说",
@@ -2462,6 +2476,17 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     };
   };
   var VOICE_KEY = "yibu-voice";
+  // Tutor voice for the server read-aloud (/tts). Names are xAI's built-in TTS voices
+  // (GET /v1/tts/voices in the xAI docs); the worker has no voices endpoint, so the list is static.
+  // The chosen id is sent as "voice"; the browser speechSynthesis fallback ignores it.
+  var TTS_VOICE_KEY = "yibu-tts-voice";
+  var TTS_VOICES = ["ara", "eve", "leo", "rex", "sal", "altair", "atlas", "carina", "castor", "celeste", "cosmo", "helios", "helix", "iris", "kepler", "lumen", "luna", "lux", "naksh", "orion", "perseus", "rigel", "sirius", "ursa", "zagan", "zenith"];
+  var TTS_VOICE_DEFAULT = "ara";
+  var validTtsVoice = function validTtsVoice(v) {
+    v = String(v || "").toLowerCase();
+    return TTS_VOICES.indexOf(v) >= 0 ? v : "";
+  };
+  var ttsVoice = validTtsVoice(storeGet(TTS_VOICE_KEY)) || TTS_VOICE_DEFAULT;
   var speakLang = "en";
   var speakDone = null;
   var onSpeakingChange = null;
@@ -2869,7 +2894,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     }
   };
   var fetchAudio = function fetchAudio(text, lang) {
-    var cacheKey = "".concat(lang, "|").concat(text);
+    var voice = ttsVoice;
+    var cacheKey = "".concat(voice, "|").concat(lang, "|").concat(text);
     if (audioCache.has(cacheKey)) return Promise.resolve(audioCache.get(cacheKey));
     var ctrl = new AbortController();
     activeAbort = ctrl;
@@ -2882,7 +2908,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       body: JSON.stringify({
         text: text,
         language: lang,
-        timestamps: true
+        timestamps: true,
+        voice: voice
       }),
       signal: ctrl.signal
     }).then(function (r) {
@@ -3301,6 +3328,24 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     renderVol();
     refreshVolUI = renderVol;
   };
+  var ttsVoiceWrap = document.getElementById("maria-tts-voice-wrap");
+  var ttsVoiceSel = document.getElementById("maria-tts-voice");
+  if (ttsVoiceWrap && ttsVoiceSel && canAudio) {
+    for (var vi = 0; vi < TTS_VOICES.length; vi++) {
+      var vopt = document.createElement("option");
+      vopt.value = TTS_VOICES[vi];
+      vopt.textContent = TTS_VOICES[vi].charAt(0).toUpperCase() + TTS_VOICES[vi].slice(1);
+      ttsVoiceSel.appendChild(vopt);
+    }
+    ttsVoiceSel.value = ttsVoice;
+    ttsVoiceWrap.hidden = false;
+    ttsVoiceSel.addEventListener("change", function () {
+      var v = validTtsVoice(ttsVoiceSel.value);
+      if (!v) return;
+      ttsVoice = v;
+      storeSet(TTS_VOICE_KEY, v);
+    });
+  }
   var setVoiceOn = function setVoiceOn(on, save) {
     voiceOn = on;
     voiceBtn.setAttribute("aria-pressed", on ? "true" : "false");
