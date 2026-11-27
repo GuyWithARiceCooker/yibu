@@ -1678,6 +1678,7 @@
           <p class="mic-live" id="maria-mic-live"></p>
           <div class="voice-opts">
             <button class="link-btn" id="maria-type-toggle" type="button" aria-expanded="false" aria-controls="maria-form">Type instead</button>
+            <button class="link-btn" id="maria-rec-lang" type="button" hidden></button>
           </div>
         </div>
         <div class="dlg-active" id="maria-dlg-active" hidden role="status">
@@ -1953,6 +1954,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       micError: "Voice input stopped. Tap the mic to try again.",
       typeInstead: "Type instead",
       hideTyping: "Hide typing",
+      recLangBtn: "Mic: {lang}",
+      recLangAria: "Speech recognition language: {lang}. Tap to switch to {next}.",
       inputPlaceholder: "Write to your tutor…",
       inputPlaceholderNamed: "Write to {name}…",
       inputAria: "Message to your tutor",
@@ -2089,6 +2092,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       micError: "A hangbevitel leállt. Koppints a mikrofonra, és próbáld újra.",
       typeInstead: "Inkább írok",
       hideTyping: "Írás elrejtése",
+      recLangBtn: "Mikrofon: {lang}",
+      recLangAria: "Beszédfelismerés nyelve: {lang}. Koppints, és átvált erre: {next}.",
       inputPlaceholder: "Írj a tanárnak…",
       inputAria: "Üzenet a tanárnak",
       inputAriaNamed: "Üzenet a tanárnak ({name})",
@@ -2224,6 +2229,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       micError: "语音输入已停止。点按麦克风再试一次。",
       typeInstead: "改为打字",
       hideTyping: "收起输入框",
+      recLangBtn: "麦克风：{lang}",
+      recLangAria: "语音识别语言：{lang}。点按切换为{next}。",
       inputPlaceholder: "给老师写点什么…",
       inputPlaceholderNamed: "给{name}写点什么…",
       inputAria: "发给老师的消息",
@@ -4107,6 +4114,47 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
   var restartTimer = null;
   var restarts = 0;
   var lastStart = 0;
+  // Web Speech recognition takes one language per session, so the learner can flip
+  // the mic between the practice language and their own (e.g. English / Hungarian).
+  var REC_KEY = "yibu-rec-lang";
+  var recPick = validLang(storeGet(REC_KEY));
+  var recLangBtn = document.getElementById("maria-rec-lang");
+  var recPair = function recPair() {
+    var main = practiceLang();
+    var other = uiLang !== main ? uiLang : main === "hu" ? "en" : "hu";
+    return [main, other];
+  };
+  var recCode = function recCode() {
+    var pair = recPair();
+    return recPick && pair.indexOf(recPick) >= 0 ? recPick : pair[0];
+  };
+  var recNext = function recNext() {
+    var pair = recPair();
+    return recCode() === pair[0] ? pair[1] : pair[0];
+  };
+  var refreshRecLang = function refreshRecLang() {
+    if (!recLangBtn) return;
+    var cur = recCode();
+    recLangBtn.hidden = false;
+    recLangBtn.textContent = t("recLangBtn", {
+      lang: code3(cur)
+    });
+    var label = t("recLangAria", {
+      lang: langLabel(cur),
+      next: langLabel(recNext())
+    });
+    recLangBtn.setAttribute("aria-label", label);
+    recLangBtn.title = label;
+  };
+  // Pick the alternative the recognizer is most confident about (falls back to the first).
+  var bestAlt = function bestAlt(r) {
+    var best = r[0];
+    for (var j = 1; j < r.length; j++) {
+      var a = r[j];
+      if (a && a.transcript && typeof a.confidence === "number" && best && a.confidence > (best.confidence || 0) + 0.05) best = a;
+    }
+    return best ? best.transcript : "";
+  };
   var micState = function micState() {
     if (!canListen || muted || blocked || needGesture) return "off";
     if (sending) return "thinking";
@@ -4130,6 +4178,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       speaking: "micSpeaking"
     }[st]);
     document.documentElement.dataset.mariaBusy = st === "hearing" || st === "thinking" ? "1" : "";
+    refreshRecLang();
   };
   onSpeakingChange = function onSpeakingChange() {
     return refreshMic();
@@ -4171,7 +4220,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       interim = "";
     for (var i = base; i < lastLen; i++) {
       var r = e.results[i];
-      if (r.isFinal) fin += r[0].transcript + " ";else interim += r[0].transcript;
+      if (r.isFinal) fin += bestAlt(r) + " ";else interim += bestAlt(r);
     }
     var text = (fin + interim).replace(/\s+/g, " ").trim();
     if (!text) return;
@@ -4190,7 +4239,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     micLive.textContent = text;
     refreshMic();
     clearTimeout(silenceTimer);
-    silenceTimer = setTimeout(submitTurn, SILENCE_MS);
+    // Still-interim words are often revised when the final result arrives, so give it a moment.
+    silenceTimer = setTimeout(submitTurn, interim.trim() ? SILENCE_MS + 900 : SILENCE_MS);
   };
   var scheduleRestart = function scheduleRestart(ms) {
     clearTimeout(restartTimer);
@@ -4203,11 +4253,11 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     try {
       var r = new SR();
       rec = r;
-      recLang = speechTag(practiceLang());
+      recLang = speechTag(recCode());
       r.lang = recLang;
       r.continuous = true;
       r.interimResults = true;
-      r.maxAlternatives = 1;
+      r.maxAlternatives = 3;
       base = 0;
       lastLen = 0;
       r.onstart = function () {
@@ -4262,7 +4312,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     }
   };
   var syncRecLang = function syncRecLang() {
-    if (rec && recRunning && recLang !== speechTag(practiceLang())) abortRec();
+    if (rec && recRunning && recLang !== speechTag(recCode())) abortRec();
   };
   var setInputMode = function setInputMode(mode, save) {
     inputMode = mode;
@@ -4313,6 +4363,13 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
         restarts = 0;
         startRec();
       }
+      refreshMic();
+    });
+    recLangBtn.addEventListener("click", function () {
+      recPick = recNext();
+      storeSet(REC_KEY, recPick);
+      discardHeard();
+      syncRecLang();
       refreshMic();
     });
     window.addEventListener("pagehide", function () {
