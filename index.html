@@ -120,25 +120,40 @@
 
     @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 
-    /* ---------- header ---------- */
+    /* ---------- top row (in the main column; not a sticky/full-width header band) ---------- */
     .app { flex: 1; display: flex; flex-direction: column;}
 
-    header {
-      position: -webkit-sticky;
-      position: sticky;
-      top: 0;
-      z-index: 5;
+    /* Overhang: 24px each side on viewports ≥ 720px; 0 on phones. Change this one value here. */
+    .top-row {
+      display: -webkit-box;
+      display: -webkit-flex;
       display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
       align-items: center;
-      gap: 24px;
-      height: 72px;
-      padding: 0 clamp(18px, 4vw, 48px);
-      padding-left: max(clamp(18px, 4vw, 48px), env(safe-area-inset-left));
-      padding-right: max(clamp(18px, 4vw, 48px), env(safe-area-inset-right));
-      background: rgba(255, 255, 255, 0.92);
-      background: var(--bg-glass);
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);}
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+      gap: 12px 16px;
+      margin-left: 0;
+      margin-right: 0;}
+    @media (min-width: 720px) {
+      .top-row { margin-left: -24px; margin-right: -24px;}
+    }
+
+    .top-row-tools {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      gap: 8px 12px;
+      margin-left: auto;}
 
     .mark {
       margin: 0;
@@ -148,36 +163,114 @@
       line-height: 1;
       white-space: nowrap;}
 
-    .mark .dot { color: #d2381b; color: var(--accent);}
+    .mark .dot { color: #d2381b; color: #d2381b; color: var(--accent);}
 
     .cn-name {
       margin-left: 10px;
+      font-family: "PingFang SC", "Hiragino Sans GB W6", "Hiragino Sans GB", "STHeiti SC", "Heiti SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
       font-family: "PingFang SC", "Hiragino Sans GB W6", "Hiragino Sans GB", "STHeiti SC", "Heiti SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
       font-family: var(--cjk);
       font-size: 16px;
       font-weight: 700;
       letter-spacing: 0;
       color: #6f6f6a;
+      color: #6f6f6a;
       color: var(--muted);}
 
-    .lang-switch { display: flex; gap: 4px; margin-left: auto;}
+    .lang-switch { display: -webkit-box; display: -webkit-flex; display: flex; gap: 4px;}
+
+    .lang-switch-langs {
+      display: -webkit-box;
+      display: -webkit-inline-flex;
+      display: inline-flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+      gap: 4px;}
+
+    .lang-switch-dots {
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: inline-flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0 4px;
+      border: 0;
+      background: transparent;
+      color: #6f6f6a;
+      color: #6f6f6a;
+      color: var(--muted);
+      min-height: 38px;
+      line-height: 0;
+      cursor: pointer;
+      -webkit-flex: none;
+      flex: none;}
+
+    .lang-switch-dots svg { display: block; width: 14px; height: 14px;}
+
+    :root[data-theme="dark"] .lang-switch-dots {
+      color: #9a9a94;
+      background: transparent;}
+
+    @media (max-width: 360px) {
+      .lang-switch button,
+      .theme-toggle {
+        min-width: 46px;
+        padding: 7px 5px;}
+      .lang-switch-dots { padding: 0 2px;}
+    }
+
 
     .lang-switch button {
       min-width: 52px;
       min-height: 38px;
       padding: 7px 8px;
       border: 1px solid transparent;
-      background: none;
+      background: #ffffff;
+      background: #ffffff;
+      background: var(--bg);
+      font: 700 13px/1 Menlo, "Courier New", Courier, monospace;
       font: 700 13px/1 Menlo, "Courier New", Courier, monospace;
       font: 700 13px/1 var(--mono);
       letter-spacing: 0.07em;
       text-transform: uppercase;
       color: #6f6f6a;
+      color: #6f6f6a;
       color: var(--muted);}
 
-    .lang-switch button:hover { color: #141414; color: var(--ink); border-color: #141414; border-color: var(--ink);}
+    .lang-switch button:hover,
+    .lang-switch button:focus,
+    .lang-switch button:active {
+      color: #141414;
+      color: #141414;
+      color: var(--ink);
+      border-color: #141414;
+      border-color: #141414;
+      border-color: var(--ink);
+      background: #ffffff;
+      background: #ffffff;
+      background: var(--bg);}
 
-    .lang-switch button[aria-pressed="true"] { background: #141414; background: var(--ink); border-color: #141414; border-color: var(--ink); color: #ffffff; color: var(--bg);}
+    .lang-switch button[aria-pressed="true"],
+    .lang-switch button[aria-pressed="true"]:hover,
+    .lang-switch button[aria-pressed="true"]:focus,
+    .lang-switch button[aria-pressed="true"]:active {
+      background: #141414;
+      background: #141414;
+      background: var(--ink);
+      border-color: #141414;
+      border-color: #141414;
+      border-color: var(--ink);
+      color: #ffffff;
+      color: #ffffff;
+      color: var(--bg);}
 
     .theme-toggle {
       min-width: 52px;
@@ -185,16 +278,90 @@
       margin-left: 4px;
       padding: 7px 8px;
       border: 1px solid #141414;
+      border: 1px solid #141414;
       border: 1px solid var(--ink);
-      background: none;
+      background: #ffffff;
+      background: #ffffff;
+      background: var(--bg);
+      font: 700 13px/1 Menlo, "Courier New", Courier, monospace;
       font: 700 13px/1 Menlo, "Courier New", Courier, monospace;
       font: 700 13px/1 var(--mono);
       letter-spacing: 0.07em;
       text-transform: uppercase;
       color: #141414;
+      color: #141414;
       color: var(--ink);}
 
-    .theme-toggle:hover { background: #141414; background: var(--ink); color: #ffffff; color: var(--bg);}
+    .theme-toggle:hover,
+    .theme-toggle:focus,
+    .theme-toggle:active,
+    .theme-toggle[aria-pressed="true"] {
+      background: #141414;
+      background: #141414;
+      background: var(--ink);
+      color: #ffffff;
+      color: #ffffff;
+      color: var(--bg);
+      border-color: #141414;
+      border-color: #141414;
+      border-color: var(--ink);}
+
+    /* Dark theme: explicit static colours (Safari 9 has no CSS variables). */
+    :root[data-theme="dark"] .lang-switch button {
+      background: #0e0e0e;
+      color: #9a9a94;
+      border-color: transparent;}
+    :root[data-theme="dark"] .lang-switch button:hover,
+    :root[data-theme="dark"] .lang-switch button:focus,
+    :root[data-theme="dark"] .lang-switch button:active {
+      color: #edede8;
+      border-color: #edede8;
+      background: #0e0e0e;}
+    :root[data-theme="dark"] .lang-switch button[aria-pressed="true"],
+    :root[data-theme="dark"] .lang-switch button[aria-pressed="true"]:hover,
+    :root[data-theme="dark"] .lang-switch button[aria-pressed="true"]:focus,
+    :root[data-theme="dark"] .lang-switch button[aria-pressed="true"]:active {
+      background: #edede8;
+      border-color: #edede8;
+      color: #0e0e0e;}
+    :root[data-theme="dark"] .theme-toggle {
+      background: #0e0e0e;
+      color: #edede8;
+      border-color: #edede8;}
+    :root[data-theme="dark"] .theme-toggle:hover,
+    :root[data-theme="dark"] .theme-toggle:focus,
+    :root[data-theme="dark"] .theme-toggle:active,
+    :root[data-theme="dark"] .theme-toggle[aria-pressed="true"] {
+      background: #edede8;
+      color: #0e0e0e;
+      border-color: #edede8;}
+
+    /* Hover only when the device can hover, so a touch tap cannot leave a stuck inverted state. */
+    @media (hover: none) {
+      .lang-switch button:hover {
+        color: #6f6f6a; color: #6f6f6a; color: var(--muted);
+        border-color: transparent;
+        background: #ffffff; background: #ffffff; background: var(--bg);}
+      .lang-switch button[aria-pressed="true"]:hover {
+        background: #141414; background: #141414; background: var(--ink);
+        border-color: #141414; border-color: #141414; border-color: var(--ink);
+        color: #ffffff; color: #ffffff; color: var(--bg);}
+      .theme-toggle:hover {
+        background: #ffffff; background: #ffffff; background: var(--bg);
+        color: #141414; color: #141414; color: var(--ink);
+        border-color: #141414; border-color: #141414; border-color: var(--ink);}
+      .theme-toggle[aria-pressed="true"]:hover {
+        background: #141414; background: #141414; background: var(--ink);
+        color: #ffffff; color: #ffffff; color: var(--bg);}
+      :root[data-theme="dark"] .lang-switch button:hover {
+        color: #9a9a94; border-color: transparent; background: #0e0e0e;}
+      :root[data-theme="dark"] .lang-switch button[aria-pressed="true"]:hover {
+        background: #edede8; border-color: #edede8; color: #0e0e0e;}
+      :root[data-theme="dark"] .theme-toggle:hover {
+        background: #0e0e0e; color: #edede8; border-color: #edede8;}
+      :root[data-theme="dark"] .theme-toggle[aria-pressed="true"]:hover {
+        background: #edede8; color: #0e0e0e; border-color: #edede8;}
+    }
 
     /* ---------- layout ---------- */
     main {
@@ -318,6 +485,111 @@
     .voice-toggle[aria-pressed="false"] .on-icon { display: none;}
 
     .voice-toggle[aria-pressed="false"] .off-icon { display: block;}
+
+    /* Speaker icon: explicit colours for every state and both themes (Safari 9: no CSS variables, no stuck-hover surprises). */
+    .voice-toggle { color: #141414; color: #141414; color: var(--ink);}
+    .voice-toggle svg { stroke: #141414; stroke: currentColor;}
+    .voice-toggle:hover,
+    .voice-toggle:focus,
+    .voice-toggle:active { background: #141414; background: #141414; background: var(--ink); color: #ffffff; color: #ffffff; color: var(--bg);}
+    .voice-toggle[aria-pressed="false"],
+    .voice-toggle[aria-pressed="false"]:hover,
+    .voice-toggle[aria-pressed="false"]:focus,
+    .voice-toggle[aria-pressed="false"]:active { background: #ffffff; background: #ffffff; background: var(--bg); border-color: #e0e0e0; border-color: #e0e0e0; border-color: var(--line); color: #666666; color: #666666; color: var(--muted);}
+    :root[data-theme="dark"] .voice-toggle { background: #0e0e0e; color: #edede8; border-color: #edede8;}
+    :root[data-theme="dark"] .voice-toggle:hover,
+    :root[data-theme="dark"] .voice-toggle:focus,
+    :root[data-theme="dark"] .voice-toggle:active { background: #edede8; color: #0e0e0e; border-color: #edede8;}
+    :root[data-theme="dark"] .voice-toggle[aria-pressed="false"],
+    :root[data-theme="dark"] .voice-toggle[aria-pressed="false"]:hover,
+    :root[data-theme="dark"] .voice-toggle[aria-pressed="false"]:focus,
+    :root[data-theme="dark"] .voice-toggle[aria-pressed="false"]:active { background: #0e0e0e; color: #9c9c96; border-color: #2e2e2b;}
+    @media (hover: none) {
+      .voice-toggle:hover { background: #ffffff; background: #ffffff; background: var(--bg); color: #141414; color: #141414; color: var(--ink);}
+      :root[data-theme="dark"] .voice-toggle:hover { background: #0e0e0e; color: #edede8;}
+    }
+
+    .voice-wrap { position: relative; -webkit-flex-shrink: 0; flex-shrink: 0;}
+
+    .vol-pop {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 7;
+      margin-top: 6px;
+      padding: 10px 10px 12px;
+      border: 1.5px solid #141414;
+      border: 1.5px solid #141414;
+      border: 1.5px solid var(--ink);
+      background: #ffffff;
+      background: #ffffff;
+      background: var(--bg);
+      color: #141414;
+      color: #141414;
+      color: var(--ink);}
+    .vol-pop.on { display: block;}
+
+    .vol-readout {
+      margin: 0 0 8px;
+      font: 700 11px/1 Menlo, "Courier New", Courier, monospace;
+      font: 700 11px/1 Menlo, "Courier New", Courier, monospace;
+      font: 700 11px/1 var(--mono);
+      letter-spacing: 0.06em;
+      text-align: center;}
+
+    .vol-slider {
+      position: relative;
+      width: 18px;
+      height: 96px;
+      margin: 0 auto;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: none;}
+    .vol-track {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      margin-left: -2px;
+      background: #e0e0e0;
+      background: #e6e6e1;
+      background: var(--line);}
+    .vol-fill {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 4px;
+      margin-left: -2px;
+      height: 100%;
+      background: #141414;
+      background: #141414;
+      background: var(--ink);}
+    .vol-thumb {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 12px;
+      height: 12px;
+      margin-left: -6px;
+      margin-top: -6px;
+      border: 1.5px solid #141414;
+      border: 1.5px solid #141414;
+      border: 1.5px solid var(--ink);
+      background: #ffffff;
+      background: #ffffff;
+      background: var(--bg);}
+    :root[data-theme="dark"] .vol-pop {
+      border-color: #edede8;
+      background: #0e0e0e;
+      color: #edede8;}
+    :root[data-theme="dark"] .vol-track { background: #2e2e2b;}
+    :root[data-theme="dark"] .vol-fill { background: #edede8;}
+    :root[data-theme="dark"] .vol-thumb {
+      border-color: #edede8;
+      background: #0e0e0e;}
 
     .maria-profile { display: flex; align-items: center; gap: 16px; margin-bottom: 14px;}
 
@@ -674,19 +946,42 @@
     .word-remove:hover { background: #141414; background: var(--ink); color: #ffffff; color: var(--bg);}
 
     /* ---------- language picker ---------- */
-    .picker { margin-top: 26px;}
+    .picker { margin-top: 0; position: relative;}
 
-    .picker .label { margin: 0 0 8px;}
+    .picker .label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;}
 
-    .picker-row { display: flex; flex-wrap: wrap; gap: 8px;}
+    .picker-row { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap; gap: 8px;}
+
+    .top-row .picker-panel {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 6;
+      width: 320px;
+      max-width: 100%;
+      background: #ffffff;
+      background: #ffffff;
+      background: var(--bg);}
 
     .pick, .pick-item {
       border: 1px solid #141414;
+      border: 1px solid #141414;
       border: 1px solid var(--ink);
+      background: #ffffff;
       background: #ffffff;
       background: var(--bg);
       color: #141414;
+      color: #141414;
       color: var(--ink);
+      font: 700 13px/1 Menlo, "Courier New", Courier, monospace;
       font: 700 13px/1 Menlo, "Courier New", Courier, monospace;
       font: 700 13px/1 var(--mono);
       letter-spacing: 0.08em;
@@ -697,11 +992,57 @@
 
     .pick-more { padding: 0 16px; font-size: 18px; letter-spacing: 0;}
 
-    .pick:hover, .pick-item:hover { background: #141414; background: var(--ink); color: #ffffff; color: var(--bg);}
+    .pick:hover, .pick-item:hover,
+    .pick:focus, .pick-item:focus,
+    .pick:active, .pick-item:active,
+    .pick[aria-pressed="true"], .pick-item[aria-pressed="true"],
+    .pick-more[aria-expanded="true"] {
+      background: #141414;
+      background: #141414;
+      background: var(--ink);
+      color: #ffffff;
+      color: #ffffff;
+      color: var(--bg);
+      border-color: #141414;
+      border-color: #141414;
+      border-color: var(--ink);}
 
-    .pick[aria-pressed="true"], .pick-item[aria-pressed="true"] { background: #141414; background: var(--ink); color: #ffffff; color: var(--bg);}
+    :root[data-theme="dark"] .pick,
+    :root[data-theme="dark"] .pick-item {
+      border-color: #edede8;
+      background: #0e0e0e;
+      color: #edede8;}
+    :root[data-theme="dark"] .pick:hover,
+    :root[data-theme="dark"] .pick-item:hover,
+    :root[data-theme="dark"] .pick:focus,
+    :root[data-theme="dark"] .pick-item:focus,
+    :root[data-theme="dark"] .pick:active,
+    :root[data-theme="dark"] .pick-item:active,
+    :root[data-theme="dark"] .pick[aria-pressed="true"],
+    :root[data-theme="dark"] .pick-item[aria-pressed="true"],
+    :root[data-theme="dark"] .pick-more[aria-expanded="true"] {
+      background: #edede8;
+      color: #0e0e0e;
+      border-color: #edede8;}
 
-    .pick-more[aria-expanded="true"] { background: #141414; background: var(--ink); color: #ffffff; color: var(--bg);}
+    @media (hover: none) {
+      .pick:hover, .pick-item:hover {
+        background: #ffffff; background: #ffffff; background: var(--bg);
+        color: #141414; color: #141414; color: var(--ink);
+        border-color: #141414; border-color: #141414; border-color: var(--ink);}
+      .pick[aria-pressed="true"]:hover, .pick-item[aria-pressed="true"]:hover,
+      .pick-more[aria-expanded="true"]:hover {
+        background: #141414; background: #141414; background: var(--ink);
+        color: #ffffff; color: #ffffff; color: var(--bg);
+        border-color: #141414; border-color: #141414; border-color: var(--ink);}
+      :root[data-theme="dark"] .pick:hover,
+      :root[data-theme="dark"] .pick-item:hover {
+        background: #0e0e0e; color: #edede8; border-color: #edede8;}
+      :root[data-theme="dark"] .pick[aria-pressed="true"]:hover,
+      :root[data-theme="dark"] .pick-item[aria-pressed="true"]:hover,
+      :root[data-theme="dark"] .pick-more[aria-expanded="true"]:hover {
+        background: #edede8; color: #0e0e0e; border-color: #edede8;}
+    }
 
     .picker-panel { margin-top: 12px; padding: 14px; border: 1px solid #141414; border: 1px solid var(--ink); animation: enter 0.25s;}
 
@@ -862,8 +1203,8 @@
 
 
     @media (max-width: 560px) {
-      header { gap: 14px;}
       main { gap: 32px;}
+      .top-row { gap: 10px 12px;}
       .msg { max-width: 92%;}
     }
 
@@ -876,14 +1217,18 @@
     :root[data-theme="dark"] body { background: #0e0e0e; color: #edede8; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; }
     :root[data-theme="dark"] button:focus-visible, :root[data-theme="dark"] input:focus-visible, :root[data-theme="dark"] a:focus-visible, :root[data-theme="dark"] summary:focus-visible, :root[data-theme="dark"] .switch input:focus-visible { outline: 3px solid #8ab0ff; }
     :root[data-theme="dark"] .label, :root[data-theme="dark"] .ra-label, :root[data-theme="dark"] .quiz-progress, :root[data-theme="dark"] .chat-head h2, :root[data-theme="dark"] .maria-practice { font: 700 11px/1.3 Menlo, "Courier New", Courier, monospace; color: #9c9c96; }
-    :root[data-theme="dark"] header { background: rgba(14, 14, 14, 0.92); }
     :root[data-theme="dark"] .mark .dot { color: #ff6a4a; }
     :root[data-theme="dark"] .cn-name { font-family: "PingFang SC", "Hiragino Sans GB W6", "Hiragino Sans GB", "STHeiti SC", "Heiti SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif; color: #9a9a94; }
-    :root[data-theme="dark"] .lang-switch button { font: 700 13px/1 Menlo, "Courier New", Courier, monospace; color: #9a9a94; }
-    :root[data-theme="dark"] .lang-switch button:hover { color: #edede8; border-color: #edede8; }
-    :root[data-theme="dark"] .lang-switch button[aria-pressed="true"] { background: #edede8; border-color: #edede8; color: #0e0e0e; }
-    :root[data-theme="dark"] .theme-toggle { border: 1px solid #edede8; font: 700 13px/1 Menlo, "Courier New", Courier, monospace; color: #edede8; }
-    :root[data-theme="dark"] .theme-toggle:hover { background: #edede8; color: #0e0e0e; }
+    :root[data-theme="dark"] .lang-switch-dots { color: #9a9a94; }
+    :root[data-theme="dark"] .lang-switch button { background: #0e0e0e; font: 700 13px/1 Menlo, "Courier New", Courier, monospace; color: #9a9a94; }
+    :root[data-theme="dark"] .lang-switch button:hover, :root[data-theme="dark"] .lang-switch button:focus, :root[data-theme="dark"] .lang-switch button:active { color: #edede8; border-color: #edede8; background: #0e0e0e; }
+    :root[data-theme="dark"] .lang-switch button[aria-pressed="true"], :root[data-theme="dark"] .lang-switch button[aria-pressed="true"]:hover, :root[data-theme="dark"] .lang-switch button[aria-pressed="true"]:focus, :root[data-theme="dark"] .lang-switch button[aria-pressed="true"]:active { background: #edede8; border-color: #edede8; color: #0e0e0e; }
+    :root[data-theme="dark"] .theme-toggle { border: 1px solid #edede8; background: #0e0e0e; font: 700 13px/1 Menlo, "Courier New", Courier, monospace; color: #edede8; }
+    :root[data-theme="dark"] .theme-toggle:hover, :root[data-theme="dark"] .theme-toggle:focus, :root[data-theme="dark"] .theme-toggle:active, :root[data-theme="dark"] .theme-toggle[aria-pressed="true"] { background: #edede8; color: #0e0e0e; border-color: #edede8; }
+    :root[data-theme="dark"] .lang-switch button:hover { color: #9a9a94; background: #0e0e0e; }
+    :root[data-theme="dark"] .lang-switch button[aria-pressed="true"]:hover { background: #edede8; border-color: #edede8; color: #0e0e0e; }
+    :root[data-theme="dark"] .theme-toggle:hover { background: #0e0e0e; color: #edede8; border-color: #edede8; }
+    :root[data-theme="dark"] .theme-toggle[aria-pressed="true"]:hover { background: #edede8; color: #0e0e0e; }
     :root[data-theme="dark"] .hero .subline { font: 11px/1.4 Menlo, "Courier New", Courier, monospace; color: #9a9a94; }
     :root[data-theme="dark"] .hero .lede { color: #9a9a94; }
     :root[data-theme="dark"] .chat-send { border: 2px solid #edede8; background: #edede8; color: #0e0e0e; }
@@ -895,6 +1240,15 @@
     :root[data-theme="dark"] .voice-toggle { border: 1.5px solid #edede8; background: #0e0e0e; }
     :root[data-theme="dark"] .voice-toggle:hover { background: #edede8; color: #0e0e0e; }
     :root[data-theme="dark"] .voice-toggle[aria-pressed="false"] { border-color: #2e2e2b; color: #9c9c96; }
+    :root[data-theme="dark"] .voice-toggle { color: #edede8; }
+    :root[data-theme="dark"] .voice-toggle:hover, :root[data-theme="dark"] .voice-toggle:focus, :root[data-theme="dark"] .voice-toggle:active { background: #edede8; color: #0e0e0e; }
+    :root[data-theme="dark"] .voice-toggle[aria-pressed="false"], :root[data-theme="dark"] .voice-toggle[aria-pressed="false"]:hover, :root[data-theme="dark"] .voice-toggle[aria-pressed="false"]:focus, :root[data-theme="dark"] .voice-toggle[aria-pressed="false"]:active { background: #0e0e0e; border-color: #2e2e2b; color: #9c9c96; }
+    :root[data-theme="dark"] .voice-toggle:hover { background: #0e0e0e; color: #edede8; }
+    :root[data-theme="dark"] .vol-pop { border: 1.5px solid #edede8; background: #0e0e0e; color: #edede8; }
+    :root[data-theme="dark"] .vol-readout { font: 700 11px/1 Menlo, "Courier New", Courier, monospace; }
+    :root[data-theme="dark"] .vol-track { background: #2a2a27; }
+    :root[data-theme="dark"] .vol-fill { background: #edede8; }
+    :root[data-theme="dark"] .vol-thumb { border: 1.5px solid #edede8; background: #0e0e0e; }
     :root[data-theme="dark"] .portrait { border: 1px solid #edede8; background: #0e0e0e; }
     :root[data-theme="dark"] .maria-role { color: #9a9a94; }
     :root[data-theme="dark"] .hear-btn, :root[data-theme="dark"] .link-btn { border-bottom: 1.5px solid #edede8; }
@@ -948,10 +1302,11 @@
     :root[data-theme="dark"] .word-example { color: #9a9a94; }
     :root[data-theme="dark"] .word-remove { border: 1.5px solid #edede8; background: #0e0e0e; }
     :root[data-theme="dark"] .word-remove:hover { background: #edede8; color: #0e0e0e; }
+    :root[data-theme="dark"] .top-row .picker-panel { background: #0e0e0e; }
     :root[data-theme="dark"] .pick, :root[data-theme="dark"] .pick-item { border: 1px solid #edede8; background: #0e0e0e; color: #edede8; font: 700 13px/1 Menlo, "Courier New", Courier, monospace; }
-    :root[data-theme="dark"] .pick:hover, :root[data-theme="dark"] .pick-item:hover { background: #edede8; color: #0e0e0e; }
-    :root[data-theme="dark"] .pick[aria-pressed="true"], :root[data-theme="dark"] .pick-item[aria-pressed="true"] { background: #edede8; color: #0e0e0e; }
-    :root[data-theme="dark"] .pick-more[aria-expanded="true"] { background: #edede8; color: #0e0e0e; }
+    :root[data-theme="dark"] .pick:hover, :root[data-theme="dark"] .pick-item:hover, :root[data-theme="dark"] .pick:focus, :root[data-theme="dark"] .pick-item:focus, :root[data-theme="dark"] .pick:active, :root[data-theme="dark"] .pick-item:active, :root[data-theme="dark"] .pick[aria-pressed="true"], :root[data-theme="dark"] .pick-item[aria-pressed="true"], :root[data-theme="dark"] .pick-more[aria-expanded="true"] { background: #edede8; color: #0e0e0e; border-color: #edede8; }
+    :root[data-theme="dark"] .pick:hover, :root[data-theme="dark"] .pick-item:hover { background: #0e0e0e; color: #edede8; border-color: #edede8; }
+    :root[data-theme="dark"] .pick[aria-pressed="true"]:hover, :root[data-theme="dark"] .pick-item[aria-pressed="true"]:hover, :root[data-theme="dark"] .pick-more[aria-expanded="true"]:hover { background: #edede8; color: #0e0e0e; border-color: #edede8; }
     :root[data-theme="dark"] .picker-panel { border: 1px solid #edede8; }
     :root[data-theme="dark"] .picker-panel input { border-bottom: 1.5px solid #edede8; color: #edede8; }
     :root[data-theme="dark"] .pick-item span { font: 400 12px/1.2 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -975,9 +1330,6 @@
     :root[data-theme="dark"] .mic-live { color: #9c9c96; }
 
     /* ---------- Safari 9 / iOS 9 compatibility ---------- */
-    header { position: -webkit-sticky; position: sticky; padding: 0 18px; }
-    @media (min-width: 600px) { header { padding-left: 32px; padding-right: 32px; } }
-    @media (min-width: 900px) { header { padding-left: 48px; padding-right: 48px; } }
     main { padding: 24px 20px 48px; }
     @media (min-width: 600px) { main { padding: 36px 28px 48px; } }
     @media (min-width: 900px) { main { padding: 48px 32px 48px; } }
@@ -1047,11 +1399,13 @@
         mix-blend-mode: screen;
       }
     }
-    header { -webkit-backdrop-filter: blur(8px); }
 
     @supports not (gap: 1px) {
-      header > * + * { margin-left: 24px; }
+      .top-row > * + * { margin-left: 16px; }
+      .top-row-tools > * + * { margin-left: 12px; }
       .lang-switch > * + * { margin-left: 4px; }
+      .lang-switch-langs > * + * { margin-left: 4px; }
+      .picker-row > * + * { margin-left: 8px; }
       .theme-toggle { margin-left: 4px; }
       main > * + * { margin-top: 40px; }
       .chat-head > * + * { margin-left: 12px; }
@@ -1083,7 +1437,7 @@
     }
     @media (max-width: 560px) {
       @supports not (gap: 1px) {
-        header > * + * { margin-left: 14px; }
+        .top-row > * + * { margin-left: 12px; }
         main > * + * { margin-top: 32px; }
       }
     }
@@ -1118,7 +1472,7 @@
     }
 
     /* Restore modern fluid values so they win over the Safari 9 static fallbacks above. */
-    header { padding: 0 clamp(18px, 4vw, 48px); padding-left: max(clamp(18px, 4vw, 48px), env(safe-area-inset-left)); padding-right: max(clamp(18px, 4vw, 48px), env(safe-area-inset-right)); }
+    @media (min-width: 720px) { .top-row { margin-left: -24px; margin-right: -24px; } }
     main { padding: clamp(20px, 6vh, 48px) clamp(20px, 5vw, 32px) 48px; }
     .hero h2 { font-size: clamp(34px, 5.4vw, 56px); }
     .quiz-score { font-size: clamp(30px, 5vw, 44px); }
@@ -1129,42 +1483,63 @@
 </head>
 <body>
   <div class="app">
-    <header>
-      <h1 class="mark"><span translate="no">Yibu</span><span class="dot" aria-hidden="true">.</span><bdi class="cn-name">一步</bdi></h1>
-      <div class="lang-switch" id="ui-lang-switch" role="group" aria-label="Interface language" data-i18n-attr="aria-label:langSwitch">
-        <button type="button" data-ui-lang="en" lang="en" aria-pressed="true" title="English">ENG</button>
-        <button type="button" data-ui-lang="hu" lang="hu" aria-pressed="false" title="Magyar">HUN</button>
-        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme" data-i18n-attr="aria-label:themeToDark;title:themeToDark">DRK</button>
-      </div>
-    </header>
-
     <main>
+      <div class="top-row">
+        <h1 class="mark"><span translate="no">Yibu</span><span class="dot" aria-hidden="true">.</span><bdi class="cn-name">一步</bdi></h1>
+        <div class="top-row-tools">
+          <div class="picker" id="lang-picker">
+            <p class="label" id="picker-label" data-i18n="learning">Learning</p>
+            <div class="picker-row" id="picker-row" role="group" aria-labelledby="picker-label"></div>
+            <div class="picker-panel" id="picker-panel" hidden>
+              <input id="picker-filter" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type to filter…" aria-label="Filter languages" data-i18n-attr="placeholder:pickFilter;aria-label:pickFilterAria">
+              <ul class="picker-grid" id="picker-grid"></ul>
+              <p class="picker-none" id="picker-none" hidden data-i18n="pickNone">No match</p>
+            </div>
+          </div>
+          <div class="lang-switch" id="ui-lang-switch">
+            <div class="lang-switch-langs" role="group" aria-label="Interface language" data-i18n-attr="aria-label:langSwitch">
+              <button type="button" data-ui-lang="en" lang="en" aria-pressed="true" title="English">ENG</button>
+              <button type="button" data-ui-lang="hu" lang="hu" aria-pressed="false" title="Magyar">HUN</button>
+              <span class="lang-switch-dots" id="ui-lang-dots" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" focusable="false" aria-hidden="true">
+                  <rect x="1" y="6" width="2" height="2" fill="currentColor"></rect>
+                  <rect x="6" y="6" width="2" height="2" fill="currentColor"></rect>
+                  <rect x="11" y="6" width="2" height="2" fill="currentColor"></rect>
+                </svg>
+              </span>
+            </div>
+            <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme" data-i18n-attr="aria-label:themeToDark;title:themeToDark">DRK</button>
+          </div>
+        </div>
+      </div>
+
       <section class="card hero" aria-labelledby="hero-heading">
         <p class="label" data-i18n="tagline">All the languages in one place</p>
         <h2 id="hero-heading" data-i18n="heroTitle">Speak freely and practice languages with your tutor</h2>
         <p class="subline" data-i18n="subline">Not all of them — but most of the main ones, and some more.</p>
         <p class="lede" data-i18n="heroLede">Yibu is a language-learning app. Talk with your tutor anytime — out loud or in writing — and practice the languages you need. Chat about the things you care about, and get honest, clear corrections that fit the way you learn.</p>
-        <div class="picker" id="lang-picker">
-          <p class="label" id="picker-label" data-i18n="learning">Learning</p>
-          <div class="picker-row" id="picker-row" role="group" aria-labelledby="picker-label"></div>
-          <div class="picker-panel" id="picker-panel" hidden>
-            <input id="picker-filter" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type to filter…" aria-label="Filter languages" data-i18n-attr="placeholder:pickFilter;aria-label:pickFilterAria">
-            <ul class="picker-grid" id="picker-grid"></ul>
-            <p class="picker-none" id="picker-none" hidden data-i18n="pickNone">No match</p>
-          </div>
-        </div>
       </section>
 
       <section class="card chat-card" aria-labelledby="maria-heading" id="maria-chat">
         <div class="chat-head">
           <h2 id="maria-heading" data-i18n="chatTitle">Talk with your tutor</h2>
-          <button class="voice-toggle" id="maria-voice" type="button" aria-pressed="true" aria-label="Read the tutor’s replies aloud" title="Read the tutor’s replies aloud">
-            <svg class="on-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
-            <svg class="off-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
-          </button>
+          <div class="voice-wrap">
+            <button class="voice-toggle" id="maria-voice" type="button" aria-pressed="true" aria-label="Read the tutor’s replies aloud" title="Tap: voice on/off · Hold: volume">
+              <svg class="on-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+              <svg class="off-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>
+            </button>
+            <div class="vol-pop" id="maria-vol-pop" hidden>
+              <p class="vol-readout" id="maria-vol-readout">100%</p>
+              <div class="vol-slider" id="maria-vol-slider" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="Tutor volume">
+                <div class="vol-track"></div>
+                <div class="vol-fill" id="maria-vol-fill"></div>
+                <div class="vol-thumb" id="maria-vol-thumb"></div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="maria-profile">
-          <span class="portrait"><img src="maria-portrait-sketch.svg" width="600" height="750" alt="Your language tutor — a simple line drawing of a calm face" data-i18n-attr="alt:portraitAlt" decoding="async"></span>
+          <span class="portrait"><img src="tutor-portrait.svg" width="600" height="750" alt="Your language tutor — an ink sketch portrait" data-i18n-attr="alt:portraitAlt" decoding="async"></span>
           <div class="maria-info">
             <p class="maria-name" data-i18n="tutorName">Tutor</p>
             <button class="hear-btn" id="maria-hear" type="button" aria-label="Listen to the tutor" data-i18n-attr="aria-label:hearAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span id="maria-hear-label" data-i18n="hear">Listen</span></button>
@@ -1408,8 +1783,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
   };
   var I18N = {
     en: {
-      portraitAlt: "Your language tutor — a simple line drawing of a calm face",
-      portraitAltNamed: "{name}, your language tutor — a simple line drawing of a calm face",
+      portraitAlt: "Your language tutor — an ink sketch portrait",
+      portraitAltNamed: "{name}, your language tutor — an ink sketch portrait",
       themeToDark: "Switch to dark theme",
       themeToLight: "Switch to light theme",
       title: "Yibu — language learning app",
@@ -1427,6 +1802,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       voiceOffLabelNamed: "Voice is off (tap to read {name}’s replies aloud)",
       voiceOnTitle: "Voice on",
       voiceOffTitle: "Voice off",
+      volHint: "Tap: voice on/off · Hold: volume",
+      volAria: "Tutor volume",
       hear: "Listen",
       hearAria: "Listen to the tutor",
       hearAriaNamed: "Listen to {name}",
@@ -1519,8 +1896,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       pickNone: "No match"
     },
     hu: {
-      portraitAlt: "A nyelvtanárod — egyszerű vonalrajz egy nyugodt arcról",
-      portraitAltNamed: "{name}, a nyelvtanárod — egyszerű vonalrajz egy nyugodt arcról",
+      portraitAlt: "A nyelvtanárod — tusrajzos portré",
+      portraitAltNamed: "{name}, a nyelvtanárod — tusrajzos portré",
       themeToDark: "Váltás sötét témára",
       themeToLight: "Váltás világos témára",
       title: "Yibu — nyelvtanuló alkalmazás",
@@ -1538,6 +1915,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       voiceOffLabelNamed: "A hang ki van kapcsolva (koppints, és felolvassuk {name} válaszait)",
       voiceOnTitle: "Hang bekapcsolva",
       voiceOffTitle: "Hang kikapcsolva",
+      volHint: "Koppintás: hang be/ki · Nyomva tartva: hangerő",
+      volAria: "Tanár hangereje",
       hear: "Hallgasd meg",
       hearAria: "A tanár szavainak meghallgatása",
       hearAriaNamed: "{name} szavainak meghallgatása",
@@ -1796,6 +2175,59 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     player = null;
     canAudio = false;
   }
+  var VOL_KEY = "yibu-volume";
+  var loadVolume = function loadVolume() {
+    var raw = parseInt(storeGet(VOL_KEY), 10);
+    if (isNaN(raw) || raw < 0 || raw > 100) return 1;
+    return raw / 100;
+  };
+  var playbackVol = loadVolume();
+  var audioCtx = null;
+  var gainNode = null;
+  var isIOS = function () {
+    try {
+      var ua = navigator.userAgent || "";
+      return /iP(hone|od|ad)/.test(ua) || navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+    } catch (err) {
+      return false;
+    }
+  }();
+  var hookGain = function hookGain() {
+    if (!isIOS || !player || gainNode) return;
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    try {
+      audioCtx = new AC();
+      var src = audioCtx.createMediaElementSource(player);
+      gainNode = audioCtx.createGain();
+      gainNode.gain.value = playbackVol;
+      src.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+    } catch (err) {
+      audioCtx = null;
+      gainNode = null;
+    }
+  };
+  var applyVolume = function applyVolume() {
+    if (player) {
+      try {
+        player.volume = playbackVol;
+      } catch (err) {}
+    }
+    if (gainNode) {
+      try {
+        gainNode.gain.value = playbackVol;
+      } catch (err) {}
+    }
+    if (audioCtx && audioCtx.state === "suspended" && typeof audioCtx.resume === "function") {
+      try {
+        audioCtx.resume();
+      } catch (err) {}
+    }
+  };
+  applyVolume();
+  var volIgnoreClick = false;
+  var refreshVolUI = function refreshVolUI() {};
   var voiceBtn = document.getElementById("maria-voice");
   var hearBtn = document.getElementById("maria-hear");
   var hearLabel = document.getElementById("maria-hear-label");
@@ -1879,6 +2311,8 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
   };
   var primeSpeech = function primeSpeech(force) {
     if (!force && !voiceOn) return;
+    hookGain();
+    applyVolume();
     if (canAudio) {
       try {
         if (!silentWav) silentWav = makeSilentWav();
@@ -2229,6 +2663,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
           u.lang = speechTag(speakLang);
         }
         u.rate = 0.95;
+        u.volume = playbackVol;
         u.onstart = function () {
           if (id === speakSeq) tr.set(from, -1, from, to);
         };
@@ -2335,11 +2770,230 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     var neural = canAudio && Date.now() >= neuralBlockedUntil && (NEURAL_LANGS.has(speakLang) || !voiceFor(speakLang));
     if (neural) speakNeural(text, id, tr);else speakBrowser(text, id, tr);
   };
+  var setupVolumeSlider = function setupVolumeSlider() {
+    var pop = document.getElementById("maria-vol-pop");
+    var slider = document.getElementById("maria-vol-slider");
+    var fill = document.getElementById("maria-vol-fill");
+    var thumb = document.getElementById("maria-vol-thumb");
+    var readout = document.getElementById("maria-vol-readout");
+    if (!pop || !slider || !voiceBtn) return;
+    var HOLD_MS = 450;
+    var MOVE_PX = 10;
+    var volOpen = false;
+    var holdTimer = null;
+    var holding = false;
+    var dragged = false;
+    var startX = 0,
+      startY = 0;
+    var startOnBtn = false;
+    var clientXY = function clientXY(e) {
+      if (e.touches && e.touches.length) return {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+      if (e.changedTouches && e.changedTouches.length) return {
+        x: e.changedTouches[0].clientX,
+        y: e.changedTouches[0].clientY
+      };
+      return {
+        x: e.clientX,
+        y: e.clientY
+      };
+    };
+    var renderVol = function renderVol() {
+      var pct = Math.round(playbackVol * 100);
+      if (fill) fill.style.height = pct + "%";
+      if (thumb) {
+        var h = slider.clientHeight || 96;
+        var th = thumb.offsetHeight || 12;
+        thumb.style.top = (1 - playbackVol) * (h - th) + th / 2 + "px";
+      }
+      if (readout) readout.textContent = pct + "%";
+      slider.setAttribute("aria-valuenow", String(pct));
+      slider.setAttribute("aria-valuetext", pct + "%");
+      slider.setAttribute("aria-label", t("volAria"));
+    };
+    var setVolume = function setVolume(pct, save) {
+      pct = Math.round(Math.max(0, Math.min(100, pct)));
+      playbackVol = pct / 100;
+      applyVolume();
+      renderVol();
+      if (save) storeSet(VOL_KEY, String(pct));
+    };
+    var pctFromEvent = function pctFromEvent(e) {
+      var rect = slider.getBoundingClientRect();
+      var y = clientXY(e).y - rect.top;
+      var t = 1 - y / (rect.height || 1);
+      return Math.round(Math.max(0, Math.min(1, t)) * 100);
+    };
+    var openVol = function openVol() {
+      volOpen = true;
+      pop.hidden = false;
+      pop.className = "vol-pop on";
+      renderVol();
+      if (typeof slider.focus === "function") {
+        try {
+          slider.focus();
+        } catch (err) {}
+      }
+    };
+    var closeVol = function closeVol() {
+      volOpen = false;
+      pop.className = "vol-pop";
+      pop.hidden = true;
+      dragged = false;
+      holding = false;
+    };
+    var armIgnoreClick = function armIgnoreClick() {
+      volIgnoreClick = true;
+      setTimeout(function () {
+        volIgnoreClick = false;
+      }, 700);
+    };
+    var clearHold = function clearHold() {
+      if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    };
+    var onDown = function onDown(e) {
+      if (e.type === "mousedown" && e.button !== 0) return;
+      var pt = clientXY(e);
+      startX = pt.x;
+      startY = pt.y;
+      startOnBtn = true;
+      holding = true;
+      dragged = false;
+      clearHold();
+      holdTimer = setTimeout(function () {
+        holdTimer = null;
+        if (!holding) return;
+        armIgnoreClick();
+        hookGain();
+        openVol();
+      }, HOLD_MS);
+    };
+    var onMove = function onMove(e) {
+      if (!holding && !volOpen) return;
+      var pt = clientXY(e);
+      var dx = pt.x - startX,
+        dy = pt.y - startY;
+      if (!volOpen) {
+        if (dx * dx + dy * dy > MOVE_PX * MOVE_PX) {
+          clearHold();
+          holding = false;
+        }
+        return;
+      }
+      if (dx * dx + dy * dy > 9) dragged = true;
+      setVolume(pctFromEvent(e), true);
+      if (e.cancelable && e.type.indexOf("touch") === 0) {
+        try {
+          e.preventDefault();
+        } catch (err) {}
+      }
+    };
+    var onUp = function onUp(e) {
+      if (!holding && !volOpen) return;
+      var wasHolding = holding;
+      holding = false;
+      clearHold();
+      if (!volOpen) return;
+      if (wasHolding && dragged) closeVol();
+    };
+    var onDocDown = function onDocDown(e) {
+      if (!volOpen) return;
+      var t = e.target;
+      if (pop.contains(t) || voiceBtn.contains(t)) return;
+      closeVol();
+    };
+    var bind = function bind(el, type, fn, capture) {
+      el.addEventListener(type, fn, capture === true);
+    };
+    if (window.PointerEvent) {
+      bind(voiceBtn, "pointerdown", onDown);
+      bind(document, "pointermove", onMove);
+      bind(document, "pointerup", onUp);
+      bind(document, "pointercancel", onUp);
+    } else {
+      bind(voiceBtn, "mousedown", onDown);
+      bind(voiceBtn, "touchstart", onDown);
+      bind(document, "mousemove", onMove);
+      bind(document, "touchmove", onMove);
+      bind(document, "mouseup", onUp);
+      bind(document, "touchend", onUp);
+      bind(document, "touchcancel", onUp);
+    }
+    bind(document, "mousedown", onDocDown, true);
+    bind(document, "touchstart", onDocDown, true);
+    bind(slider, "mousedown", function (e) {
+      dragged = true;
+      holding = true;
+      setVolume(pctFromEvent(e), true);
+    });
+    bind(slider, "touchstart", function (e) {
+      dragged = true;
+      holding = true;
+      setVolume(pctFromEvent(e), true);
+    });
+    bind(slider, "keydown", function (e) {
+      var k = e.key || "";
+      var code = e.keyCode;
+      var pct = Math.round(playbackVol * 100);
+      var handled = true;
+      if (k === "ArrowUp" || k === "ArrowRight" || code === 38 || code === 39) pct += 5;else if (k === "ArrowDown" || k === "ArrowLeft" || code === 40 || code === 37) pct -= 5;else if (k === "Home" || code === 36) pct = 100;else if (k === "End" || code === 35) pct = 0;else if (k === "PageUp" || code === 33) pct += 10;else if (k === "PageDown" || code === 34) pct -= 10;else if (k === "Escape" || code === 27) {
+        closeVol();
+        voiceBtn.focus();
+        handled = true;
+      } else handled = false;
+      if (handled) {
+        if (e.preventDefault) e.preventDefault();
+        if (k !== "Escape" && code !== 27) setVolume(pct, true);
+      }
+    });
+    bind(document, "keydown", function (e) {
+      if ((e.key === "Escape" || e.keyCode === 27) && volOpen) closeVol();
+    });
+    bind(voiceBtn, "keydown", function (e) {
+      var isAct = e.key === " " || e.key === "Spacebar" || e.key === "Enter" || e.keyCode === 32 || e.keyCode === 13;
+      if (!isAct) return;
+      if (e.repeat) {
+        if (e.preventDefault) e.preventDefault();
+        return;
+      }
+      startX = 0;
+      startY = 0;
+      holding = true;
+      dragged = false;
+      clearHold();
+      holdTimer = setTimeout(function () {
+        holdTimer = null;
+        if (!holding) return;
+        if (e.preventDefault) e.preventDefault();
+        armIgnoreClick();
+        hookGain();
+        openVol();
+      }, HOLD_MS);
+    });
+    bind(voiceBtn, "keyup", function (e) {
+      var isAct = e.key === " " || e.key === "Spacebar" || e.key === "Enter" || e.keyCode === 32 || e.keyCode === 13;
+      if (!isAct) return;
+      var opened = volOpen && holdTimer === null;
+      holding = false;
+      clearHold();
+      if (opened && !dragged) {}
+    });
+    bind(voiceBtn, "contextmenu", function (e) {
+      if (e.preventDefault) e.preventDefault();
+    });
+    renderVol();
+    refreshVolUI = renderVol;
+  };
   var setVoiceOn = function setVoiceOn(on, save) {
     voiceOn = on;
     voiceBtn.setAttribute("aria-pressed", on ? "true" : "false");
     voiceBtn.setAttribute("aria-label", on ? t("voiceOnLabel") : t("voiceOffLabel"));
-    voiceBtn.title = on ? t("voiceOnTitle") : t("voiceOffTitle");
+    voiceBtn.title = t("volHint");
     if (save) storeSet(VOICE_KEY, on ? "on" : "off");
     if (!on) stopAll();
   };
@@ -2356,7 +3010,13 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       pickVoice();
       if (typeof synth.addEventListener === "function") synth.addEventListener("voiceschanged", pickVoice);else synth.onvoiceschanged = pickVoice;
     }
-    voiceBtn.addEventListener("click", function () {
+    voiceBtn.addEventListener("click", function (e) {
+      if (volIgnoreClick) {
+        if (e && typeof e.preventDefault === "function") e.preventDefault();
+        if (e && typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
+        volIgnoreClick = false;
+        return;
+      }
       setVoiceOn(!voiceOn, true);
       if (voiceOn) primeSpeech(true);
     });
@@ -2369,6 +3029,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       say(lastMaria.text, lastMaria.lang);
     });
     window.addEventListener("pagehide", stopAll);
+    setupVolumeSlider();
   }
   var addMessage = function addMessage(who, text, replayable, replayLang) {
     var el = document.createElement("div");
@@ -3280,11 +3941,19 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       return setUiLang(b.dataset.uiLang);
     });
   });
+  var uiLangDots = document.getElementById("ui-lang-dots");
+  if (uiLangDots) {
+    uiLangDots.addEventListener("click", function () {
+      var on = document.querySelector("#ui-lang-switch [data-ui-lang][aria-pressed='true']") || document.querySelector("#ui-lang-switch [data-ui-lang]");
+      if (on && on.focus) on.focus();
+    }, false);
+  }
   nameHook = function nameHook() {
     refreshTheme();
     setVoiceOn(voiceOn, false);
     setHearState(speaking);
     refreshOpener();
+    if (refreshVolUI) refreshVolUI();
   };
   if (!MARIA_ENDPOINT) {
     addMessage("maria", "Hi! I’m getting ready — coming soon. Come back soon to practice with your tutor.");
@@ -3352,7 +4021,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     });
   };
   var imageChanged = function imageChanged() {
-    return fetch("maria-portrait-sketch.svg", {
+    return fetch("tutor-portrait.svg", {
       method: "HEAD",
       cache: "no-store"
     }).then(function (r) {
