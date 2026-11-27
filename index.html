@@ -10,7 +10,7 @@
     (function () {
       try {
         var v = localStorage.getItem("yibu-theme");
-        if (v === "dark" || v === "light") document.documentElement.setAttribute("data-theme", v);
+        if (v === "dark" || v === "light" || v === "grey") document.documentElement.setAttribute("data-theme", v);
       } catch (e) { /* ignore */ }
     })();
   </script>
@@ -41,7 +41,7 @@
 
     /* ---------- dark theme: same variables, dark palette ---------- */
     @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
+      :root:not([data-theme="light"]):not([data-theme="grey"]) {
         --ink: #edede8;
         --muted: #9a9a94;
         --line: #2a2a27;
@@ -80,6 +80,76 @@
       --chat-line: #2e2e2b;
       color-scheme: dark;}
     :root[data-theme="light"] { color-scheme: light;}
+
+    /* Grey theme: a softer, greyer version of light — light background,
+       dark-grey ink/borders instead of near-black #141414. */
+    :root[data-theme="grey"] {
+      --ink: #4a4a48;
+      --muted: #6e6e6b;
+      --line: #e4e4e0;
+      --soft: #f3f3f1;
+      --accent: #d2381b;
+      --green: #17724a;
+      --green-bg: #eef8f2;
+      --red: #b0291e;
+      --red-bg: #fdf1ef;
+      --focus: #2b66d9;
+      --bg: #fafaf8;
+      --bg-glass: rgba(250, 250, 248, 0.92);
+      --faint: #9a9a96;
+      --chat-soft: #f0f0ee;
+      --chat-muted: #6e6e6b;
+      --chat-line: #e0e0de;
+      color-scheme: light;}
+
+    /* Safari 9: static grey colours (no CSS variables). */
+    :root[data-theme="grey"] body { background: #fafaf8; color: #4a4a48; }
+    :root[data-theme="grey"] .cn-name { color: #6e6e6b; }
+    :root[data-theme="grey"] .lang-switch button { background: #fafaf8; color: #6e6e6b; border-color: transparent; }
+    :root[data-theme="grey"] .lang-switch button:hover,
+    :root[data-theme="grey"] .lang-switch button:focus,
+    :root[data-theme="grey"] .lang-switch button:active { color: #4a4a48; border-color: #4a4a48; background: #fafaf8; }
+    :root[data-theme="grey"] .lang-switch button[aria-pressed="true"],
+    :root[data-theme="grey"] .lang-switch button[aria-pressed="true"]:hover,
+    :root[data-theme="grey"] .lang-switch button[aria-pressed="true"]:focus,
+    :root[data-theme="grey"] .lang-switch button[aria-pressed="true"]:active { background: #4a4a48; border-color: #4a4a48; color: #fafaf8; }
+    :root[data-theme="grey"] .theme-toggle { background: #fafaf8; color: #4a4a48; border-color: #4a4a48; }
+    :root[data-theme="grey"] .theme-toggle:hover,
+    :root[data-theme="grey"] .theme-toggle:focus,
+    :root[data-theme="grey"] .theme-toggle:active,
+    :root[data-theme="grey"] .theme-toggle[aria-pressed="true"] { background: #4a4a48; color: #fafaf8; border-color: #4a4a48; }
+    :root[data-theme="grey"] .hero .subline,
+    :root[data-theme="grey"] .hero .lede,
+    :root[data-theme="grey"] .feature p { color: #6e6e6b; }
+    :root[data-theme="grey"] .chat-send { border-color: #4a4a48; background: #4a4a48; color: #fafaf8; }
+    :root[data-theme="grey"] .chat-send:hover:not(:disabled) { background: #fafaf8; color: #4a4a48; }
+    :root[data-theme="grey"] .voice-toggle { background: #fafaf8; color: #4a4a48; border-color: #4a4a48; }
+    :root[data-theme="grey"] .voice-toggle:hover,
+    :root[data-theme="grey"] .voice-toggle:focus,
+    :root[data-theme="grey"] .voice-toggle:active { background: #4a4a48; color: #fafaf8; border-color: #4a4a48; }
+    :root[data-theme="grey"] .mic-btn { background: #fafaf8; color: #4a4a48; border-color: #4a4a48; }
+    :root[data-theme="grey"] .mic-btn:hover,
+    :root[data-theme="grey"] .mic-btn[aria-pressed="true"] { background: #4a4a48; color: #fafaf8; }
+    :root[data-theme="grey"] .tool-btn { background: #fafaf8; color: #4a4a48; border-color: #4a4a48; }
+    :root[data-theme="grey"] .tool-btn:hover:not(:disabled) { background: #4a4a48; color: #fafaf8; }
+    :root[data-theme="grey"] .hear-btn,
+    :root[data-theme="grey"] .link-btn { color: #4a4a48; border-color: #4a4a48; }
+    :root[data-theme="grey"] .chat-form input,
+    :root[data-theme="grey"] .quiz-fill input { border-color: #4a4a48; color: #4a4a48; background: #fafaf8; }
+    :root[data-theme="grey"] .msg.user { background: #4a4a48; color: #fafaf8; }
+    :root[data-theme="grey"] .words-count { background: #4a4a48; color: #fafaf8; }
+    :root[data-theme="grey"] .pick,
+    :root[data-theme="grey"] .pick-item,
+    :root[data-theme="grey"] .dlg-chip { background: #fafaf8; color: #4a4a48; border-color: #4a4a48; }
+    :root[data-theme="grey"] .pick[aria-pressed="true"],
+    :root[data-theme="grey"] .pick-item[aria-pressed="true"],
+    :root[data-theme="grey"] .dlg-chip[aria-pressed="true"] { background: #4a4a48; color: #fafaf8; border-color: #4a4a48; }
+    /* Grey is a light theme: keep the line-drawing portrait dark-on-white (never invert). */
+    :root[data-theme="grey"] .portrait img {
+      -webkit-filter: none;
+      filter: none;
+      mix-blend-mode: normal;}
+
 
     * { box-sizing: border-box;}
 
@@ -157,7 +227,7 @@
 
     .mark {
       margin: 0;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 900;
       letter-spacing: -1.6px;
       line-height: 1;
@@ -170,12 +240,21 @@
       font-family: "PingFang SC", "Hiragino Sans GB W6", "Hiragino Sans GB", "STHeiti SC", "Heiti SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
       font-family: "PingFang SC", "Hiragino Sans GB W6", "Hiragino Sans GB", "STHeiti SC", "Heiti SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
       font-family: var(--cjk);
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 700;
       letter-spacing: 0;
       color: #6f6f6a;
       color: #6f6f6a;
       color: var(--muted);}
+
+    /* Interface Chinese: body copy uses the CJK stack. The logo keeps the Latin
+       font; 一步 keeps .cn-name. */
+    html[lang="zh-Hans"] body {
+      font-family: "PingFang SC", "Hiragino Sans GB W6", "Hiragino Sans GB", "STHeiti SC", "Heiti SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
+      font-family: var(--cjk);}
+    html[lang="zh-Hans"] .mark {
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: var(--font);}
 
     .lang-switch { display: -webkit-box; display: -webkit-flex; display: flex; gap: 4px;}
 
@@ -189,14 +268,6 @@
       -webkit-flex-wrap: nowrap;
       flex-wrap: nowrap;
       gap: 4px;}
-
-    @media (max-width: 360px) {
-      .lang-switch button,
-      .theme-toggle {
-        min-width: 46px;
-        padding: 7px 5px;}
-    }
-
 
     .lang-switch button {
       min-width: 52px;
@@ -276,6 +347,14 @@
       border-color: #141414;
       border-color: var(--ink);}
 
+    /* Three UI-language buttons plus DRK must share a row with the logo at 375px. */
+    @media (max-width: 375px) {
+      .lang-switch button,
+      .theme-toggle {
+        min-width: 44px;
+        padding: 7px 4px;}
+    }
+
     /* Dark theme: explicit static colours (Safari 9 has no CSS variables). */
     :root[data-theme="dark"] .lang-switch button {
       background: #0e0e0e;
@@ -351,7 +430,7 @@
 
     .hero h2 {
       margin: 10px 0 10px;
-      font-size: clamp(34px, 5.4vw, 56px);
+      font-size: clamp(25px, 3.9vw, 39px);
       font-weight: 800;
       line-height: 0.98;
       letter-spacing: -0.055em;}
@@ -455,13 +534,20 @@
       .feature + .feature { margin-left: 16px;}
     }
 
+    /* vertical dividers between the three columns, same line as the stripe above */
+    .feature + .feature {
+      border-left: 1px solid #e6e6e1;
+      border-left: 1px solid var(--line);
+      padding-left: 16px;}
+    @media (max-width: 420px) { .feature + .feature { padding-left: 10px;} }
+
     /* ---------- chat card ---------- */
     .chat-head {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 12px;
-      margin-bottom: 14px;}
+      margin-bottom: 10px;}
 
     .chat-head h2 { margin: 0;}
 
@@ -607,18 +693,11 @@
       border: 1px solid #141414;
       border: 1px solid var(--ink);
       background: #ffffff;
-      background: var(--bg);
       overflow: hidden;}
 
     .portrait img { display: block; width: 100%; height: 100%; object-fit: cover;}
 
     @media (min-width: 600px) { .portrait { width: 120px; height: 150px;} }
-
-    /* dark theme: the black-on-white line art is inverted to light lines on the dark page */
-    :root[data-theme="dark"] .portrait img { -webkit-filter: invert(1); filter: invert(1); mix-blend-mode: screen;}
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .portrait img { -webkit-filter: invert(1); filter: invert(1); mix-blend-mode: screen; }
-    }
 
 
     .maria-info { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px;}
@@ -1259,6 +1338,8 @@
 
     /* Safari 9: static dark colours (no CSS variables) */
     :root[data-theme="dark"] body { background: #0e0e0e; color: #edede8; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    :root[data-theme="dark"][lang="zh-Hans"] body { font-family: "PingFang SC", "Hiragino Sans GB W6", "Hiragino Sans GB", "STHeiti SC", "Heiti SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif; }
+    :root[data-theme="dark"][lang="zh-Hans"] .mark { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; }
     :root[data-theme="dark"] button:focus-visible, :root[data-theme="dark"] input:focus-visible, :root[data-theme="dark"] a:focus-visible, :root[data-theme="dark"] summary:focus-visible, :root[data-theme="dark"] .switch input:focus-visible { outline: 3px solid #8ab0ff; }
     :root[data-theme="dark"] .label, :root[data-theme="dark"] .ra-label, :root[data-theme="dark"] .quiz-progress, :root[data-theme="dark"] .chat-head h2, :root[data-theme="dark"] .maria-practice { font: 700 11px/1.3 Menlo, "Courier New", Courier, monospace; color: #9c9c96; }
     :root[data-theme="dark"] .mark .dot { color: #ff6a4a; }
@@ -1277,6 +1358,7 @@
     :root[data-theme="dark"] .chat-send { border: 2px solid #edede8; background: #edede8; color: #0e0e0e; }
     :root[data-theme="dark"] .chat-send:hover:not(:disabled) { background: #0e0e0e; color: #edede8; }
     :root[data-theme="dark"] .features { border-top: 1px solid #2a2a27; }
+    :root[data-theme="dark"] .feature + .feature { border-left: 1px solid #2a2a27; }
     :root[data-theme="dark"] .feature { border-bottom: 0; }
     :root[data-theme="dark"] .feature::before { font: 700 11px Menlo, "Courier New", Courier, monospace; color: #ff6a4a; }
     :root[data-theme="dark"] .feature p { color: #9a9a94; }
@@ -1292,7 +1374,7 @@
     :root[data-theme="dark"] .vol-track { background: #2a2a27; }
     :root[data-theme="dark"] .vol-fill { background: #edede8; }
     :root[data-theme="dark"] .vol-thumb { border: 1.5px solid #edede8; background: #0e0e0e; }
-    :root[data-theme="dark"] .portrait { border: 1px solid #edede8; background: #0e0e0e; }
+    :root[data-theme="dark"] .portrait { border: 1px solid #edede8; background: #ffffff; }
     :root[data-theme="dark"] .maria-role { color: #9a9a94; }
     :root[data-theme="dark"] .hear-btn, :root[data-theme="dark"] .link-btn { border-bottom: 1.5px solid #edede8; }
     :root[data-theme="dark"] .hear-btn:hover, :root[data-theme="dark"] .link-btn:hover { color: #edede8; border-color: #edede8; }
@@ -1388,9 +1470,9 @@
     main { padding: 24px 20px 48px; }
     @media (min-width: 600px) { main { padding: 36px 28px 48px; } }
     @media (min-width: 900px) { main { padding: 48px 32px 48px; } }
-    .hero h2 { font-size: 34px; }
-    @media (min-width: 600px) { .hero h2 { font-size: 44px; } }
-    @media (min-width: 900px) { .hero h2 { font-size: 56px; } }
+    .hero h2 { font-size: 25px; }
+    @media (min-width: 600px) { .hero h2 { font-size: 32px; } }
+    @media (min-width: 900px) { .hero h2 { font-size: 39px; } }
     .quiz-score { font-size: 30px; }
     @media (min-width: 600px) { .quiz-score { font-size: 38px; } }
     @media (min-width: 900px) { .quiz-score { font-size: 44px; } }
@@ -1442,18 +1524,6 @@
       justify-content: center;
     }
     .portrait img { width: 100%; height: 100%; }
-    :root[data-theme="dark"] .portrait img {
-      -webkit-filter: invert(1);
-      filter: invert(1);
-      mix-blend-mode: screen;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) .portrait img {
-        -webkit-filter: invert(1);
-        filter: invert(1);
-        mix-blend-mode: screen;
-      }
-    }
 
     @supports not (gap: 1px) {
       .top-row > * + * { margin-left: 16px; }
@@ -1531,7 +1601,7 @@
     /* Restore modern fluid values so they win over the Safari 9 static fallbacks above. */
     @media (min-width: 720px) { .top-row { margin-left: -24px; margin-right: -24px; } }
     main { padding: clamp(20px, 6vh, 48px) clamp(20px, 5vw, 32px) 48px; }
-    .hero h2 { font-size: clamp(34px, 5.4vw, 56px); }
+    .hero h2 { font-size: clamp(25px, 3.9vw, 39px); }
     .quiz-score { font-size: clamp(30px, 5vw, 44px); }
     .ra-text, .msg, .word-body, .pick-item span, .mic-live { overflow-wrap: anywhere; }
     .mic-dot.s-listening { background: radial-gradient(var(--ink) 0 2.5px, var(--bg) 3px); }
@@ -1557,6 +1627,7 @@
             <div class="lang-switch-langs" role="group" aria-label="Interface language" data-i18n-attr="aria-label:langSwitch">
               <button type="button" data-ui-lang="en" lang="en" aria-pressed="true" title="English">ENG</button>
               <button type="button" data-ui-lang="hu" lang="hu" aria-pressed="false" title="Magyar">HUN</button>
+              <button type="button" data-ui-lang="zh" lang="zh-Hans" aria-pressed="false" title="中文">CHN</button>
             </div>
             <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme" data-i18n-attr="aria-label:themeToDark;title:themeToDark">DRK</button>
           </div>
@@ -1564,15 +1635,14 @@
       </div>
 
       <section class="card hero" aria-labelledby="hero-heading">
-        <p class="label" data-i18n="tagline">All the languages in one place</p>
+        <p class="label" data-i18n="tagline">All the languages* in one place</p>
         <h2 id="hero-heading" data-i18n="heroTitle">Speak freely and practice languages with your tutor</h2>
-        <p class="subline" data-i18n="subline">Not all of them — but most of the main ones, and some more.</p>
+        <p class="subline" data-i18n="subline">*Not all of them.. but most of the main ones, and some more..</p>
         <p class="lede" data-i18n="heroLede">Yibu is a language-learning app. Talk with your tutor anytime — out loud or in writing — and practice the languages you need. Chat about the things you care about, and get honest, clear corrections that fit the way you learn.</p>
       </section>
 
-      <section class="card chat-card" aria-labelledby="maria-heading" id="maria-chat">
+      <section class="card chat-card" aria-label="Talk with your tutor" data-i18n-attr="aria-label:chatTitle" id="maria-chat">
         <div class="chat-head">
-          <h2 id="maria-heading" data-i18n="chatTitle">Talk with your tutor</h2>
           <div class="voice-wrap">
             <button class="voice-toggle" id="maria-voice" type="button" aria-pressed="true" aria-label="Read the tutor’s replies aloud" title="Tap: voice on/off · Hold: volume">
               <svg class="on-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
@@ -1589,7 +1659,7 @@
           </div>
         </div>
         <div class="maria-profile">
-          <span class="portrait"><img src="tutor-portrait.svg" width="600" height="750" alt="Your language tutor — an ink sketch portrait" data-i18n-attr="alt:portraitAlt" decoding="async"></span>
+          <span class="portrait"><img src="tutor-portrait.svg" width="600" height="750" alt="Your language tutor — a simple line drawing of a tutor with round glasses" data-i18n-attr="alt:portraitAlt" decoding="async"></span>
           <div class="maria-info">
             <p class="maria-name" data-i18n="tutorName">Tutor</p>
             <button class="hear-btn" id="maria-hear" type="button" aria-label="Listen to the tutor" data-i18n-attr="aria-label:hearAria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span id="maria-hear-label" data-i18n="hear">Listen</span></button>
@@ -1652,6 +1722,7 @@
       </div>
     </main>
   </div>
+  <script src="tutor-reply.js"></script>
   <script>
 /* Safari 9 / iOS 9 polyfills. No-ops on modern browsers that already have the APIs. */
 (function () {
@@ -1842,13 +1913,14 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
   };
   var I18N = {
     en: {
-      portraitAlt: "Your language tutor — an ink sketch portrait",
-      portraitAltNamed: "{name}, your language tutor — an ink sketch portrait",
+      portraitAlt: "Your language tutor — a simple line drawing of a tutor with round glasses",
+      portraitAltNamed: "{name}, your language tutor — a simple line drawing of a tutor with round glasses",
       themeToDark: "Switch to dark theme",
       themeToLight: "Switch to light theme",
+      themeToGrey: "Switch to grey theme",
       title: "Yibu — language learning app",
-      tagline: "All the languages in one place",
-      subline: "Not all of them — but most of the main ones, and some more.",
+      tagline: "All the languages* in one place",
+      subline: "*Not all of them.. but most of the main ones, and some more..",
       langSwitch: "Interface language",
       heroTitle: "Speak freely and practice languages with your tutor",
       heroLede: "Yibu is a language-learning app. Talk with your tutor anytime — out loud or in writing — and practice the languages you need. Chat about the things you care about, and get honest, clear corrections that fit the way you learn.",
@@ -1928,9 +2000,9 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       typingNamed: "{name} is typing",
       failed: "Sorry, I couldn’t answer just now. Please try again in a moment.",
       limit: "I’ve really enjoyed our practice today! You’ve reached today’s message limit, so let’s continue tomorrow.",
-      opener: "Hi, I’m your language tutor — lovely to meet you! Before we dive in, I’d love to get to know you a little. What’s your native language, and are there any other languages you speak?",
-      openerNamed: "Hi, I’m {name}, your language tutor — lovely to meet you! Before we dive in, I’d love to get to know you a little. What’s your native language, and are there any other languages you speak?",
-      welcomeBack: "Welcome back! Shall we carry on practicing? Tell me, how’s your day going?",
+      opener: "Hi, I’m your language tutor — lovely to meet you! Let’s jump straight into a little practice.",
+      openerNamed: "Hi, I’m {name}, your language tutor — lovely to meet you! Let’s jump straight into a little practice.",
+      welcomeBack: "Welcome back! Let’s pick up with a little practice.",
       newWord: "New word saved: {term}",
       newWords: "{n} new words saved",
       removed: "Removed: {term}",
@@ -1977,13 +2049,14 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       pickNone: "No match"
     },
     hu: {
-      portraitAlt: "A nyelvtanárod — tusrajzos portré",
-      portraitAltNamed: "{name}, a nyelvtanárod — tusrajzos portré",
+      portraitAlt: "A nyelvtanárod — egyszerű vonalas rajz egy kerek szemüveges tanárról",
+      portraitAltNamed: "{name}, a nyelvtanárod — egyszerű vonalas rajz egy kerek szemüveges tanárról",
       themeToDark: "Váltás sötét témára",
       themeToLight: "Váltás világos témára",
+      themeToGrey: "Váltás szürke témára",
       title: "Yibu — nyelvtanuló alkalmazás",
-      tagline: "Minden nyelvet egy helyen",
-      subline: "Nem mindet — de a legtöbb fontosat, és még néhányat.",
+      tagline: "Minden nyelvet* egy helyen",
+      subline: "*Nem mindet.. de a legtöbb fontosat, és még néhányat..",
       langSwitch: "A felület nyelve",
       heroTitle: "Beszélj bátran, és gyakorold a nyelveket a tanároddal",
       heroLede: "A Yibu egy nyelvtanuló alkalmazás. Beszélgess a tanároddal bármikor — hangosan vagy írásban —, és gyakorold a számodra fontos nyelveket. Beszélgessetek azokról a témákról, amelyek érdekelnek, és kapj őszinte, világos javításokat, amelyek igazodnak ahhoz, ahogyan tanulsz.",
@@ -2062,9 +2135,9 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       typingNamed: "{name} ír",
       failed: "Bocsi, most nem tudtam válaszolni. Próbáld újra egy kicsit később.",
       limit: "Nagyon élveztem a mai gyakorlást! Elérted a mai üzenetkeretet, úgyhogy holnap folytassuk.",
-      opener: "Szia, én vagyok a nyelvtanárod — nagyon örülök, hogy itt vagy! Mielőtt belevágunk, szeretnélek egy kicsit megismerni. Mi az anyanyelved, és beszélsz még más nyelveken is?",
-      openerNamed: "Szia, {name} vagyok, a nyelvtanárod — nagyon örülök, hogy itt vagy! Mielőtt belevágunk, szeretnélek egy kicsit megismerni. Mi az anyanyelved, és beszélsz még más nyelveken is?",
-      welcomeBack: "Örülök, hogy újra itt vagy! Folytassuk a gyakorlást? Mesélj, hogy telik a napod?",
+      opener: "Szia, én vagyok a nyelvtanárod — nagyon örülök, hogy itt vagy! Kezdjünk is egy kis gyakorlással.",
+      openerNamed: "Szia, {name} vagyok, a nyelvtanárod — nagyon örülök, hogy itt vagy! Kezdjünk is egy kis gyakorlással.",
+      welcomeBack: "Örülök, hogy újra itt vagy! Folytassuk egy kis gyakorlással.",
       newWord: "Új szó mentve: {term}",
       newWords: "{n} új szó mentve",
       removed: "Törölve: {term}",
@@ -2109,10 +2182,146 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
       pickFilter: "Írj a szűréshez…",
       pickFilterAria: "Nyelvek szűrése",
       pickNone: "Nincs találat"
+    },
+    zh: {
+      portraitAlt: "你的语言老师 — 一幅戴圆框眼镜的老师的简洁线描",
+      portraitAltNamed: "{name}，你的语言老师 — 一幅戴圆框眼镜的老师的简洁线描",
+      themeToDark: "切换到深色主题",
+      themeToLight: "切换到浅色主题",
+      themeToGrey: "切换到灰色主题",
+      title: "Yibu — 语言学习应用",
+      tagline: "所有语言*，都在这里",
+      subline: "*不是全部..但包括大多数主要语言，还有一些别的..",
+      langSwitch: "界面语言",
+      heroTitle: "自由开口，和老师一起练习语言",
+      heroLede: "Yibu 是一款语言学习应用。随时和老师交谈 — 可以开口说，也可以打字 — 练习你需要的语言。聊你关心的事情，得到真诚、清楚、适合你学习方式的纠正。",
+      heroLedeNamed: "Yibu 是一款语言学习应用。随时和{name}交谈 — 可以开口说，也可以打字 — 练习你需要的语言。聊你关心的事情，得到真诚、清楚、适合你学习方式的纠正。",
+      chatTitle: "和老师聊聊",
+      chatTitleNamed: "和{name}聊聊",
+      voiceOnLabel: "正在朗读老师的回复（点按可关闭）",
+      voiceOnLabelNamed: "正在朗读{name}的回复（点按可关闭）",
+      voiceOffLabel: "语音已关闭（点按可朗读老师的回复）",
+      voiceOffLabelNamed: "语音已关闭（点按可朗读{name}的回复）",
+      voiceOnTitle: "语音已开启",
+      voiceOffTitle: "语音已关闭",
+      volHint: "点按：开关语音 · 长按：音量",
+      volAria: "老师音量",
+      hear: "听一听",
+      hearAria: "听老师说",
+      hearAriaNamed: "听{name}说",
+      stop: "停止",
+      stopAria: "停止老师说话",
+      stopAriaNamed: "停止{name}说话",
+      practicing: "正在练习：{lang}",
+      changeLangs: "更改我的语言",
+      changeLangsMsg: "我想更新我的语言。",
+      readAlong: "跟读",
+      micListening: "正在听",
+      micThinking: "正在思考…",
+      micSpeaking: "正在说",
+      micBlocked: "麦克风权限被拒绝。请在浏览器设置中允许使用，或改为打字。",
+      micUnsupported: "当前浏览器不支持语音输入 — 你可以改为打字。",
+      micError: "语音输入已停止。点按麦克风再试一次。",
+      typeInstead: "改为打字",
+      hideTyping: "收起输入框",
+      inputPlaceholder: "给老师写点什么…",
+      inputPlaceholderNamed: "给{name}写点什么…",
+      inputAria: "发给老师的消息",
+      inputAriaNamed: "发给{name}的消息",
+      send: "发送",
+      quiz: "测验",
+      dlgBtn: "情景对话",
+      dlgHint: "选一个情景 — 老师来演对方",
+      dlgActive: "对话：{name}",
+      dlgEnd: "结束对话",
+      dlgStartMsg: "我们开始这段对话：{name}。",
+      dlgEndMsg: "请结束这段对话，并给我一个简短的回顾。",
+      dlg_intro: "介绍自己",
+      dlg_intro_d: "说说你是谁、来自哪里",
+      dlg_cafe: "在咖啡馆",
+      dlg_cafe_d: "点一杯饮料和一份小吃",
+      dlg_directions: "问路",
+      dlg_directions_d: "找到去某个地方的路",
+      dlg_shopping: "购物",
+      dlg_shopping_d: "尺码、价格和结账",
+      dlg_doctor: "看医生",
+      dlg_doctor_d: "说说你哪里不舒服",
+      dlg_plans: "和朋友订计划",
+      dlg_plans_d: "约定日期、时间和地点",
+      dlg_hotel: "酒店入住",
+      dlg_hotel_d: "办理入住，问问房间的情况",
+      dlg_interview: "面试寒暄",
+      dlg_interview_d: "正式提问前先热热身",
+      forget: "忘记我",
+      forgetTitle: "删除老师记住的关于你、你的语言和已保存单词的内容",
+      forgetTitleNamed: "删除{name}记住的关于你、你的语言和已保存单词的内容",
+      myWords: "我的单词",
+      wordsEmpty: "聊天中遇到的有用单词和短语会出现在这里。",
+      feat1T: "开口说",
+      feat1: "直接说就行 — 麦克风一直开着。老师会出声回答，你也可以跟着读出的字走。",
+      feat1Named: "直接说就行 — 麦克风一直开着。{name}会出声回答，你也可以跟着读出的字走。",
+      feat2T: "真诚的纠正",
+      feat2: "有点严格，但从不刻薄：重要的错误会改正，小的口误会等到停顿时再提，老师也会慢慢了解你希望怎么被纠正。",
+      feat2Named: "有点严格，但从不刻薄：重要的错误会改正，小的口误会等到停顿时再提，{name}也会慢慢了解你希望怎么被纠正。",
+      feat3T: "你的语言，你的兴趣",
+      feat3: "选择你正在学的语言。老师会聊你关心的事情，并记住它们 — 没有固定课程。",
+      feat3Named: "选择你正在学的语言。{name}会聊你关心的事情，并记住它们 — 没有固定课程。",
+      playReply: "播放这条回复",
+      typing: "老师正在输入",
+      typingNamed: "{name}正在输入",
+      failed: "抱歉，刚才没法回答。请稍后再试一次。",
+      limit: "今天的练习很愉快！你已经达到今天的消息上限，我们明天再继续吧。",
+      opener: "你好，我是你的语言老师 — 很高兴认识你！我们直接开始一点练习吧。",
+      openerNamed: "你好，我是{name}，你的语言老师 — 很高兴认识你！我们直接开始一点练习吧。",
+      welcomeBack: "欢迎回来！我们接着做一点练习吧。",
+      newWord: "已保存新词：{term}",
+      newWords: "已保存 {n} 个新词",
+      removed: "已删除：{term}",
+      removeFail: "没能删除这个词。请再试一次。",
+      removeAria: "从我的单词中删除“{term}”",
+      removeTitle: "删除",
+      quizMaking: "正在为你出题…",
+      quizProgress: "第 {i} 题，共 {n} 题 · 得分 {s}",
+      quizCorrect: "正确！",
+      quizWrong: "不太对。正确答案是：“{a}”",
+      quizNext: "下一题",
+      quizSee: "查看得分",
+      quizScore: "你答对了 {n} 题中的 {s} 题！",
+      quizPerfect: "满分 — 太棒了！",
+      quizGreat: "很出色！这些词你掌握得很好。",
+      quizGood: "不错！继续练习，你就能全部掌握。",
+      quizTry: "很好的尝试！我们继续一起练习这些词吧。",
+      quizNew: "再来一次测验",
+      quizBack: "返回聊天",
+      quizRetry: "再试一次",
+      quizClose: "关闭测验",
+      quizHint: "提示：{h}",
+      quizPlaceholder: "输入缺少的单词",
+      quizAnswerAria: "你的答案",
+      quizCheck: "检查",
+      quizLimit: "今天的测验先到这里。我们明天再继续吧！",
+      quizFail: "抱歉，现在没法出测验。请稍后再试。",
+      quizChip: "来一道快速测验",
+      quizTitle: "测验",
+      forgetConfirm: "忘记我？\n\n老师会忘记你们的对话、你的语言和已保存的单词。此操作无法撤销。",
+      forgetConfirmNamed: "忘记我？\n\n{name}会忘记你们的对话、你的语言和已保存的单词。此操作无法撤销。",
+      forgetDone: "已完成 — 你的聊天、语言和单词都已忘记。",
+      forgetFail: "抱歉，这次没有成功。请再试一次。",
+      tutorName: "老师",
+      tutorNameNamed: "{name}",
+      micHearing: "正在听你说…",
+      micMuted: "麦克风已关",
+      micMuteAria: "关闭麦克风",
+      micUnmuteAria: "打开麦克风",
+      learning: "正在学习",
+      pickMore: "更多语言",
+      pickFilter: "输入以筛选…",
+      pickFilterAria: "筛选语言",
+      pickNone: "没有匹配项"
     }
   };
   var UI_KEY = "yibu-lang";
-  var uiLang = storeGet(UI_KEY) === "hu" ? "hu" : "en";
+  var uiLang = I18N[storeGet(UI_KEY)] ? storeGet(UI_KEY) : "en";
   var DEFAULT_TUTOR = "";
   var tutorNm = DEFAULT_TUTOR;
   var cleanTutorName = function cleanTutorName(v) {
@@ -2137,11 +2346,11 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     var row = LANGS.filter(function (l) {
       return l[1] === code;
     })[0];
-    if (row) return uiLang === "hu" ? row[3] : row[2];
+    if (row) return uiLang === "hu" ? row[3] : uiLang === "zh" && row[4] ? row[4] : row[2];
     return code;
   };
   var applyI18n = function applyI18n() {
-    document.documentElement.lang = uiLang;
+    document.documentElement.lang = uiLang === "zh" ? "zh-Hans" : uiLang;
     document.title = t("title");
     document.querySelectorAll("[data-i18n]").forEach(function (n) {
       n.textContent = t(n.dataset.i18n);
@@ -3169,11 +3378,11 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     sending = busy;
     sendBtn.disabled = busy;
   };
-  var api = function api(method, path, payload) {
+  var api = function api(method, path, payload, timeoutMs) {
     var ctrl = new AbortController();
     var timer = setTimeout(function () {
       return ctrl.abort();
-    }, 60000);
+    }, timeoutMs || 60000);
     var init = {
       method: method,
       headers: apiHeaders(),
@@ -3219,46 +3428,70 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     refreshMic();
     var typing = showTyping();
     var failed = t("failed");
-    api("POST", "/", payload).then(function (res) {
+    var shown = false;
+    var settle = function settle() {
+      setBusy(false);
+      refreshMic();
+      if (inputMode === "text") input.focus({
+        preventScroll: true
+      });
+    };
+    var showReply = function showReply(replyText, replyLang) {
+      if (shown) return;
+      shown = true;
       typing.remove();
-      try {
-        if (!res) {
-          addMessage("maria", failed);
-        } else if (res.ok && res.data && typeof res.data.reply === "string") {
-          if (pp) storeSet(SENT_KEY, pp);
-          history.push({
-            role: "user",
-            content: text
-          }, {
-            role: "assistant",
-            content: res.data.reply
-          });
-          history = history.slice(-MAX_TURNS);
-          var replyLang = typeof res.data.lang === "string" && res.data.lang ? res.data.lang : practiceLang();
-          if (res.data.profile) setProfile(res.data.profile);
-          addMessage("maria", res.data.reply, true, replyLang);
-          lastMaria = {
-            text: res.data.reply,
-            lang: replyLang
-          };
-          if (voiceOn && (canSpeak || canAudio)) say(res.data.reply, replyLang);
-          if (Array.isArray(res.data.words)) gotWords(res.data.words, res.data.vocabCount);
-          if (res.data.suggestQuiz && !activeDialogue) addQuizChip();
-          if (opts.end) {
-            activeDialogue = "";
-            if (renderDialogues) renderDialogues();
-          }
-        } else if (res.status === 429) {
-          addMessage("maria", t("limit"));
-        } else {
-          addMessage("maria", failed);
-        }
-      } finally {
-        setBusy(false);
-        refreshMic();
-        if (inputMode === "text") input.focus({
-          preventScroll: true
-        });
+      history.push({
+        role: "user",
+        content: text
+      }, {
+        role: "assistant",
+        content: replyText
+      });
+      history = history.slice(-MAX_TURNS);
+      addMessage("maria", replyText, true, replyLang);
+      lastMaria = {
+        text: replyText,
+        lang: replyLang
+      };
+      if (voiceOn && (canSpeak || canAudio)) say(replyText, replyLang);
+      if (opts.end) {
+        activeDialogue = "";
+        if (renderDialogues) renderDialogues();
+      }
+      settle();
+    };
+    var useLocal = function useLocal() {
+      var localReply = window.YibuTutor && typeof YibuTutor.tutorReply === "function" ? YibuTutor.tutorReply(text, tutorCtx()) : null;
+      if (localReply && localReply.inferredPractice && !picked) {
+        picked = localReply.inferredPractice;
+        storeSet(PICK_KEY, picked);
+      }
+      if (localReply && localReply.text) {
+        showReply(localReply.text, localReply.lang || practiceLang());
+      } else {
+        typing.remove();
+        addMessage("maria", failed);
+        settle();
+      }
+    };
+    api("POST", "/", payload, 8000).then(function (res) {
+      if (res && res.ok && res.data) {
+        if (pp) storeSet(SENT_KEY, pp);
+        if (res.data.profile) setProfile(res.data.profile);
+        if (Array.isArray(res.data.words)) gotWords(res.data.words, res.data.vocabCount);
+        if (res.data.suggestQuiz && !activeDialogue) addQuizChip();
+      }
+      if (shown) return;
+      var workerText = res && res.ok && res.data && typeof res.data.reply === "string" ? String(res.data.reply).trim() : "";
+      if (workerText) {
+        var replyLang = typeof res.data.lang === "string" && res.data.lang ? res.data.lang : practiceLang();
+        showReply(workerText, replyLang);
+      } else if (res && res.status === 429) {
+        typing.remove();
+        addMessage("maria", t("limit"));
+        settle();
+      } else {
+        useLocal();
       }
     });
   };
@@ -3673,7 +3906,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     renderPicker();
     syncRecLang();
   };
-  var LANGS = [["ENG", "en", "English", "angol"], ["CHN", "zh", "Chinese", "kínai"], ["JPN", "ja", "Japanese", "japán"], ["KOR", "ko", "Korean", "koreai"], ["HUN", "hu", "Hungarian", "magyar"], ["GER", "de", "German", "német"], ["FRA", "fr", "French", "francia"], ["SPA", "es", "Spanish", "spanyol"], ["ITA", "it", "Italian", "olasz"], ["POR", "pt", "Portuguese", "portugál"], ["DUT", "nl", "Dutch", "holland"], ["POL", "pl", "Polish", "lengyel"], ["CZE", "cs", "Czech", "cseh"], ["SVK", "sk", "Slovak", "szlovák"], ["ROM", "ro", "Romanian", "román"], ["CRO", "hr", "Croatian", "horvát"], ["SRP", "sr", "Serbian", "szerb"], ["SLV", "sl", "Slovenian", "szlovén"], ["UKR", "uk", "Ukrainian", "ukrán"], ["RUS", "ru", "Russian", "orosz"], ["GRE", "el", "Greek", "görög"], ["TUR", "tr", "Turkish", "török"], ["ARA", "ar", "Arabic", "arab"], ["HEB", "he", "Hebrew", "héber"], ["HIN", "hi", "Hindi", "hindi"], ["BEN", "bn", "Bengali", "bengáli"], ["IND", "id", "Indonesian", "indonéz"], ["VIE", "vi", "Vietnamese", "vietnami"], ["THA", "th", "Thai", "thai"], ["SWE", "sv", "Swedish", "svéd"], ["DAN", "da", "Danish", "dán"], ["NOR", "no", "Norwegian", "norvég"], ["FIN", "fi", "Finnish", "finn"], ["EST", "et", "Estonian", "észt"], ["LAV", "lv", "Latvian", "lett"], ["LIT", "lt", "Lithuanian", "litván"], ["BUL", "bg", "Bulgarian", "bolgár"], ["CAT", "ca", "Catalan", "katalán"], ["PER", "fa", "Persian", "perzsa"], ["URD", "ur", "Urdu", "urdu"], ["SWA", "sw", "Swahili", "szuahéli"], ["TGL", "tl", "Tagalog", "tagalog"], ["MAY", "ms", "Malay", "maláj"], ["IRI", "ga", "Irish", "ír"], ["LAT", "la", "Latin", "latin"], ["EPO", "eo", "Esperanto", "eszperantó"]];
+  var LANGS = [["ENG", "en", "English", "angol", "英语"], ["CHN", "zh", "Chinese", "kínai", "中文"], ["JPN", "ja", "Japanese", "japán", "日语"], ["KOR", "ko", "Korean", "koreai", "韩语"], ["HUN", "hu", "Hungarian", "magyar", "匈牙利语"], ["GER", "de", "German", "német", "德语"], ["FRA", "fr", "French", "francia", "法语"], ["SPA", "es", "Spanish", "spanyol", "西班牙语"], ["ITA", "it", "Italian", "olasz", "意大利语"], ["POR", "pt", "Portuguese", "portugál", "葡萄牙语"], ["DUT", "nl", "Dutch", "holland", "荷兰语"], ["POL", "pl", "Polish", "lengyel", "波兰语"], ["CZE", "cs", "Czech", "cseh", "捷克语"], ["SVK", "sk", "Slovak", "szlovák", "斯洛伐克语"], ["ROM", "ro", "Romanian", "román", "罗马尼亚语"], ["CRO", "hr", "Croatian", "horvát", "克罗地亚语"], ["SRP", "sr", "Serbian", "szerb", "塞尔维亚语"], ["SLV", "sl", "Slovenian", "szlovén", "斯洛文尼亚语"], ["UKR", "uk", "Ukrainian", "ukrán", "乌克兰语"], ["RUS", "ru", "Russian", "orosz", "俄语"], ["GRE", "el", "Greek", "görög", "希腊语"], ["TUR", "tr", "Turkish", "török", "土耳其语"], ["ARA", "ar", "Arabic", "arab", "阿拉伯语"], ["HEB", "he", "Hebrew", "héber", "希伯来语"], ["HIN", "hi", "Hindi", "hindi", "印地语"], ["BEN", "bn", "Bengali", "bengáli", "孟加拉语"], ["IND", "id", "Indonesian", "indonéz", "印尼语"], ["VIE", "vi", "Vietnamese", "vietnami", "越南语"], ["THA", "th", "Thai", "thai", "泰语"], ["SWE", "sv", "Swedish", "svéd", "瑞典语"], ["DAN", "da", "Danish", "dán", "丹麦语"], ["NOR", "no", "Norwegian", "norvég", "挪威语"], ["FIN", "fi", "Finnish", "finn", "芬兰语"], ["EST", "et", "Estonian", "észt", "爱沙尼亚语"], ["LAV", "lv", "Latvian", "lett", "拉脱维亚语"], ["LIT", "lt", "Lithuanian", "litván", "立陶宛语"], ["BUL", "bg", "Bulgarian", "bolgár", "保加利亚语"], ["CAT", "ca", "Catalan", "katalán", "加泰罗尼亚语"], ["PER", "fa", "Persian", "perzsa", "波斯语"], ["URD", "ur", "Urdu", "urdu", "乌尔都语"], ["SWA", "sw", "Swahili", "szuahéli", "斯瓦希里语"], ["TGL", "tl", "Tagalog", "tagalog", "他加禄语"], ["MAY", "ms", "Malay", "maláj", "马来语"], ["IRI", "ga", "Irish", "ír", "爱尔兰语"], ["LAT", "la", "Latin", "latin", "拉丁语"], ["EPO", "eo", "Esperanto", "eszperantó", "世界语"]];
   var LANG_ALIASES = {
     zh: ["ch", "cn", "mandarin"],
     ja: ["jp"],
@@ -3707,7 +3940,11 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     return langByCode.has(c) ? langByCode.get(c)[0] : String(c).toUpperCase();
   };
   var pickName = function pickName(c) {
-    return langByCode.has(c) ? cap(langByCode.get(c)[uiLang === "hu" ? 3 : 2]) : String(c);
+    if (!langByCode.has(c)) return String(c);
+    var row = langByCode.get(c);
+    if (uiLang === "hu") return cap(row[3]);
+    if (uiLang === "zh" && row[4]) return row[4];
+    return cap(row[2]);
   };
   var pickerOpen = false;
   var choose = function choose(code) {
@@ -3790,7 +4027,28 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
     }
   });
   renderPicker();
-  var openerText = function openerText() {
+  var tutorCtx = function tutorCtx() {
+    return {
+      uiLang: uiLang,
+      savedPractice: picked || profile && profile.practice || "",
+      profilePractice: profile && profile.practice || "",
+      tutorName: tutorNm,
+      returning: profileDone(),
+      history: history,
+      langLabel: langLabel,
+      profile: profile,
+      knownWords: words && words.map(function (w) {
+        return w && w.term;
+      }).filter(Boolean)
+    };
+  };
+  var openerText = function openerText(rotate) {
+    if (window.YibuTutor && typeof YibuTutor.teachingOpener === "function") {
+      var ctx = tutorCtx();
+      if (rotate === false) ctx.rotate = false;
+      var opened = YibuTutor.teachingOpener(ctx);
+      if (opened && opened.text) return opened.text;
+    }
     return profileDone() ? t("welcomeBack") : t("opener");
   };
   var openerEl = null;
@@ -3808,7 +4066,7 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
   };
   var refreshOpener = function refreshOpener() {
     if (!openerEl || log.querySelector(".msg.user")) return;
-    var text = openerText();
+    var text = openerText(false);
     openerEl.remove();
     openerEl = null;
     log.replaceChildren();
@@ -4073,21 +4331,30 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
   var themeBtn = document.getElementById("theme-toggle");
   var themeMeta = document.getElementById("theme-color");
   var sysDark = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  var THEME_CYCLE = ["light", "grey", "dark"];
+  var THEME_NEXT_LABEL = { light: "GRY", grey: "DRK", dark: "LGHT" };
+  var THEME_NEXT_KEY = { light: "themeToGrey", grey: "themeToDark", dark: "themeToLight" };
+  var THEME_META = { light: "#ffffff", grey: "#fafaf8", dark: "#0e0e0e" };
   var effectiveTheme = function effectiveTheme() {
     var a = document.documentElement.getAttribute("data-theme");
-    return a === "dark" || a === "light" ? a : sysDark && sysDark.matches ? "dark" : "light";
+    if (a === "dark" || a === "light" || a === "grey") return a;
+    return sysDark && sysDark.matches ? "dark" : "light";
   };
   var refreshTheme = function refreshTheme() {
-    var dark = effectiveTheme() === "dark";
-    themeBtn.textContent = dark ? "LGT" : "DRK";
-    var label = t(dark ? "themeToLight" : "themeToDark");
+    var cur = effectiveTheme();
+    var nextKey = THEME_NEXT_KEY[cur];
+    themeBtn.textContent = THEME_NEXT_LABEL[cur];
+    var label = t(nextKey);
     themeBtn.setAttribute("aria-label", label);
     themeBtn.title = label;
-    themeBtn.dataset.i18nAttr = "aria-label:" + (dark ? "themeToLight" : "themeToDark") + ";title:" + (dark ? "themeToLight" : "themeToDark");
-    if (themeMeta) themeMeta.setAttribute("content", dark ? "#0e0e0e" : "#ffffff");
+    themeBtn.dataset.i18nAttr = "aria-label:" + nextKey + ";title:" + nextKey;
+    themeBtn.setAttribute("aria-pressed", cur === "dark" ? "true" : "false");
+    if (themeMeta) themeMeta.setAttribute("content", THEME_META[cur]);
   };
   themeBtn.addEventListener("click", function () {
-    var next = effectiveTheme() === "dark" ? "light" : "dark";
+    var cur = effectiveTheme();
+    var i = THEME_CYCLE.indexOf(cur);
+    var next = THEME_CYCLE[i < 0 ? 1 : (i + 1) % THEME_CYCLE.length];
     document.documentElement.setAttribute("data-theme", next);
     storeSet(THEME_KEY, next);
     refreshTheme();
