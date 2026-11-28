@@ -8,4 +8,5 @@
     <path d="M116 128 H124"/>
     <path d="M24 292 C40 228 80 198 120 198 C160 198 200 228 216 292"/>
   </g>
+  <text x="120" y="275" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="700" fill="#141414" letter-spacing="0.05em">assistant</text>
 </svg>
