@@ -1,3 +1,4 @@
 # Everyday Notes
 
-- [ ] Buy Makos testa
+- [ ] Buy makos testa
+- [ ] Buy pappi
