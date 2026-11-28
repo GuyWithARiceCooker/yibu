@@ -1,4 +1,4 @@
 # Everyday Notes
 
-- [ ] Buy makos testa
+- [ ] Buy mákos tészta
 - [ ] Buy pappi
