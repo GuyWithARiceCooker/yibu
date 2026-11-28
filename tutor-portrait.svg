@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300" fill="none">
   <rect width="240" height="300" fill="#ffffff"/>
-  <g stroke="#141414" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Tutor figure, kept mostly as-is but a little higher -->
+  <g stroke="#141414" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,-10)">
     <circle cx="120" cy="118" r="64"/>
     <path d="M58 114 C70 52 170 52 182 114"/>
     <circle cx="96" cy="128" r="20"/>
@@ -8,5 +9,34 @@
     <path d="M116 128 H124"/>
     <path d="M24 292 C40 228 80 198 120 198 C160 198 200 228 216 292"/>
   </g>
-  <text x="120" y="275" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="700" fill="#141414" letter-spacing="0.05em">assistant</text>
+  <!-- Drawn "assistant" in matching thick, round-cap line style — underneath the picture -->
+  <g stroke="#141414" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- a s s i s t a n t  — simplified single-stroke letterforms, centered -->
+    <g transform="translate(20, 248) scale(0.85)">
+      <!-- a -->
+      <path d="M8 18 C8 10 16 8 22 12 C28 16 26 26 18 28 C12 30 6 26 6 20"/>
+      <path d="M22 14 V30"/>
+      <!-- s -->
+      <path d="M36 12 C44 8 52 12 52 18 C52 24 40 22 40 28 C40 34 50 32 56 28"/>
+      <!-- s -->
+      <path d="M64 12 C72 8 80 12 80 18 C80 24 68 22 68 28 C68 34 78 32 84 28"/>
+      <!-- i -->
+      <path d="M96 14 V30"/>
+      <circle cx="96" cy="8" r="2" fill="#141414" stroke="none"/>
+      <!-- s -->
+      <path d="M108 12 C116 8 124 12 124 18 C124 24 112 22 112 28 C112 34 122 32 128 28"/>
+      <!-- t -->
+      <path d="M140 10 V30"/>
+      <path d="M132 16 H148"/>
+      <!-- a -->
+      <path d="M160 18 C160 10 168 8 174 12 C180 16 178 26 170 28 C164 30 158 26 158 20"/>
+      <path d="M174 14 V30"/>
+      <!-- n -->
+      <path d="M188 30 V14"/>
+      <path d="M188 16 C196 10 206 16 206 22 V30"/>
+      <!-- t -->
+      <path d="M218 10 V30"/>
+      <path d="M210 16 H226"/>
+    </g>
+  </g>
 </svg>
