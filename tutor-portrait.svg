@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 320" width="240" height="320" fill="none">
-  <rect width="240" height="320" fill="#ffffff"/>
-  <!-- Tutor figure, shifted higher so text fits cleanly underneath -->
-  <g stroke="#141414" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,-25)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 300" width="240" height="300" fill="none">
+  <rect width="240" height="300" fill="#ffffff"/>
+  <!-- Tutor figure shifted up so the drawn text sits clearly underneath -->
+  <g stroke="#141414" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" transform="translate(0,-40) scale(0.92)">
     <circle cx="120" cy="118" r="64"/>
     <path d="M58 114 C70 52 170 52 182 114"/>
     <circle cx="96" cy="128" r="20"/>
@@ -9,9 +9,9 @@
     <path d="M116 128 H124"/>
     <path d="M24 292 C40 228 80 198 120 198 C160 198 200 228 216 292"/>
   </g>
-  <!-- Drawn "assistant" clearly below the portrait -->
-  <g stroke="#141414" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <g transform="translate(15, 270) scale(0.78)">
+  <!-- Drawn "assistant" below the portrait figure, inside the square -->
+  <g stroke="#141414" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <g transform="translate(18, 255) scale(0.72)">
       <!-- a -->
       <path d="M8 18 C8 10 16 8 22 12 C28 16 26 26 18 28 C12 30 6 26 6 20"/>
       <path d="M22 14 V30"/>
